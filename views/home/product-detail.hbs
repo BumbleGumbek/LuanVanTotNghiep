@@ -1,0 +1,128 @@
+
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product__details__img">
+                    <div class="product__details__big__img">
+                        <img class="big_img img-fluid"
+                             src="{{product.image}}"
+                             alt="{{product.name}}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product__details__text">
+                    <h4>{{product.name}}</h4>
+                    <h5>{{product.price}} VND</h5>
+                    <p>{{product.description}}</p>
+                    <ul>
+                        <li>Category: <span>{{product.category.title}}</span></li>
+                        <li>Quantity: <span>{{product.quantity}}</span></li>
+                        <li>Status:
+                            <span>
+                                {{#if product.status}}
+                                    In Stock
+                                {{else}}
+                                    Out Of Stock
+                                {{/if}}
+                            </span>
+                        </li>
+                    </ul>
+                    <form action="/add-cart/{{product._id}}" method="POST">
+                        <div class="product__details__option">
+
+                            <div class="option-group">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="number" name="qty" value="1" min="1" max="{{product.quantity}}">
+                                    </div>
+                                </div>
+
+                                <button type="submit" name="action" value="add_to_cart" class="primary-btn">
+                                    Add to cart
+                                </button>
+                            </div>
+
+                            <div class="option-group">
+                                <button type="submit" name="action" value="buy_now" class="primary-btn" style="background: #111111;">
+                                    Buy Now
+                                </button>
+
+                                <a href="/wishlist/add/{{product._id}}" class="heart__btn">
+                                    <i class="fa fa-heart {{#if product.inWishlist}}heart-active{{/if}}" style="font-size: 20px;"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <section class="related-products spad">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="section-title">
+                            <h2>Related Products</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="related__products__slider owl-carousel">
+
+{{#each relatedProducts}}
+                            <div class="col-lg-3">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg"
+                                         data-setbg="{{image}}">
+                                        <div class="product__label">
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li>
+                                                <a href="/wishlist/add/{{_id}}">
+                                                    <i class="fa fa-heart {{#if inWishlist}}heart-active{{/if}}"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <a href="/product-detail/{{_id}}" class="w-100 h-100 d-block"></a>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>
+                                            <a href="/product-detail/{{_id}}">
+                                                {{name}}
+                                            </a>
+                                        </h6>
+                                        <div class="product__item__price">
+                                            {{price}} VND
+                                        </div>
+                                        <div class="cart_add">
+
+                                            <form action="/add-cart/{{_id}}" method="POST">
+
+                                                <button type="submit"
+                                                        class="border-0 bg-transparent">
+
+                                                    Add to cart
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+{{/each}}
+
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</section>
+<!-- Product Details Section End -->

@@ -1,0 +1,104 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <div class="row align-items-center mb-4">
+                <div class="col">
+                    <h2 class="h5 page-title"><small class="text-muted text-uppercase">Invoice</small><br />{{shortId order._id}}</h2>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
+                    <button type="button" class="btn btn-primary">Pay</button>
+                </div>
+            </div>
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="row mb-5">
+                        <div class="col-12 text-center mb-4">
+                            <img src="/img/logo.jpg" class="navbar-brand-img brand-sm mx-auto mb-4" alt="Luxury Jewelry" style="max-width: 100px;">
+                            <h2 class="mb-0 text-uppercase">Invoice</h2>
+                            <p class="text-muted"> Luxury Jewelry Co.<br /> Fashion District, Ho Chi Minh City </p>
+                        </div>
+                        <div class="col-md-7">
+                            <p class="small text-muted text-uppercase mb-2">Invoice from</p>
+                            <p class="mb-4">
+                                <strong>Luxury Jewelry Co.</strong><br /> 
+                                Jewelry Dept.<br /> 
+                                123 Fashion St.<br /> 
+                                Ho Chi Minh City<br /> 
+                                (+84) 123-456-789<br />
+                            </p>
+                            <p>
+                                <span class="small text-muted text-uppercase">Invoice #</span><br />
+                                <strong>{{shortId order._id}}</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-5">
+                            <p class="small text-muted text-uppercase mb-2">Invoice to</p>
+                            <p class="mb-4">
+                                <strong>{{order.shippingAddress.fullName}}</strong><br /> 
+                                {{order.shippingAddress.phone}}<br /> 
+                                {{order.shippingAddress.address}}<br /> 
+                                {{order.shippingAddress.city}}<br />
+                                {{order.user.email}}<br />
+                            </p>
+                            <p>
+                                <small class="small text-muted text-uppercase">Order Date</small><br />
+                                <strong>{{order.createdAt}}</strong>
+                            </p>
+                        </div>
+                    </div> <!-- /.row -->
+                    <table class="table table-borderless table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Description</th>
+                                <th scope="col" class="text-right">Price</th>
+                                <th scope="col" class="text-right">Quantity</th>
+                                <th scope="col" class="text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each order.items}}
+                            <tr>
+                                <th scope="row">{{@index}}</th>
+                                <td> {{snapshot.name}}<br />
+                                    <span class="small text-muted">Premium luxury jewelry item</span>
+                                </td>
+                                <td class="text-right">{{snapshot.price}} VNĐ</td>
+                                <td class="text-right">{{quantity}}</td>
+                                <td class="text-right">{{subtotal}} VNĐ</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    <div class="row mt-5">
+                        <div class="col-2 text-center">
+                            <img src="/assets/images/qrcode.svg" class="navbar-brand-img brand-sm mx-auto my-4" alt="QR Code" onerror="this.style.display='none'">
+                        </div>
+                        <div class="col-md-5">
+                            <p class="text-muted small">
+                                <strong>Note :</strong> {{#if order.note}}{{order.note}}{{else}}Thank you for choosing Luxury Jewelry. We hope you enjoy your purchase!{{/if}} 
+                            </p>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="text-right mr-2">
+                                <p class="mb-2 h6">
+                                    <span class="text-muted">Subtotal : </span>
+                                    <strong>{{order.totalPrice}} VNĐ</strong>
+                                </p>
+                                <p class="mb-2 h6">
+                                    <span class="text-muted">VAT (0%) : </span>
+                                    <strong>0 VNĐ</strong>
+                                </p>
+                                <p class="mb-2 h6">
+                                    <span class="text-muted">Total : </span>
+                                    <span class="h4">{{order.totalPrice}} VNĐ</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div> <!-- /.row -->
+                </div> <!-- /.card-body -->
+            </div> <!-- /.card -->
+        </div> <!-- /.col-12 -->
+    </div> <!-- .row -->
+</div> <!-- .container-fluid -->

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna Jewelry</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/flaticon.css">
+    <link rel="stylesheet" href="/css/barfiller.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/elegant-icons.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/slicknav.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff0000;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            height: 18px;
+            width: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .header__top__right__cart a {
+            position: relative;
+        }
+        .heart-active {
+            color: #ff0000 !important;
+        }
+        .product__item__pic__hover {
+            position: absolute;
+            left: 0;
+            bottom: -50px;
+            width: 100%;
+            text-align: center;
+            -webkit-transition: all, 0.5s;
+            -o-transition: all, 0.5s;
+            transition: all, 0.5s;
+        }
+        .product__item:hover .product__item__pic__hover {
+            bottom: 20px;
+        }
+        .product__item__pic__hover li {
+            list-style: none;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .product__item__pic__hover li:last-child {
+            margin-right: 0;
+        }
+        .product__item__pic__hover li a {
+            font-size: 18px;
+            color: #111111;
+            height: 45px;
+            width: 45px;
+            line-height: 48px;
+            text-align: center;
+            border: 1px solid #ebebeb;
+            background: #ffffff;
+            display: block;
+            -webkit-transition: all, 0.3s;
+            -o-transition: all, 0.3s;
+            transition: all, 0.3s;
+        }
+        .product__item__pic__hover li a:hover {
+            background: #ff0000;
+            border-color: #ff0000;
+        }
+        .product__item__pic__hover li a:hover i {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Preloader -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+<!-- Header -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="header__top__inner">
+                        <div class="header__top__left">
+                            <ul>
+                                <li>VND<span class="arrow_carrot-down"></span>
+                                    <ul>
+                                        <li>VND</li>
+                                        <li>USD</li>
+                                    </ul>
+                                </li>
+                                <li>ENG<span class="arrow_carrot-down"></span>
+                                    <ul>
+                                        <li>VN</li>
+                                        <li>ENG</li>
+                                    </ul>
+                                </li>
+                                {{#if user}}
+                                    <li>
+                                        Welcome {{user.firstName}}
+                                    </li>
+                                    <li>
+                                        <a href="/my-orders">
+                                            My Orders
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout">
+                                            Logout
+                                        </a>
+                                    </li>
+                                {{else}}
+                                    <li>
+                                        <a href="/login">
+                                            Login
+                                        </a>
+                                    </li>
+                                {{/if}}
+                            </ul>
+                        </div>
+                        <div class="header__logo">
+                            <a href="/">
+                                <img src="/img/logo.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="header__top__right">
+
+                            <!-- SEARCH -->
+                            <div class="header__search">
+
+                                <form action="/search"
+                                      method="GET"
+                                      class="header__search__form">
+
+                                    <input type="text"
+                                           name="keyword"
+                                           placeholder="Search jewelry...">
+
+                                    <button type="submit">
+                                        <img src="/img/icon/search.png" alt="">
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                            <!-- ICONS -->
+                            <div class="header__top__right__links">
+                                <a href="/wishlist">
+                                    <img src="/img/icon/heart.png" alt="">
+                                </a>
+                            </div>
+
+                            <!-- CART -->
+                            <div class="header__top__right__cart">
+                                <a href="/shopping-cart">
+                                    <img src="/img/icon/cart.png" alt="">
+                                    {{#if totalQty}}
+                                        <span class="cart-count">{{totalQty}}</span>
+                                    {{/if}}
+                                </a>
+                                <div class="cart__price">
+                                    Cart:
+                                    <span>{{totalPrice}} VND</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="{{#if (eq activePage 'home')}}active{{/if}}">
+                            <a href="/">
+                                Home
+                            </a>
+                        </li>
+                        <li class="{{#if (eq activePage 'jewelry')}}active{{/if}}">
+                            <a href="/jewelry">
+                                Jewelry
+                            </a>
+                            <ul class="dropdown">
+                                <li><a href="/jewelry?cat=rings">Rings</a></li>
+                                <li><a href="/jewelry?cat=necklaces">Necklaces</a></li>
+                                <li><a href="/jewelry?cat=bracelets">Bracelets</a></li>
+                                <li><a href="/jewelry?cat=earrings">Earrings</a></li>
+                                <li><a href="/jewelry?cat=watches">Watches</a></li>
+                            </ul>
+                        </li>
+                        <li class="{{#if (eq activePage 'collections')}}active{{/if}}"><a href="/collections">Collections</a>
+                            <ul class="dropdown">
+                                <li><a href="/collections?col=new">New Arrivals</a></li>
+                                <li><a href="/collections?col=bestseller">Best Sellers</a></li>
+                                <li><a href="/collections?col=sale">Sale</a></li>
+                                <li><a href="/collections?col=gift">Gift Sets</a></li>
+                            </ul>
+                        </li>
+                        <li class="{{#if (eq activePage 'about')}}active{{/if}}"><a href="/about">About</a></li>
+                        <li class="{{#if (eq activePage 'contact')}}active{{/if}}"><a href="/contact">Contact</a></li>
+                        {{#if isAdmin}}
+                            <li>
+                                <a href="/admin">
+                                    Admin
+                                </a>
+                            </li>
+                        {{/if}}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Body -->
+{{{body}}}
+<!-- Footer -->
+
+<footer class="footer set-bg" data-setbg="/img/footer-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="footer__widget">
+                    <h6>
+                        WORKING HOURS
+                    </h6>
+                    <ul>
+                        <li>Monday - Friday: 08:00 am – 08:30 pm</li>
+                        <li>Saturday: 10:00 am – 16:30 pm</li>
+                        <li>Sunday: 10:00 am – 16:30 pm</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+
+                <div class="footer__about">
+                    <div class="footer__logo">
+                        <a href="/"><img src="/img/footer-logo.png" alt=""></a>
+                    </div>
+                    <p>
+                        Luxury jewelry collection for modern elegance.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="footer__newslatter">
+                    <h6>
+                        Subscribe
+                    </h6>
+                    <p>
+                        Get latest jewelry collections and offers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Search -->
+<!-- Search Box In Header -->
+<!--<div class="header__search">-->
+<!--    <form action="/search" method="GET" class="header__search__form">-->
+<!--        <input type="text" name="keyword" placeholder="Search jewelry..." required>-->
+<!--        <button type="submit">-->
+<!--            <i class="fa fa-search"></i>-->
+<!--        </button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!-- Js -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery.barfiller.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.nicescroll.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

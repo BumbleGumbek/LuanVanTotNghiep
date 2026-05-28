@@ -1,0 +1,570 @@
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="hero__slider owl-carousel">
+
+        <div class="hero__item set-bg" data-setbg="img/hero/hero-1.jpg">
+
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- About Section Begin -->
+<section class="about spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="about__text">
+                    <div class="section-title">
+                        <span>About Our Jewelry Store</span>
+                        <h2>Elegant Jewelry Crafted With Passion</h2>
+                    </div>
+                    <p>Discover elegant jewelry collections designed with
+                        precision, passion and modern luxury. Every piece
+                        reflects beauty, confidence and sophistication.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="about__bar">
+                    <div class="about__bar__item">
+                        <p>Jewelry Design</p>
+                        <div id="bar1" class="barfiller">
+                            <div class="tipWrap"><span class="tip"></span></div>
+                            <span class="fill" data-percentage="95"></span>
+                        </div>
+                    </div>
+                    <div class="about__bar__item">
+                        <p>Customer Satisfaction</p>
+                        <div id="bar2" class="barfiller">
+                            <div class="tipWrap"><span class="tip"></span></div>
+                            <span class="fill" data-percentage="80"></span>
+                        </div>
+                    </div>
+                    <div class="about__bar__item">
+                        <p>Luxury Collection</p>
+                        <div id="bar3" class="barfiller">
+                            <div class="tipWrap"><span class="tip"></span></div>
+                            <span class="fill" data-percentage="90"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Section End -->
+
+<!-- Categories Section Begin -->
+<div class="categories">
+    <div class="container">
+        <div class="row">
+            <div class="categories__slider owl-carousel">
+                <div class="categories__item">
+                    <div class="categories__item__icon">
+                        <i class="fa-solid fa-diamond"></i>
+                        <h5>Rings</h5>
+                    </div>
+                </div>
+                <div class="categories__item">
+                    <div class="categories__item__icon">
+                        <i class="fa-regular fa-gem"></i>
+                        <h5>Necklaces</h5>
+                    </div>
+                </div>
+                <div class="categories__item">
+                    <div class="categories__item__icon">
+                        <i class="fa-regular fa-heart"></i>
+                        <h5>Bracelets</h5>
+                    </div>
+                </div>
+                <div class="categories__item">
+                    <div class="categories__item__icon">
+                        <i class="fa-regular fa-star"></i>
+                        <h5>Earrings</h5>
+                    </div>
+                </div>
+                <div class="categories__item">
+                    <div class="categories__item__icon">
+                        <i class="fa-regular fa-clock"></i>
+                        <h5>Watches</h5>
+                    </div>
+                </div>
+                <div class="categories__item">
+                    <div class="categories__item__icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <h5>Collections</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Categories Section End -->
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <!-- Filter UI -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="filter__controls d-flex justify-content-center flex-wrap">
+                    <a href="/collections?col=new" class="btn btn-outline-dark mx-2 mb-2">New Arrivals</a>
+                    <a href="/collections?col=bestseller" class="btn btn-outline-dark mx-2 mb-2">Bestsellers</a>
+                    <a href="/collections?col=sale" class="btn btn-outline-dark mx-2 mb-2">Best Prices</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            {{#each plainProduct}}
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{{image}}">
+                            <div class="product__label">
+                            </div>
+                            <ul class="product__item__pic__hover">
+                                <li>
+                                    <a href="/wishlist/add/{{_id}}">
+                                        <i class="fa fa-heart {{#if inWishlist}}heart-active{{/if}}"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <a href="/product-detail/{{_id}}" class="w-100 h-100 d-block"></a>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>
+                                <a href="/product-detail/{{_id}}">
+                                    {{name}}
+                                </a>
+                            </h6>
+                            <div class="product__item__price">
+                                {{price}} VND
+                            </div>
+                            <div class="cart_add">
+
+                                <form action="/add-cart/{{_id}}" method="POST">
+
+                                    <button type="submit"
+                                            class="border-0 bg-transparent">
+
+                                        Add to cart
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+
+        </div>
+
+        {{#if isHome}}
+            <div class="row mt-5">
+                <div class="col-lg-12 text-center">
+                    <a href="/jewelry" class="primary-btn">View More Products</a>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</section>
+<!-- Product Section End -->
+
+<!-- Custom Jewelry Section Begin -->
+<section class="class spad">
+
+    <div class="container">
+        <div class="custom__wrapper">
+            <div class="custom__text">
+                <span>Custom Jewelry</span>
+                <h2>
+                    Design Your <br>
+                    Dream Jewelry
+                </h2>
+                <p>
+                    Create personalized rings, necklaces and luxury accessories
+                    crafted specially for your unique style and unforgettable moments.
+                </p>
+            </div>
+            <div class="class__form">
+                <form action="#">
+
+                    <input type="text" placeholder="Your Name">
+
+                    <input type="text" placeholder="Phone Number">
+
+                    <select>
+                        <option value="">Select Collection</option>
+                        <option value="">Wedding Collection</option>
+                        <option value="">Diamond Collection</option>
+                        <option value="">Luxury Collection</option>
+                    </select>
+
+                    <textarea placeholder="Describe your custom design"></textarea>
+
+                    <button type="submit" class="site-btn">
+                        Send Request
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Team Section Begin -->
+<section class="team spad">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+                <div class="section-title">
+                    <span>Our Services</span>
+                    <h2>Luxury Jewelry Experience</h2>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="team__btn">
+                    <a href="#" class="primary-btn">
+                        Explore More
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <!-- ITEM -->
+            <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="team__item">
+
+                    <div class="team__image">
+                        <img src="img/team/team-1.jpg" alt="">
+                    </div>
+
+                    <div class="team__item__text">
+
+                        <h6>Diamond Collection</h6>
+
+                        <span>Premium Luxury Jewelry</span>
+
+                        <div class="team__item__social">
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ITEM -->
+            <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="team__item">
+
+                    <div class="team__image">
+                        <img src="img/team/team-2.jpg" alt="">
+                    </div>
+
+                    <div class="team__item__text">
+
+                        <h6>Wedding Jewelry</h6>
+
+                        <span>Elegant Wedding Designs</span>
+
+                        <div class="team__item__social">
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ITEM -->
+            <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="team__item">
+
+                    <div class="team__image">
+                        <img src="img/team/team-3.jpg" alt="">
+                    </div>
+
+                    <div class="team__item__text">
+
+                        <h6>Custom Design</h6>
+
+                        <span>Personalized Jewelry Style</span>
+
+                        <div class="team__item__social">
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ITEM -->
+            <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="team__item">
+
+                    <div class="team__image">
+                        <img src="img/team/team-4.jpg" alt="">
+                    </div>
+
+                    <div class="team__item__text">
+
+                        <h6>Luxury Accessories</h6>
+
+                        <span>Modern Fashion Collection</span>
+
+                        <div class="team__item__social">
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- Team Section End -->
+
+<!-- Testimonial Section Begin -->
+<section class="testimonial spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <span>Testimonials</span>
+                    <h2>What Our Customers Say</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="testimonial__slider owl-carousel">
+
+                <div class="col-lg-6">
+                    <div class="testimonial__item">
+                        <div class="testimonial__author">
+                            <div class="testimonial__author__pic">
+                                <img src="img/testimonial/ta-1.jpg" alt="">
+                            </div>
+                            <div class="testimonial__author__text">
+                                <h5>Emma Watson</h5>
+                                <span>Vietnam</span>
+                            </div>
+                        </div>
+
+                        <div class="rating">
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                        </div>
+
+                        <p>
+                            The jewelry quality exceeded my expectations.
+                            Every detail is beautifully crafted and feels truly luxurious.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="testimonial__item">
+                        <div class="testimonial__author">
+                            <div class="testimonial__author__pic">
+                                <img src="img/testimonial/ta-2.jpg" alt="">
+                            </div>
+                            <div class="testimonial__author__text">
+                                <h5>Sophia Carter</h5>
+                                <span>Vietnam</span>
+                            </div>
+                        </div>
+
+                        <div class="rating">
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star-half_alt"></span>
+                        </div>
+
+                        <p>
+                            I bought a necklace as a gift and it was absolutely stunning.
+                            Elegant packaging and fast delivery too.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="testimonial__item">
+                        <div class="testimonial__author">
+                            <div class="testimonial__author__pic">
+                                <img src="img/testimonial/ta-3.jpg" alt="">
+                            </div>
+                            <div class="testimonial__author__text">
+                                <h5>Olivia Le</h5>
+                                <span>Vietnam</span>
+                            </div>
+                        </div>
+
+                        <div class="rating">
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                        </div>
+
+                        <p>
+                            Their ring collection is modern, elegant, and perfect for special occasions.
+                            Highly recommended for jewelry lovers.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="testimonial__item">
+                        <div class="testimonial__author">
+                            <div class="testimonial__author__pic">
+                                <img src="img/testimonial/ta-4.jpg" alt="">
+                            </div>
+                            <div class="testimonial__author__text">
+                                <h5>Isabella Nguyen</h5>
+                                <span>Vietnam</span>
+                            </div>
+                        </div>
+
+                        <div class="rating">
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star"></span>
+                            <span class="icon_star-half_alt"></span>
+                        </div>
+
+                        <p>
+                            Amazing customer service and premium quality jewelry.
+                            I will definitely shop here again.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Testimonial Section End -->
+
+<!-- Instagram Section Begin -->
+<section class="instagram spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 p-0">
+                <div class="instagram__text">
+                    <div class="section-title">
+                        <span>Follow us on instagram</span>
+                        <h2>Luxury Moments In Every Design</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                        <div class="instagram__pic">
+                            <img src="img/instagram/instagram-1.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                        <div class="instagram__pic middle__pic">
+                            <img src="img/instagram/instagram-2.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                        <div class="instagram__pic">
+                            <img src="img/instagram/instagram-3.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                        <div class="instagram__pic">
+                            <img src="img/instagram/instagram-4.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                        <div class="instagram__pic middle__pic">
+                            <img src="img/instagram/instagram-5.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                        <div class="instagram__pic">
+                            <img src="img/instagram/instagram-3.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Instagram Section End -->
+
+<!-- Map Begin -->
+<div class="map">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-7">
+                <div class="map__inner">
+                    <h6>STU University</h6>
+                    <ul>
+                        <li>180 Cao Lỗ Street, Ward 4, District 8, Ho Chi Minh City, Vietnam</li>
+                        <li>contact@stu.edu.vn</li>
+                        <li>(028) 3850 5520</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map__iframe">
+        <iframe
+                src="https://www.google.com/maps?q=180+Cao+Lỗ,+Phường+4,+Quận+8,+TP.HCM&output=embed"
+                height="300"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy">
+        </iframe>
+    </div>
+</div>
+<!-- Map End -->

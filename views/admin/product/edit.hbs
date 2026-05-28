@@ -1,0 +1,75 @@
+<div class="card shadow">
+    <div class="card-body">
+        <form action="/admin/product/edit/{{product._id}}?_method=PUT" method="POST">
+            <div class="mb-3">
+                <label class="form-label">
+                    Product name
+                </label>
+                <input type="text" name="name" value="{{product.name}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Description
+                </label>
+                <textarea name="description" class="form-control" rows="4">{{product.description}}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Price
+                </label>
+                <input type="number" name="price" value="{{product.price}}" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Quantity
+                </label>
+                <input type="number" name="quantity" value="{{product.quantity}}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Image
+                </label>
+                <input type="text" name="image" value="{{product.image}}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Category
+                </label>
+                <select name="category"
+                        class="form-control">
+                    {{#each plainCategory}}
+                        <option value="{{_id}}"
+                            {{#ifEquals _id ../product.category}}
+                                selected
+                            {{/ifEquals}}>
+                            {{title}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">
+                    Status
+                </label>
+                <select name="status"
+                        class="form-control">
+                    <option value="true"
+                            {{#if product.status}}selected{{/if}}>
+                        True
+                    </option>
+                    <option value="false"
+                            {{#unless product.status}}selected{{/unless}}>
+                        False
+                    </option>
+                </select>
+            </div>
+            <button type="submit"
+                    class="btn btn-primary">
+                Update Product
+            </button>
+        </form>
+    </div>
+</div>

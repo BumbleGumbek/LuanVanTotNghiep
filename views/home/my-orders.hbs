@@ -1,0 +1,100 @@
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__text">
+                    <h2>My Orders</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__links">
+                    <a href="/">Home</a>
+                    <span>My Orders</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        {{#if orders.length}}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each orders}}
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__text">
+                                            <h6>{{shortId _id}}</h6>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">
+                                        {{formatDate createdAt}}
+                                    </td>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__text">
+                                            <ul class="list-unstyled mb-0">
+                                                {{#each items}}
+                                                    <li class="small">
+                                                        <span>{{snapshot.name}}</span>
+                                                        <span class="text-muted ml-1">x{{quantity}}</span>
+                                                    </li>
+                                                {{/each}}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">
+                                        {{totalPrice}} VND
+                                    </td>
+                                    <td class="cart__price">
+                                        <span class="badge badge-pill px-3 py-2
+                                            {{#if (eq orderStatus 'Pending')}}badge-warning text-dark{{/if}}
+                                            {{#if (eq orderStatus 'Confirmed')}}badge-primary{{/if}}
+                                            {{#if (eq orderStatus 'Shipping')}}badge-info{{/if}}
+                                            {{#if (eq orderStatus 'Delivered')}}badge-success{{/if}}
+                                            {{#if (eq orderStatus 'Cancelled')}}badge-danger{{/if}}">
+                                            {{orderStatus}}
+                                        </span>
+                                    </td>
+                                    <td class="cart__close">
+                                        <a href="/my-orders/{{_id}}" class="primary-btn" style="padding: 10px 20px; font-size: 12px;">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {{else}}
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-title">
+                        <span>Empty</span>
+                        <h2>You have no orders</h2>
+                    </div>
+                    <a href="/" class="primary-btn">Continue Shopping</a>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</section>
+<!-- Shopping Cart Section End -->

@@ -1,0 +1,90 @@
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <form action="/update-cart" method="POST">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Jewelry</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {{#each product}}
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="{{image}}" alt="{{name}}" width="90">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6>{{name}}</h6>
+                                            <h5>{{price}} VND</h5>
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text"
+                                                       name="quantities[{{_id}}]"
+                                                       value="{{quantity}}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">
+                                        {{total}} VND
+                                    </td>
+                                    <td class="cart__close">
+                                        <a href="/remove-cart/{{_id}}">
+                                            <span class="icon_close"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="/">
+                                    Continue Shopping
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+                                <button type="submit" class="site-btn">Update cart</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__total">
+                        <h6>Cart Total</h6>
+                        <ul>
+                            <li>
+                                Total Items:
+                                <span>{{totalQty}}</span>
+                            </li>
+                            <li>
+                                Total Price:
+                                <span>{{totalPrice}} VND</span>
+                            </li>
+                        </ul>
+                        <a href="/checkout" class="primary-btn">
+                            Proceed to Checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
