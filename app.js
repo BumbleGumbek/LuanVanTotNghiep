@@ -25,12 +25,24 @@ app.engine(
       partialsDir: path.join(__dirname, 'views', 'partials'),
       layoutsDir: path.join(__dirname, 'views', 'layouts'),
       helpers: {
-        eq: function (v1, v2) {
-          return String(v1) === String(v2);
-        },
-        gt: function (v1, v2) {
-          return v1 > v2;
-        },
+          eq: function (v1, v2) {
+              return v1 === v2;
+          },
+          ne: function (v1, v2) {
+              return v1 !== v2;
+          },
+          lt: function (v1, v2) {
+              return v1 < v2;
+          },
+          gt: function (v1, v2) {
+              return v1 > v2;
+          },
+          lte: function (v1, v2) {
+              return v1 <= v2;
+          },
+          gte: function (v1, v2) {
+              return v1 >= v2;
+          },
         add: function (v1, v2) {
             return v1 + v2;
         },
@@ -106,6 +118,7 @@ var homeRouter = require('./routes/home');
 var adminRouter = require('./routes/admin');
 var categoryRouter = require('./routes/category');
 var productRouter = require('./routes/product');
+var supplierRouter = require('./routes/supplier');
 var loginRouter = require('./routes/login');
 
 var registerRouter = require('./routes/register');
@@ -143,6 +156,7 @@ app.use('/register', registerRouter);
 app.use('/admin', isAdmin, adminRouter);
 app.use('/admin/category', isAdmin, categoryRouter);
 app.use('/admin/product', isAdmin, productRouter);
+app.use('/admin/supplier', isAdmin, supplierRouter);
 app.use('/admin/orders', isAdmin, adminOrderRouter);
 app.use('/users', isAdmin, usersRouter);
 
