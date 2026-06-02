@@ -1,28 +1,34 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const UserSchema = new Schema({
-    name: {
-        type:String,
-        required:true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    phone: {
-        type: Number,
-        required: true,
-    },
-    address: {
-        type: String,
-        required: true,
-    },
-    status: {
-        type: Boolean,
-        default: true
-    }
 
-});
+const SupplierSchema = new Schema({
+        name: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        phone: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        email: {
+            type: String,
+            trim: true,
+            lowercase: true
+        },
+        address: {
+            type: String,
+            required: true
+        },
+        status: {
+            type: Boolean,
+            default: true
+        }
 
-module.exports = mongoose.model('supplier', UserSchema);
+    },
+    {
+        timestamps: true
+    });
 
+module.exports = mongoose.model('Supplier', SupplierSchema);
