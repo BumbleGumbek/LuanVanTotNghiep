@@ -24,15 +24,14 @@
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{name}}</h6>
+                                            <p style="margin-bottom: 0; color: #b7b7b7; font-size: 14px;">Size: <span style="color: #111; font-weight: 600;">{{size}}</span></p>
                                             <h5>{{price}} VND</h5>
                                         </div>
                                     </td>
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text"
-                                                       name="quantities[{{_id}}]"
-                                                       value="{{quantity}}">
+                                                <input type="number" name="quantities[{{this.product_id}}_{{this.size}}]" value="{{this.quantity}}">
                                             </div>
                                         </div>
                                     </td>
@@ -40,7 +39,7 @@
                                         {{total}} VND
                                     </td>
                                     <td class="cart__close">
-                                        <a href="/remove-cart/{{_id}}">
+                                        <a href="/remove-cart/{{this.product_id}}?size={{this.size}}">
                                             <span class="icon_close"></span>
                                         </a>
                                     </td>

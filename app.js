@@ -89,20 +89,41 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Global Middleware
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     res.locals.user = req.user ? req.user.toObject() : null;
     res.locals.isAdmin = (req.user && req.user.role === 'admin');
     
     let totalQty = 0;
     let totalPrice = 0;
-    if (req.session.cart) {
-        req.session.cart.forEach(item => {
-            totalQty += item.quantity;
-            totalPrice += item.total;
-        });
+    let cartItems = [];
+
+    try {
+        if (req.isAuthenticated()) {
+            const Cart = require('./models/Cart');
+            const dbCart = await Cart.findOne({ user_id: req.user._id }).populate('items.product_id');
+            if (dbCart && dbCart.items) {
+                dbCart.items.forEach(item => {
+                    if (item.product_id) {
+                        totalQty += item.quantity;
+                        totalPrice += (item.quantity * item.product_id.price);
+                        cartItems.push(item);
+                    }
+                });
+            }
+        } else if (req.session.cart) {
+            cartItems = req.session.cart;
+            cartItems.forEach(item => {
+                totalQty += item.quantity;
+                totalPrice += item.total;
+            });
+        }
+    } catch (err) {
+        console.error("Cart Middleware Error:", err);
     }
+
     res.locals.totalQty = totalQty;
     res.locals.totalPrice = totalPrice;
+    res.locals.product = cartItems;
     
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
@@ -110,10 +131,7 @@ app.use((req, res, next) => {
     res.locals.errors = req.flash('errors');
     next();
 });
-app.use((req, res, next) => {
-    res.locals.product = req.session.cart;
-    next();
-});
+
 var homeRouter = require('./routes/home');
 var adminRouter = require('./routes/admin');
 var categoryRouter = require('./routes/category');

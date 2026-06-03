@@ -50,12 +50,12 @@
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__text">
                                             <ul class="list-unstyled mb-0">
-                                                {{#each items}}
-                                                    <li class="small">
-                                                        <span>{{snapshot.name}}</span>
-                                                        <span class="text-muted ml-1">x{{quantity}}</span>
-                                                    </li>
-                                                {{/each}}
+                                            {{#each items}}
+                                                <li class="small">
+                                                    <span>{{this.name}}</span>
+                                                    <span class="text-muted ml-1">(Size {{this.size}}) x{{this.quantity}}</span>
+                                                </li>
+                                            {{/each}}
                                             </ul>
                                         </div>
                                     </td>
@@ -64,13 +64,14 @@
                                     </td>
                                     <td class="cart__price">
                                         <span class="badge badge-pill px-3 py-2
-                                            {{#if (eq orderStatus 'Pending')}}badge-warning text-dark{{/if}}
-                                            {{#if (eq orderStatus 'Confirmed')}}badge-primary{{/if}}
-                                            {{#if (eq orderStatus 'Shipping')}}badge-info{{/if}}
-                                            {{#if (eq orderStatus 'Delivered')}}badge-success{{/if}}
-                                            {{#if (eq orderStatus 'Cancelled')}}badge-danger{{/if}}">
-                                            {{orderStatus}}
+                                            {{#if (eq status 'Pending')}}badge-warning text-dark{{/if}}
+                                            {{#if (eq status 'Confirmed')}}badge-primary{{/if}}
+                                            {{#if (eq status 'Shipping')}}badge-info{{/if}}
+                                            {{#if (eq status 'Delivered')}}badge-success{{/if}}
+                                            {{#if (eq status 'Cancelled')}}badge-danger{{/if}}">
+                                            {{status}}
                                         </span>
+
                                     </td>
                                     <td class="cart__close">
                                         <a href="/my-orders/{{_id}}" class="primary-btn" style="padding: 10px 20px; font-size: 12px;">

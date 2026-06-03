@@ -3,27 +3,36 @@ var router = express.Router();
 
 function useAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        return next(); // Proceed if authenticated
+        return next();
     } else {
-        res.redirect('/login'); // Redirect to login if authentication fails
+        res.redirect('/login');
     }
 }
 
-router.all('/*', function (req,res,next) {
+router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
     next();
-})
+});
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('admin/index', { title: 'Admin' });
+router.get('/', async function(req, res, next) {
+    try {
+        res.render('admin/index', { title: 'Admin' });
+    } catch (err) {
+        next(err);
+    }
 });
 
 /* GET profile settings */
-router.get('/profile', function(req, res, next) {
-    res.render('admin/profile/settings', {
-        title: 'Profile Settings',
-        user: req.user.toObject()
-    });
+router.get('/profile', async function(req, res, next) {
+    try {
+        res.render('admin/profile/settings', {
+            title: 'Profile Settings',
+            user: req.user.toObject()
+        });
+    } catch (err) {
+        next(err);
+    }
 });
+
 module.exports = router;

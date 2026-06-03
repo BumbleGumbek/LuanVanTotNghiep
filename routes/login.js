@@ -43,6 +43,7 @@ passport.use(new LocalStrategy({usernameField: 'email'}, function (email, passwo
 router.post('/', (req, res, next) => {
     // 1. Sao lưu giỏ hàng trước khi Passport tái tạo session
     const cartBackup = req.session.cart;
+    const buyNowBackup = req.session.buyNowItem;
     const oldUrl = req.session.oldUrl;
 
     passport.authenticate('local', (err, user, info) => {
@@ -58,6 +59,9 @@ router.post('/', (req, res, next) => {
             // 2. Khôi phục lại giỏ hàng sau khi login thành công
             if (cartBackup) {
                 req.session.cart = cartBackup;
+            }
+            if (buyNowBackup) {
+                req.session.buyNowItem = buyNowBackup;
             }
 
             // 3. Điều hướng thông minh

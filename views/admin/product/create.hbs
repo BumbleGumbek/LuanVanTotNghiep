@@ -1,73 +1,209 @@
-<div class="card shadow">
-    <div class="card-body">
-
-        <form action="/admin/product/create" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">
-                    Product name
-                </label>
-                <input type="text" name="name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Description
-                </label>
-                <textarea name="description" class="form-control" rows="4"></textarea>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="row align-items-center mb-4">
+                <div class="col">
+                    <h2 >Create New Product</h2>
+                    <p class="text-muted">Fill in the details below to add a new jewelry item to your inventory.</p>
+                </div>
+                <div class="col-auto">
+                    <a href="/admin/product" class="btn btn-secondary px-4">
+                        <i class="fe fe-arrow-left mr-1"></i> Back to List
+                    </a>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">
-                    Price
-                </label>
-                <input type="number" name="price" class="form-control" min="1" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Quantity
-                </label>
-                <input type="number" name="quantity" class="form-control" value="0" min="1" required>
-            </div>
-            <div class="mb-3">
+            <form action="/admin/product/create" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <strong class="card-title"></i>Basic Information</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Product Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="form-label font-weight-bold">Description <span class="text-danger">*</span></label>
+                                    <textarea name="description" class="form-control" rows="6"  required></textarea>
+                                </div>
+                            </div>
+                        </div>
 
-                <label class="form-label">
-                    Product Image
-                </label>
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <strong class="card-title"><i class="fe fe-layers mr-2"></i>Product Inventory & Variants</strong>
+                                <button type="button" class="btn btn-sm btn-outline-success" id="add-size-btn">
+                                    <i class="fe fe-plus-circle mr-1"></i> Add Size
+                                </button>
+                            </div>
+                            <div class="card-body bg-light-lighter">
+                                <div id="variant-wrapper">
+                                    <div class="form-row mb-3 variant-item align-items-center">
+                                        <div class="col-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
+                                                </div>
+                                                <input type="text" name="sizes[]" class="form-control" placeholder="Size (e.g., 6, S, 42)" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fe fe-package"></i></span>
+                                                </div>
+                                                <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="0" value="10" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <button type="button" class="btn btn-outline-danger btn-block remove-size-btn" style="height: calc(1.5em + 0.75rem + 2px);">
+                                                <i class="fe fe-trash-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <input type="file" name="image" class="form-control mb-2">
-                <small class="text-muted d-block mb-2">
-                    Or paste image URL below
-                </small>
-                <input type="text" name="imageUrl" class="form-control" placeholder="https://example.com/image.jpg">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Category
-                </label>
-                <select name="category"
-                        class="form-control">
-                    {{#each plainCategory}}
-                        <option value="{{_id}}">
-                            {{title}}
-                        </option>
-                    {{/each}}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Status
-                </label>
-                <select name="status" class="form-control">
-                    <option value="true">
-                        True
-                    </option>
-                    <option value="false">
-                        False
-                    </option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                Submit
-            </button>
-        </form>
+                    <div class="col-md-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <strong class="card-title"><i class="fe fe-tag mr-2"></i>Pricing & Category</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Price (VND) <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="number" name="price" class="form-control" min="1" placeholder="0" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">VND</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Category <span class="text-danger">*</span></label>
+                                    <select name="category" class="form-control custom-select" required>
+                                        <option value="" disabled selected>-- Select --</option>
+                                        {{#each plainCategory}}
+                                            <option value="{{_id}}">{{title}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="form-label font-weight-bold">Supplier <span class="text-danger">*</span></label>
+                                    <select name="supplier" class="form-control custom-select" required>
+                                        <option value="" disabled selected>-- Select --</option>
+                                        {{#each plainSupplier}}
+                                            <option value="{{_id}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <strong class="card-title"><i class="fe fe-image mr-2"></i>Product Media</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Upload Image</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="image" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                    </div>
+                                </div>
+                                <div class="text-center my-2">
+                                    <span class="badge badge-light px-3 py-2 text-muted">OR</span>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <label class="form-label font-weight-bold">Image URL</label>
+                                    <input type="text" name="imageUrl" class="form-control" placeholder="https://example.com/image.jpg">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <strong class="card-title"><i class="fe fe-eye mr-2"></i>Visibility</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group mb-0">
+                                    <label class="form-label font-weight-bold">Product Status</label>
+                                    <select name="status" class="form-control custom-select">
+                                        <option value="true">Visible (Public)</option>
+                                        <option value="false">Hidden (Draft)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm font-weight-bold py-3">
+                            <i class="fe fe-save mr-2"></i> Save Product
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script>
+    // Xử lý sự kiện thêm hàng Variant mới
+    document.getElementById('add-size-btn').addEventListener('click', function() {
+        const container = document.getElementById('variant-wrapper');
+        const row = document.createElement('div');
+        // Sử dụng form-row thay vì row để padding khít và thẳng hàng tuyệt đối trong Bootstrap 4
+        row.className = 'form-row mb-3 variant-item align-items-center';
+        row.innerHTML = `
+            <div class="col-5">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
+                    </div>
+                    <input type="text" name="sizes[]" class="form-control" placeholder="Size" required>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fe fe-package"></i></span>
+                    </div>
+                    <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="0" value="0" required>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-outline-danger btn-block remove-size-btn" style="height: calc(1.5em + 0.75rem + 2px);">
+                    <i class="fe fe-trash-2"></i>
+                </button>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+
+    // Xử lý xóa hàng Variant bằng Event Delegation
+    document.getElementById('variant-wrapper').addEventListener('click', function(e) {
+        const btn = e.target.closest('.remove-size-btn');
+        if (btn) {
+            const rows = document.querySelectorAll('.variant-item');
+            if (rows.length > 1) {
+                btn.closest('.variant-item').remove();
+            } else {
+                alert('You must have at least one size variant!');
+            }
+        }
+    });
+
+    // Cập nhật tên file khi chọn upload mẫu file input của Bootstrap
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('custom-file-input')) {
+            var fileName = e.target.files[0].name;
+            var label = e.target.nextElementSibling;
+            label.innerText = fileName;
+        }
+    });
+</script>

@@ -1,8 +1,4 @@
-<!-- Breadcrumb Begin -->
 
-<!-- Breadcrumb End -->
-
-<!-- Order Detail Section Begin -->
 <section class="shopping-cart spad">
     <div class="container">
         <div class="row">
@@ -15,21 +11,21 @@
             </div>
             <div class="col-lg-12">
                 <div class="section-title" style="text-align: left; margin-bottom: 30px;">
-                    <h2 >Order</h2>
+                    <h2>Order</h2>
                     <h3>{{shortId order._id}}</h3>
                     <p>{{formatDate order.createdAt}}</p>
                 </div>
             </div>
         </div>
-        
-        <div class="row">
 
+        <div class="row">
             <div class="col-lg-8">
                 <div class="shopping__cart__table">
                     <table>
                         <thead>
                         <tr>
                             <th>Jewelry</th>
+                            <th>Size</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Total</th>
@@ -38,29 +34,33 @@
                         <tbody>
                         {{#each order.items}}
                             <tr>
-                                <td class="product__cart__item" style="width: 400px;">
+                                <td class="product__cart__item" style="width: 350px;">
                                     <div class="product__cart__item__pic">
-                                        <img src="{{snapshot.image}}" alt="{{snapshot.name}}" width="90">
+                                        <img src="{{this.image}}" alt="{{this.name}}" width="90">
                                     </div>
                                     <div class="product__cart__item__text">
-                                        <h6>{{snapshot.name}}</h6>
+                                        <h6>{{this.name}}</h6>
                                     </div>
                                 </td>
-                                <td class="cart__price" style="width: 150px;">
-                                    {{snapshot.price}} VND
+                                <td class="cart__price" style="width: 80px; text-align: center;">
+                                    <span class="badge badge-light" style="font-size: 14px;">{{this.size}}</span>
                                 </td>
-                                <td class="cart__price" style=" text-align: center;">
-                                    {{quantity}}
+                                <td class="cart__price" style="width: 130px;">
+                                    {{this.price_at_purchase}} VND
+                                </td>
+                                <td class="cart__price" style="text-align: center; width: 80px;">
+                                    {{this.quantity}}
                                 </td>
                                 <td class="cart__price">
-                                    {{subtotal}} VND
+                                    <!-- Tính subtotal trực tiếp từ giá lúc mua * số lượng -->
+                                    {{this.subtotal}} VND
                                 </td>
                             </tr>
                         {{/each}}
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="continue__btn">
@@ -75,26 +75,25 @@
                 <div class="cart__total" style="margin-top: 0; margin-bottom: 30px;">
                     <h6>Order Summary</h6>
                     <ul>
-                        <li>Status 
-                            <span class="badge 
-                                {{#if (eq order.orderStatus 'Pending')}}badge-warning{{/if}}
-                                {{#if (eq order.orderStatus 'Confirmed')}}badge-primary{{/if}}
-                                {{#if (eq order.orderStatus 'Shipping')}}badge-info{{/if}}
-                                {{#if (eq order.orderStatus 'Delivered')}}badge-success{{/if}}
-                                {{#if (eq order.orderStatus 'Cancelled')}}badge-danger{{/if}}"
-                                style="padding: 5px 10px; font-weight: 500;">
-                                {{order.orderStatus}}
+                        <li>Status
+                            <span class="badge
+                                {{#if (eq order.status 'Pending')}}badge-warning text-dark{{/if}}
+                                {{#if (eq order.status 'Confirmed')}}badge-primary{{/if}}
+                                {{#if (eq order.status 'Shipping')}}badge-info{{/if}}
+                                {{#if (eq order.status 'Delivered')}}badge-success{{/if}}
+                                {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}"
+                                  style="padding: 5px 10px; font-weight: 500;">
+                                {{order.status}}
                             </span>
                         </li>
-                        <li>Payment Status <span style="color: #111;">{{order.paymentStatus}}</span></li>
-                        <li>Payment Method <span style="color: #111;">{{order.paymentMethod}}</span></li>
-                        <li>Items <span>{{order.totalQuantity}}</span></li>
+                        <li>Payment Status <span style="color: #111;">{{#if order.paymentStatus}}{{order.paymentStatus}}{{else}}Unpaid{{/if}}</span></li>
+                        <li>Payment Method <span style="color: #111;">{{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}COD{{/if}}</span></li>
                         <li style="border-top: 1px solid #f2f2f2; padding-top: 15px; margin-top: 15px;">
                             Total <span style="color: #d10024; font-size: 20px;">{{order.totalPrice}} VND</span>
                         </li>
                     </ul>
-                    
-                    {{#if (eq order.orderStatus 'Pending')}}
+
+                    {{#if (eq order.status 'Pending')}}
                         <form action="/cancel-order/{{order._id}}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order? This action cannot be undone.');">
                             <button type="submit" class="site-btn" style="background:#dc3545; width: 100%; margin-top: 20px; border-radius: 2px;">
                                 Cancel Order
@@ -108,28 +107,21 @@
                     <ul style="border-bottom: none;">
                         <li style="display: block; margin-bottom: 10px;">
                             <p style="margin-bottom: 0; font-weight: 600; color: #111;">Recipient</p>
-                            <span style="float: none; font-size: 14px; color: #444;">{{order.shippingAddress.fullName}}</span>
+                            <span style="float: none; font-size: 14px; color: #444;">{{order.shippingAddress.receiverName}}</span>
                         </li>
                         <li style="display: block; margin-bottom: 10px;">
                             <p style="margin-bottom: 0; font-weight: 600; color: #111;">Phone Number</p>
-                            <span style="float: none; font-size: 14px; color: #444;">{{order.shippingAddress.phone}}</span>
+                            <span style="float: none; font-size: 14px; color: #444;">{{order.shippingAddress.receiverPhone}}</span>
                         </li>
                         <li style="display: block; margin-bottom: 10px;">
                             <p style="margin-bottom: 0; font-weight: 600; color: #111;">Address</p>
                             <span style="float: none; font-size: 14px; color: #444; line-height: 1.4;">
-                                {{order.shippingAddress.address}}, {{order.shippingAddress.city}}
+                                {{order.shippingAddress.detailAddress}}
                             </span>
                         </li>
-                        {{#if order.note}}
-                        <li style="display: block; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f2f2f2;">
-                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Note</p>
-                            <span style="float: none; font-size: 14px; color: #666; font-style: italic;">"{{order.note}}"</span>
-                        </li>
-                        {{/if}}
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Order Detail Section End -->

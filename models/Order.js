@@ -16,7 +16,7 @@ const OrderItemSchema = new Schema({
         required: true
     },
     size: {
-        type: Number,
+        type: String,
         required: true
     },
     quantity: {
@@ -72,12 +72,12 @@ const OrderSchema = new Schema({
 
             // Chỉ được phép nằm trong danh sách này
             enum: [
-                'Chờ thanh toán',
-                'Đã thanh toán',
-                'Đang xử lý',
-                'Đang giao hàng',
-                'Đã hủy',
-                'Hoàn thành'
+                'Pending',
+                'Confirmed',
+                'Processing',
+                'Shipping',
+                'Cancelled',
+                'Delivered'
             ],
             default: 'Chờ thanh toán'
         },
