@@ -15,7 +15,7 @@
                 <div class="product__details__text">
                     <div class="product__label">{{product.category.title}}</div>
                     <h4>{{product.name}}</h4>
-                    <h5>{{product.price}} VND</h5>
+                    <h5><span class="format-currency">{{product.price}}</span> VND</h5>
                     <p>{{product.description}}</p>
                     <ul>
                         <li>Total Quantity: <span>{{product.totalQuantity}}</span></li>
@@ -44,14 +44,14 @@
                                             <input type="radio" name="size" value="{{this.size}}" required style="position: absolute; opacity: 0; width: 0; height: 0; margin: 0;">
                                             <div style="text-align: center; width: 100%;">
                                                 <span style="font-weight: 600; font-size: 13px; color: #111111; display: block;">Size {{this.size}}</span>
-                                                <small style="color: #888888; font-size: 11px; display: block; margin-top: 2px;">({{this.quantity}} left)</small>
+                                                <span style="color: #04274c; font-size: 11px; display: block; margin-top: 2px;">({{this.quantity}} available)</span>
                                             </div>
                                         </label>
                                     {{else}}
                                         <label class="size-label disabled" style="display: inline-flex; align-items: center; justify-content: center; min-width: 85px; padding: 10px 12px; border: 1px solid #f1f1f1; color: #b2b2b2; background: #fafafa; cursor: not-allowed; border-radius: 2px; margin: 0; text-align: center;">
                                             <div>
                                                 <span style="font-weight: 500; font-size: 13px; text-decoration: line-through; display: block;">Size {{this.size}}</span>
-                                                <small style="color: #cc0000; font-size: 11px; display: block; margin-top: 2px;">Hết hàng</small>
+                                                <small style="color: #cc0000; font-size: 11px; display: block; margin-top: 2px;">Sold out</small>
                                             </div>
                                         </label>
                                     {{/if}}
@@ -122,7 +122,7 @@
                                             </a>
                                         </h6>
                                         <div class="product__item__price">
-                                            {{price}} VND
+                                            <span class="format-currency">{{price}}</span> VND
                                         </div>
                                         <div class="cart_add">
 

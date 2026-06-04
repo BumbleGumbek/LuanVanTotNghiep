@@ -105,7 +105,7 @@
                                     <li>
                                         <samp>{{quantity}}x</samp>
                                         {{name}}
-                                        <span>{{total}} VND</span>
+                                        <span><span class="format-currency">{{total}}</span> VND</span>
                                     </li>
                                 {{/each}}
                             </ul>
@@ -116,7 +116,7 @@
                                 </li>
                                 <li>
                                     Total
-                                    <span>{{totalPrice}} VND</span>
+                                    <span><span class="format-currency">{{totalPrice}}</span> VND</span>
                                 </li>
                             </ul>
                             <button type="submit" class="site-btn">PLACE ORDER</button>

@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <form action="/admin/product/edit/{{product._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+            <form action="/admin/product/edit/{{product._id}}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card shadow mb-4">
@@ -116,20 +116,20 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label font-weight-bold">Category <span class="text-danger">*</span></label>
                                     <select name="category" class="form-control custom-select" required>
+                                        <option value="{{product.category._id}}" selected>{{product.category.title}}</option>
+
                                         {{#each plainCategory}}
-                                            <option value="{{_id}}" {{#ifEquals _id ../product.category}}selected{{/ifEquals}}>
-                                                {{title}}
-                                            </option>
+                                            <option value="{{this._id}}">{{this.title}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">
                                     <label class="form-label font-weight-bold">Supplier <span class="text-danger">*</span></label>
                                     <select name="supplier" class="form-control custom-select" required>
+                                        <option value="{{product.supplier._id}}" selected>{{product.supplier.name}}</option>
+
                                         {{#each plainSupplier}}
-                                            <option value="{{_id}}" {{#ifEquals _id ../product.supplier}}selected{{/ifEquals}}>
-                                                {{name}}
-                                            </option>
+                                            <option value="{{this._id}}">{{this.name}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
@@ -156,7 +156,7 @@
                                 </div>
                                 <div class="form-group mb-0">
                                     <label class="form-label font-weight-bold">Image URL</label>
-                                    <input type="text" name="image" value="{{product.image}}" class="form-control" placeholder="https://example.com/image.jpg">
+                                    <input type="text" name="imageUrl" value="{{product.image}}" class="form-control" placeholder="https://example.com/image.jpg">
                                 </div>
                             </div>
                         </div>
@@ -187,7 +187,6 @@
 </div>
 
 <script>
-    // Xử lý sự kiện thêm hàng Variant mới
     document.getElementById('add-size-btn').addEventListener('click', function() {
         const container = document.getElementById('variant-wrapper');
         const row = document.createElement('div');
@@ -218,7 +217,6 @@
         container.appendChild(row);
     });
 
-    // Xử lý xóa hàng Variant bằng Event Delegation
     document.getElementById('variant-wrapper').addEventListener('click', function(e) {
         const btn = e.target.closest('.remove-size-btn');
         if (btn) {
@@ -231,7 +229,6 @@
         }
     });
 
-    // Cập nhật tên file khi chọn upload mẫu file input của Bootstrap
     document.addEventListener('change', function(e) {
         if (e.target.classList.contains('custom-file-input')) {
             var fileName = e.target.files[0].name;

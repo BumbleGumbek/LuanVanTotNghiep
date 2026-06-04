@@ -38,7 +38,7 @@
                 <th>Product Name</th>
                 <th>Category</th>
                 <th>Price</th>
-                <th>Qty</th>
+                <th>Sizes & Stock</th>
                 <th>Status</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -63,13 +63,36 @@
                     <td>
                         {{price}} VND
                     </td>
+
                     <td>
-                        {{#if (eq quantity 0)}}
-                            <span class="badge badge-danger">Sold</span>
+                        {{#if this.variants.length}}
+                            <ul class="list-unstyled mb-0" style="font-size: 13px; padding-left: 0; min-width: 120px;">
+                                {{#each this.variants}}
+                                    <li class="mb-1 d-flex align-items-center">
+                                        <span class="badge badge-light text-dark font-weight-bold mr-1" style="border: 1px solid #ced4da;">{{this.size}}</span>:
+
+                                        {{#if (eq this.quantity 0)}}
+                                            <span class="badge badge-soft-danger text-danger font-weight-bold ml-1">Sold out</span>
+                                        {{else if (eq this.quantity 1)}}
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} cái</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Sắp hết!</span>
+                                        {{else if (eq this.quantity 2)}}
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} cái</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Sắp hết!</span>
+                                        {{else if (eq this.quantity 3)}}
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} cái</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Sắp hết!</span>
+                                        {{else}}
+                                            <span class="text-secondary ml-1">{{this.quantity}} cái</span>
+                                        {{/if}}
+                                    </li>
+                                {{/each}}
+                            </ul>
                         {{else}}
-                            <span>{{quantity}} cái</span>
+                            <span class="badge badge-soft-danger text-danger">Sold / No Size</span>
                         {{/if}}
                     </td>
+
                     <td>
                         {{#if status}}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
@@ -105,3 +128,14 @@
         </table>
     </div>
 </div>
+
+<style>
+    @keyframes pulse-animation {
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    .animate-pulse {
+        animation: pulse-animation 1.5s infinite ease-in-out;
+    }
+</style>

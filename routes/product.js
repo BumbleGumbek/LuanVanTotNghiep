@@ -62,21 +62,22 @@ router.get('/create', async function(req, res, next) {
     }
 });
 
-/* [POST] /admin/product/create - Xử lý thêm sản phẩm mới (Chuẩn cấu trúc VARIANTS mới) */
+/* [POST] /admin/product/create - Xử lý thêm sản phẩm mới */
 router.post('/create', upload.single('image'), async function(req, res, next) {
     try {
-        // Xử lý mảng variants gửi lên từ form (ví dụ form gửi lên mảng kích cỡ và số lượng tương ứng)
-        // Giả sử giao diện truyền lên req.body.sizes và req.body.quantities dưới dạng mảng
         let variants = [];
+
+        // Vì Form của Ngân gửi lên mảng dạng sizes[] và quantities[]
+        // Express sẽ nhận diện thành req.body.sizes và req.body.quantities
         if (req.body.sizes && req.body.quantities) {
             const sizes = Array.isArray(req.body.sizes) ? req.body.sizes : [req.body.sizes];
             const quantities = Array.isArray(req.body.quantities) ? req.body.quantities : [req.body.quantities];
 
             for (let i = 0; i < sizes.length; i++) {
-                if (sizes[i] && quantities[i] >= 0) {
+                if (sizes[i].trim() !== '') { // Bỏ qua nếu dòng đó bị bỏ trống size
                     variants.push({
                         size: sizes[i],
-                        quantity: parseInt(quantities[i], 10)
+                        quantity: parseInt(quantities[i], 10) || 0
                     });
                 }
             }
@@ -85,17 +86,18 @@ router.post('/create', upload.single('image'), async function(req, res, next) {
         const newProduct = new Product({
             name: req.body.name,
             description: req.body.description,
-            image: req.file ? '/uploads/' + req.file.filename : '/uploads/default.jpg',
+            image: req.file ? '/uploads/' + req.file.filename : (req.body.imageUrl || '/uploads/default.jpg'),
             category: req.body.category,
-            supplier: req.body.supplier, // <-- Lưu thông tin Supplier vào sản phẩm
+            supplier: req.body.supplier,
             price: req.body.price,
-            variants: variants, // <-- Lưu mảng variants thay vì quantity đơn lẻ cũ
+            variants: variants, // Lưu mảng variants cực đẹp vào DB
             status: req.body.status === 'true'
         });
 
         await newProduct.save();
         res.redirect('/admin/product');
     } catch (err) {
+        console.error("Lỗi khi tạo sản phẩm mới:", err);
         next(err);
     }
 });

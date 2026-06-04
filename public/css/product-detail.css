@@ -1,0 +1,18 @@
+/* public/css/product-detail.css */
+
+/* Khi size được chọn thì đổi màu viền và nền cho nổi bật */
+.size-label input[type="radio"]:checked + div {
+    color: #ffffff !important;
+}
+.size-label input[type="radio"]:checked + div small {
+    color: #dddddd !important;
+}
+.size-label:has(input[type="radio"]:checked) {
+    background: rgb(230 230 230 / 0.9) !important; /* Màu đen thương hiệu Luna */
+    border-color: #111111 !important;
+}
+
+/* Hiệu ứng hover nhẹ cho các size còn hàng */
+.size-label:not(.disabled):hover {
+    border-color: #111111 !important;
+}

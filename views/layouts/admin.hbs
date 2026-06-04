@@ -461,6 +461,18 @@
     }
 </script>
 <script src="js/apps.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const formatter = new Intl.NumberFormat('en-US');
+        document.querySelectorAll('.format-currency').forEach(function(el) {
+            let price = el.innerText.trim();
+            if (price && !isNaN(price)) {
+                let formatted = formatter.format(price).replace(/,/g, ' ');
+                el.innerText = formatted;
+            }
+        });
+    });
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
 <script>
