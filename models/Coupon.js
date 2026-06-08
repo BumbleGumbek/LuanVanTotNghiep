@@ -29,7 +29,7 @@ const CouponSchema = new Schema({
         usedBy: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'user'
+                ref: 'User'
             }
         ],
         expiryDate: {

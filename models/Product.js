@@ -40,7 +40,7 @@ const ProductSchema = new Schema({
         },
         category: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'category', // Tham chiếu đến collection category
+            ref: 'Category', // Tham chiếu đến collection category
             required: true
         },
         supplier: {

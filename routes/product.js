@@ -172,12 +172,18 @@ router.get('/delete/:id', async function (req, res, next) {
     }
 });
 
-/* [GET] /admin/product/inventory - Quản lý tồn kho */
 router.get('/inventory', async function(req, res, next) {
     try {
         const products = await Product.find({}).populate('category');
+
+        const plainProduct = products.map(p => {
+            const pObj = p.toObject();
+            pObj.totalInventory = pObj.variants.reduce((sum, v) => sum + (v.quantity || 0), 0);
+            return pObj;
+        });
+
         res.render('admin/product/inventory', {
-            plainProduct: products.map(p => p.toObject())
+            plainProduct: plainProduct
         });
     } catch (err) {
         next(err);

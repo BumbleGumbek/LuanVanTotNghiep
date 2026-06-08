@@ -1,34 +1,22 @@
 <div class="card shadow">
     <div class="card-body">
-        <form action="/admin/category/edit/{{category._id}}?_method=PUT" method="POST">
+        <form action="/admin/category/edit/{{category._id}}" method="POST">
             <div class="mb-3">
                 <label class="form-label">
-                    Category Title
+                    Category Name
                 </label>
-                <input type="text" name="title" class="form-control" value="{{category.title}}" required>
+                <input type="text" name="name" class="form-control" value="{{category.name}}" required>
             </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Category Description
-                </label>
-                <textarea name="description" class="form-control" rows="4">{{category.description}}</textarea>
-            </div>
+
             <div class="mb-4">
                 <label class="form-label">
                     Status
                 </label>
-                <select name="status"
-                        class="form-control">
-                    <option value="true"
-                        {{#if category.status}}
-                            selected
-                        {{/if}}>
+                <select name="status" class="form-control">
+                    <option value="true" {{#if category.status}} selected {{/if}}>
                         True
                     </option>
-                    <option value="false"
-                        {{#unless category.status}}
-                            selected
-                        {{/unless}}>
+                    <option value="false" {{#unless category.status}} selected {{/unless}}>
                         False
                     </option>
                 </select>

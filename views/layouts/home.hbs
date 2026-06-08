@@ -223,7 +223,7 @@
                     <div class="footer__logo">
                         <a href="/"><img src="/img/footer-logo.png" alt=""></a>
                     </div>
-                    <p>Luxury jewelry collection for modern elegance.</p>
+                    <p>Elegant jewelry designed for modern women.</p>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -244,16 +244,18 @@
 <script src="/js/jquery.slicknav.js"></script>
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/jquery.nicescroll.min.js"></script>
-<script src="/js/product-detail.js"></script>
 <script src="/js/main.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const formatter = new Intl.NumberFormat('en-US');
         document.querySelectorAll('.format-currency').forEach(function(el) {
-            let price = el.innerText.trim();
-            if (price !== '' && !isNaN(price)) {
-                let formatted = formatter.format(price).replace(/,/g, ' ');
+            // Chỉ lọc lấy các ký tự số, loại bỏ hoàn toàn chữ hoặc khoảng trắng lỗi nếu lỡ bị dính vào
+            let rawValue = el.innerText.replace(/[^0-9]/g, '');
+
+            if (rawValue !== '') {
+                // Định dạng lại thành chuỗi tiền tệ chuẩn bằng dấu cách
+                let formatted = formatter.format(rawValue).replace(/,/g, ' ');
                 el.innerText = formatted;
             }
         });

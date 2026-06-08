@@ -92,7 +92,7 @@
                         <div class="checkout__input">
                             <p>Order notes<span>*</span></p>
                             <textarea name="note"
-                                      placeholder="Notes about your order"
+                                      class="form-control"
                                       rows="4"></textarea>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                     <li>
                                         <samp>{{quantity}}x</samp>
                                         {{name}}
-                                        <span><span class="format-currency">{{total}}</span> VND</span>
+                                        <span>{{total}} VND</span>
                                     </li>
                                 {{/each}}
                             </ul>
@@ -116,7 +116,7 @@
                                 </li>
                                 <li>
                                     Total
-                                    <span><span class="format-currency">{{totalPrice}}</span> VND</span>
+                                    <span>{{totalPrice}} VND</span>
                                 </li>
                             </ul>
                             <button type="submit" class="site-btn">PLACE ORDER</button>

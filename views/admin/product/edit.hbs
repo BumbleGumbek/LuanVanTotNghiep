@@ -34,7 +34,7 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <strong class="card-title"><i class="fe fe-layers mr-2"></i>Product Inventory & Variants</strong>
+                                <strong class="card-name"><i class="fe fe-layers mr-2"></i>Product Inventory & Variants</strong>
                                 <button type="button" class="btn btn-sm btn-outline-success" id="add-size-btn">
                                     <i class="fe fe-plus-circle mr-1"></i> Add Size
                                 </button>
@@ -116,16 +116,16 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label font-weight-bold">Category <span class="text-danger">*</span></label>
                                     <select name="category" class="form-control custom-select" required>
-                                        <option value="{{product.category._id}}" selected>{{product.category.title}}</option>
-
                                         {{#each plainCategory}}
-                                            <option value="{{this._id}}">{{this.title}}</option>
+                                            <option value="{{this._id}}" {{#if (eq this._id ../product.category._id)}}selected{{/if}}>
+                                                {{this.name}}
+                                            </option>
                                         {{/each}}
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">
                                     <label class="form-label font-weight-bold">Supplier <span class="text-danger">*</span></label>
-                                    <select name="supplier" class="form-control custom-select" required>
+                                    <select name="supplier" class="form-control custom-select" >
                                         <option value="{{product.supplier._id}}" selected>{{product.supplier.name}}</option>
 
                                         {{#each plainSupplier}}

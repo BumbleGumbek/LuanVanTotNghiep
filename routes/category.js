@@ -47,8 +47,7 @@ router.get('/create', function(req, res, next) {
 router.post('/create', async function (req, res, next) {
     try {
         const newCategory = new Category({
-            title: req.body.title,
-            description: req.body.description,
+            name: req.body.name,
             status: req.body.status === 'true' || req.body.status === true
         });
 
@@ -81,8 +80,7 @@ router.post('/edit/:id', async function(req, res, next) {
         const category = await Category.findById(req.params.id);
         if (!category) return res.status(404).send('Category not found');
 
-        category.title = req.body.title;
-        category.description = req.body.description;
+        category.name = req.body.name;
         category.status = req.body.status === 'true' || req.body.status === true;
 
         await category.save();

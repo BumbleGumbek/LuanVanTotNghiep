@@ -16,9 +16,9 @@ const UserSchema = new Schema({
         email: {
             type: String,
             required: true,
-            unique: true,       // Không được trùng
+            unique: true,
             trim: true,
-            lowercase: true,   // Tự chuyển thành chữ thường
+            lowercase: true,
             minlength: 5
         },
         password: {
@@ -40,4 +40,4 @@ const UserSchema = new Schema({
         timestamps: true
     });
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

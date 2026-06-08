@@ -19,7 +19,7 @@
                     <select name="category" class="form-control mr-2" onchange="this.form.submit()">
                         <option value="">All Categories</option>
                         {{#each categories}}
-                            <option value="{{_id}}" {{#if (eq _id ../selectedCategory)}}selected{{/if}}>{{title}}</option>
+                            <option value="{{_id}}" {{#if (eq _id ../selectedCategory)}}selected{{/if}}>{{name}}</option>
                         {{/each}}
                     </select>
                 </form>
@@ -58,7 +58,7 @@
                         {{name}}
                     </td>
                     <td>
-                        {{category.title}}
+                        {{category.name}}
                     </td>
                     <td>
                         {{price}} VND
@@ -74,16 +74,16 @@
                                         {{#if (eq this.quantity 0)}}
                                             <span class="badge badge-soft-danger text-danger font-weight-bold ml-1">Sold out</span>
                                         {{else if (eq this.quantity 1)}}
-                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} cái</span>
-                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Sắp hết!</span>
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} items</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Low Stock!</span>
                                         {{else if (eq this.quantity 2)}}
-                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} cái</span>
-                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Sắp hết!</span>
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} items</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Low Stock!</span>
                                         {{else if (eq this.quantity 3)}}
-                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} cái</span>
-                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Sắp hết!</span>
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} items</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Low Stock!</span>
                                         {{else}}
-                                            <span class="text-secondary ml-1">{{this.quantity}} cái</span>
+                                            <span class="text-secondary ml-1">{{this.quantity}} items</span>
                                         {{/if}}
                                     </li>
                                 {{/each}}

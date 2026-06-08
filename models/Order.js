@@ -35,7 +35,7 @@ const OrderItemSchema = new Schema({
 const OrderSchema = new Schema({
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'User',
             required: true
         },
         items: [OrderItemSchema],
@@ -79,7 +79,7 @@ const OrderSchema = new Schema({
                 'Cancelled',
                 'Delivered'
             ],
-            default: 'Chờ thanh toán'
+            default: 'Pending'
         },
         trackingCode: {
             type: String,

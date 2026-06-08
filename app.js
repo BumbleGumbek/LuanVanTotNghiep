@@ -134,6 +134,7 @@ app.use(async (req, res, next) => {
 
 var homeRouter = require('./routes/home');
 var adminRouter = require('./routes/admin');
+var cartRouter = require('./routes/cart');
 var categoryRouter = require('./routes/category');
 var productRouter = require('./routes/product');
 var supplierRouter = require('./routes/supplier');
@@ -169,6 +170,7 @@ function isAdmin(req, res, next){
 }
 
 app.use('/', homeRouter);
+app.use('/', cartRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/admin', isAdmin, adminRouter);
