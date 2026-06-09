@@ -26,7 +26,9 @@
                         <div class="row mt-1 align-items-center">
                             <div class="col-12 col-lg-4 text-left pl-4">
                                 <p class="mb-1 small text-muted">Total Revenue</p>
-                                <span class="h3">$12,600</span>
+                                <span class="h3">
+                                    {{totalRevenue}}
+                                </span>
                                 <span class="small text-muted">+20%</span>
                                 <span class="fe fe-arrow-up text-success fe-12"></span>
                                 <p class="text-muted mt-2"> Overall revenue generated from jewelry sales and completed customer orders. </p>
@@ -39,7 +41,9 @@
                             </div>
                             <div class="col-6 col-lg-2 text-center py-4">
                                 <p class="mb-1 small text-muted">Completed Orders</p>
-                                <span class="h3">26</span><br />
+                                <span class="h3">
+                                    {{totalOrders}}
+                                </span>
                                 <span class="small text-muted">+20%</span>
                                 <span class="fe fe-arrow-up text-success fe-12"></span>
                             </div>
@@ -73,7 +77,9 @@
                                 </div> <!-- .col -->
                                 <div class="col-md-6 border-top py-3">
                                     <p class="mb-1"><strong class="text-muted">New Customers</strong></p>
-                                    <h4 class="mb-0">1168</h4>
+                                    <h4 class="mb-0">
+                                        {{totalCustomers}}
+                                    </h4>
                                     <p class="small text-muted mb-0"><span>-18.9% Last week</span></p>
                                 </div> <!-- .col -->
                             </div>
@@ -85,7 +91,9 @@
                         <div class="d-flex mt-3 mb-4">
                             <div class="flex-fill pt-2">
                                 <p class="mb-0 text-muted">Total</p>
-                                <h4 class="mb-0">108</h4>
+                                <h4 class="mb-0">
+                                    {{totalProducts}}
+                                </h4>
                                 <span class="small text-muted">+37.7%</span>
                             </div>
                             <div class="flex-fill chart-box mt-n2">
@@ -212,7 +220,7 @@
             <div class="col-md-12 col-lg-8">
                 <div class="card shadow">
                     <div class="card-header">
-                        <strong class="card-title">Recent Data</strong>
+                        <strong class="card-title">Top Selling Products</strong>
                         <a class="float-right small text-muted" href="#!">View all</a>
                     </div>
                     <div class="card-body my-n2">

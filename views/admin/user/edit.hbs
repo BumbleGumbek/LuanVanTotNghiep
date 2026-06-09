@@ -1,7 +1,6 @@
 <div class="card shadow">
     <div class="card-body">
-        <form action="/admin/user/edit/{{user._id}}?_method=PUT"
-              method="POST">
+        <form action="/users/edit/{{user._id}}" method="POST">
             <div class="mb-3">
                 <label class="form-label">
                     First Name
@@ -26,7 +25,35 @@
                 <label class="form-label">
                     Password
                 </label>
-                <input type="text" name="password" value="{{user.password}}" class="form-control">
+
+                <input type="password"
+                       name="password"
+                       placeholder="Leave blank to keep current password"
+                       class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Role
+                </label>
+
+                <select name="role"
+                        class="form-control">
+
+                    <option value="customer"
+                        {{#if (eq user.role 'customer')}}
+                            selected
+                        {{/if}}>
+                        Customer
+                    </option>
+
+                    <option value="admin"
+                        {{#if (eq user.role 'admin')}}
+                            selected
+                        {{/if}}>
+                        Admin
+                    </option>
+
+                </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">
@@ -38,13 +65,13 @@
                         {{#if user.status}}
                             selected
                         {{/if}}>
-                        True
+                        Active
                     </option>
                     <option value="false"
                         {{#unless user.status}}
                             selected
                         {{/unless}}>
-                        False
+                        Inactive
                     </option>
                 </select>
             </div>

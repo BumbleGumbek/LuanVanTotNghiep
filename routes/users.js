@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const User = require('../models/User');
+const bcryptjs = require('bcryptjs');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
@@ -10,13 +11,37 @@ router.all('/*', function (req, res, next) {
 /* [GET] /admin/user - Danh sách tài khoản người dùng */
 router.get('/', async function (req, res, next) {
     try {
-        const users = await User.find({});
+        const users =
+            await User.find({
+                role: 'customer'
+            });
         const plainUser = users.map(user => user.toObject());
         res.render('admin/user/index', {
             plainUser: plainUser
         });
     } catch (err) {
         console.error("Lỗi lấy danh sách User:", err);
+        next(err);
+    }
+});
+
+
+router.get('/admins', async function(req, res, next) {
+    try {
+        const admins = await User.find({
+            role: 'admin'
+        });
+        res.render(
+            'admin/user/admin-list',
+            {
+                plainUser:
+                    admins.map(
+                        user => user.toObject()
+                    )
+            }
+        );
+
+    } catch (err) {
         next(err);
     }
 });
@@ -33,16 +58,19 @@ router.get('/create', async function (req, res, next) {
 /* [POST] /admin/user/create - Xử lý thêm mới User */
 router.post('/create', async function (req, res, next) {
     try {
+        const salt = await bcryptjs.genSalt(10);
+        const hash = await bcryptjs.hash(req.body.password, salt);
+
         const newUser = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            password: req.body.password,
+            password: hash,
+            role: req.body.role || 'customer',
             status: req.body.status === 'true'
         });
-
         await newUser.save();
-        res.redirect('/admin/user');
+        res.redirect('/users');
     } catch (error) {
         console.error("Lỗi thêm mới User:", error);
         next(error);
@@ -75,12 +103,20 @@ router.post('/edit/:id', async function (req, res, next) {
         user.lastName = req.body.lastName;
         user.email = req.body.email;
         if (req.body.password) {
-            user.password = req.body.password; // Chỉ cập nhật nếu Admin điền mật khẩu mới
+
+            const salt = await bcryptjs.genSalt(10);
+
+            user.password =
+                await bcryptjs.hash(
+                    req.body.password,
+                    salt
+                );
         }
+        user.role = req.body.role;
         user.status = req.body.status === 'true';
 
         await user.save();
-        res.redirect('/admin/user');
+        res.redirect('/users');
     } catch (err) {
         console.error("Lỗi lưu thông tin sửa User:", err);
         res.redirect('back');
@@ -91,7 +127,7 @@ router.post('/edit/:id', async function (req, res, next) {
 router.get('/delete/:id', async function (req, res, next) {
     try {
         await User.findByIdAndDelete(req.params.id);
-        res.redirect('/admin/user');
+        res.redirect('/users');
     } catch (err) {
         console.error("Lỗi xóa User khỏi hệ thống:", err);
         next(err);
