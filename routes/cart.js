@@ -3,6 +3,20 @@ var router = express.Router();
 const Product = require("../models/Product");
 const Cart = require('../models/Cart');
 const Order = require('../models/Order');
+const {
+    deductInventory
+} = require("../helpers/inventory-helper");
+
+const {
+    createOrder
+} = require("../helpers/order-helper");
+
+const {
+    getCartItems,
+    calculateCartSummary
+} = require("../helpers/cart-helper");
+
+
 
 // Gán layout chung
 router.use((req, res, next) => {
@@ -12,45 +26,26 @@ router.use((req, res, next) => {
 
 /* 1. Xem giỏ hàng */
 router.get('/shopping-cart', async function(req, res, next){
+
     try {
-        let totalPrice = 0;
-        let totalQty = 0;
-        let cartItems = [];
 
-        if (req.isAuthenticated()) {
-            const dbCart = await Cart.findOne({ user_id: req.user._id }).populate('items.product_id');
-            if (dbCart && dbCart.items) {
-                dbCart.items.forEach(item => {
-                    let p = item.product_id;
-                    if (p) {
-                        cartItems.push({
-                            product_id: p._id.toString(),
-                            name: p.name,
-                            image: p.image,
-                            price: p.price,
-                            quantity: item.quantity,
-                            size: item.size,
-                            total: p.price * item.quantity
-                        });
-                    }
-                });
-            }
-        } else {
-            cartItems = req.session.cart || [];
-        }
+        const cartItems =
+            await getCartItems(req);
 
-        cartItems.forEach(item => {
-            totalPrice += item.total;
-            totalQty += item.quantity;
-        });
+        const {
+            totalPrice,
+            totalQty
+        } = calculateCartSummary(cartItems);
 
         res.render('home/shopping-cart', {
             title: 'cart',
             product: cartItems,
-            totalPrice: totalPrice,
-            totalQty: totalQty
+            totalPrice,
+            totalQty
         });
+
     } catch (error) {
+
         next(error);
     }
 });
@@ -255,30 +250,24 @@ router.get('/checkout', async function(req, res, next){
                 total: item.total
             });
         } else {
-            const dbCart = await Cart.findOne({ user_id: req.user._id }).populate('items.product_id');
 
-            if(!dbCart || !dbCart.items || dbCart.items.length <= 0){
-                req.flash('error_message', 'Your shopping cart is empty.');
+            cartItems = await getCartItems(req);
+
+            if (cartItems.length <= 0) {
+
+                req.flash(
+                    'error_message',
+                    'Your shopping cart is empty.'
+                );
+
                 return res.redirect('/shopping-cart');
             }
 
-            dbCart.items.forEach(item => {
-                let p = item.product_id;
-                if (p) {
-                    let total = p.price * item.quantity;
-                    totalPrice += total;
-                    totalQty += item.quantity;
-                    cartItems.push({
-                        product_id: p._id.toString(),
-                        name: p.name,
-                        image: p.image,
-                        price: p.price,
-                        quantity: item.quantity,
-                        size: item.size,
-                        total: total
-                    });
-                }
-            });
+            const summary =
+                calculateCartSummary(cartItems);
+
+            totalPrice = summary.totalPrice;
+            totalQty = summary.totalQty;
         }
 
         res.render('home/checkout', {
@@ -298,7 +287,7 @@ router.post('/checkout', async function(req, res, next){
     if (!req.isAuthenticated()) return res.status(401).redirect('/login');
 
     try {
-        // Đọc đúng các thuộc tính name từ file .hbs của bà gửi lên
+        // Đọc đúng các thuộc tính name từ file .hbs của gửi lên
         const { firstName, lastName, phone, address, city, note } = req.body;
 
         // Validate thông tin giao hàng cơ bản dựa trên các trường bắt buộc (*) ngoài form
@@ -325,7 +314,7 @@ router.post('/checkout', async function(req, res, next){
             totalPrice = item.total;
             isBuyNow = true;
         } else {
-            // Nếu không, đọc từ Giỏ hàng Database gốc của bà
+            // Nếu không, đọc từ Giỏ hàng Database gốc
             const dbCart = await Cart.findOne({ user_id: req.user._id }).populate('items.product_id');
             if(!dbCart || !dbCart.items || dbCart.items.length <= 0) {
                 return res.redirect('/shopping-cart');
@@ -347,60 +336,30 @@ router.post('/checkout', async function(req, res, next){
             });
         }
 
-        // Cơ chế trừ kho dựa trên cấu trúc VARIANTS của bà
-        const deductedItems = [];
-        for (const item of checkoutItems) {
-            const updatedProduct = await Product.findOneAndUpdate(
-                {
-                    _id: item.product_id,
-                    "variants.size": item.size,
-                    "variants.quantity": { $gte: item.quantity }
-                },
-                {
-                    $inc: {
-                        "variants.$.quantity": -item.quantity,
-                        sold: item.quantity
-                    }
-                },
-                { new: true }
+        const inventoryResult =
+            await deductInventory(checkoutItems);
+
+        if (!inventoryResult.success) {
+
+            req.flash(
+                'error_message',
+                `Sorry, product "${inventoryResult.item.name}" (Size ${inventoryResult.item.size}) is out of stock.`
             );
 
-            if (!updatedProduct) {
-                // Rollback nếu thiếu hàng
-                for (const rolledBackItem of deductedItems) {
-                    await Product.findOneAndUpdate(
-                        { _id: rolledBackItem.id, "variants.size": rolledBackItem.size },
-                        { $inc: { "variants.$.quantity": rolledBackItem.qty, sold: -rolledBackItem.qty } }
-                    );
-                }
-                req.flash('error_message', `Sorry, product "${item.name}" (Size ${item.size}) is out of stock.`);
-                return res.redirect('/shopping-cart');
-            }
-            deductedItems.push({ id: item.product_id, size: item.size, qty: item.quantity });
+            return res.redirect('/shopping-cart');
         }
 
-        // Tạo đơn hàng và nối chuỗi firstName, lastName, city lại cho khớp cấu trúc DB Order cũ của bà
-        const newOrder = new Order({
-            user: req.user._id,
-            shippingAddress: {
-                receiverName: `${firstName} ${lastName || ''}`.trim(),
-                receiverPhone: phone,
-                detailAddress: `${address}, ${city}`
-            },
-            items: checkoutItems.map(item => ({
-                product_id: item.product_id,
-                name: item.name,
-                image: item.image,
-                size: item.size,
-                price_at_purchase: item.price,
-                quantity: item.quantity
-            })),
-            totalPrice: totalPrice,
-            note: note || '', // Lưu thêm ghi chú đơn hàng nếu bà cần dùng sau này
-            status: 'Pending'
+        const newOrder = await createOrder({
+            userId: req.user._id,
+            firstName,
+            lastName,
+            phone,
+            address,
+            city,
+            checkoutItems,
+            totalPrice,
+            note
         });
-
-        await newOrder.save();
 
         // Dọn dẹp bộ nhớ tạm sau khi đặt hàng thành công
         if (isBuyNow) {
