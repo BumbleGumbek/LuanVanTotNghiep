@@ -79,6 +79,7 @@
                             <span class="badge
                                 {{#if (eq order.status 'Pending')}}badge-warning text-dark{{/if}}
                                 {{#if (eq order.status 'Confirmed')}}badge-primary{{/if}}
+                                {{#if (eq order.status 'Processing')}}badge-secondary{{/if}}
                                 {{#if (eq order.status 'Shipping')}}badge-info{{/if}}
                                 {{#if (eq order.status 'Delivered')}}badge-success{{/if}}
                                 {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}"
@@ -89,7 +90,13 @@
                         <li>Payment Status <span style="color: #111;">{{#if order.paymentStatus}}{{order.paymentStatus}}{{else}}Unpaid{{/if}}</span></li>
                         <li>Payment Method <span style="color: #111;">{{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}COD{{/if}}</span></li>
                         <li style="border-top: 1px solid #f2f2f2; padding-top: 15px; margin-top: 15px;">
-                            Total <span style="color: #d10024; font-size: 20px;"><span class="format-currency"> VND</span>{{order.totalPrice}} </span>
+                            Total
+                            <span style="color: #d10024; font-size: 20px;">
+                                <span class="format-currency">
+                                    {{order.totalPrice}}
+                                </span>
+                                VND
+                            </span>
                         </li>
                     </ul>
 

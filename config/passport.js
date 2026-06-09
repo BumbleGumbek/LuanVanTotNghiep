@@ -8,78 +8,48 @@ module.exports = function () {
     passport.use(
         new LocalStrategy(
             { usernameField: 'email' },
-
             async function (email, password, done) {
-
                 try {
-
-                    const user =
-                        await User.findOne({
+                    const user = await User.findOne({
                             email: email
                         });
-
                     if (!user) {
-
                         return done(
-                            null,
-                            false,
-                            { message: 'users not found' }
+                            null, false, { message: 'users not found' }
                         );
                     }
-
                     bcryptjs.compare(
-                        password,
-                        user.password,
-                        (err, matched) => {
-
+                        password, user.password, (err, matched) => {
                             if (err) {
                                 return done(err);
                             }
-
                             if (matched) {
-
                                 return done(
-                                    null,
-                                    user
+                                    null, user
                                 );
                             }
-
                             return done(
-                                null,
-                                false,
-                                {
-                                    message:
-                                        'Wrong email or password'
+                                null, false, {
+                                    message: 'Wrong email or password'
                                 }
                             );
                         }
                     );
-
                 } catch (error) {
-
                     done(error);
                 }
             }
         )
     );
-
     passport.serializeUser((user, done) => {
-
         done(null, user.id);
     });
-
     passport.deserializeUser(
         async (id, done) => {
-
             try {
-
-                const user =
-                    await User.findById(id);
-
+                const user = await User.findById(id);
                 done(null, user);
-
             } catch (error) {
-
                 done(error);
             }
         }

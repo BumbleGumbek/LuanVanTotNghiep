@@ -28,12 +28,16 @@ router.get('/', async function (req, res, next) {
 
 router.post('/update-status/:id', async function (req, res, next) {
     try {
-        const { orderStatus } = req.body;
-
-        await Order.findByIdAndUpdate(req.params.id, { status: orderStatus, orderStatus: orderStatus });
-
-        req.flash('success_message', `Order status updated successfully!`);
+        const { status } = req.body;
+        await Order.findByIdAndUpdate(
+            req.params.id,
+            {
+                status: status
+            }
+        );
+        req.flash('success_message', 'Order status updated successfully!');
         res.redirect('/admin/orders');
+
     } catch (err) {
         console.error("Error updating order status:", err);
         req.flash('error_message', 'Unable to update order status');
@@ -44,12 +48,20 @@ router.post('/update-status/:id', async function (req, res, next) {
 
 router.get('/invoice/:id', async function (req, res, next) {
     try {
-        const order = await Order.findById(req.params.id).populate('user');
+        const order = await Order.findById(req.params.id)
+            .populate('user');
         if (!order) {
             return res.status(404).send('Order not found');
         }
+        const plainOrder = order.toObject();
+        plainOrder.items = plainOrder.items.map(item => ({
+            ...item,
+            subtotal:
+                item.price_at_purchase *
+                item.quantity
+        }));
         res.render('admin/orders/invoice', {
-            order: order.toObject(),
+            order: plainOrder,
             title: 'Invoice'
         });
     } catch (err) {

@@ -80,28 +80,30 @@
                 <strong>{{user.firstName}} {{user.lastName}}</strong><br>
                 <small class="text-muted">{{user.email}}</small>
             </td>
-            <td>{{shippingAddress.phone}}</td>
+            <td>{{shippingAddress.receiverPhone}}</td>
             <td>
                 <ul class="list-unstyled mb-0">
                     {{#each items}}
-                    <li><small>- {{snapshot.name}} (x{{quantity}})</small></li>
+                    <li><small>- {{name}} (x{{quantity}})</small></li>
                     {{/each}}
                 </ul>
             </td>
             <td><span class="font-weight-bold text-danger">{{totalPrice}} VNĐ</span></td>
             <td>
                 <span class="dot dot-lg mr-2
-                    {{#if (eq orderStatus 'Pending')}}bg-warning{{/if}}
-                    {{#if (eq orderStatus 'Confirmed')}}bg-info{{/if}}
-                    {{#if (eq orderStatus 'Shipping')}}bg-primary{{/if}}
-                    {{#if (eq orderStatus 'Delivered')}}bg-success{{/if}}
-                    {{#if (eq orderStatus 'Cancelled')}}bg-danger{{/if}}"></span>
+                    {{#if (eq status 'Pending')}}bg-warning{{/if}}
+                    {{#if (eq status 'Confirmed')}}bg-info{{/if}}
+                    {{#if (eq status 'Processing')}}bg-secondary{{/if}}
+                    {{#if (eq status 'Shipping')}}bg-primary{{/if}}
+                    {{#if (eq status 'Delivered')}}bg-success{{/if}}
+                    {{#if (eq status 'Cancelled')}}bg-danger{{/if}}"></span>
                 <span class="font-weight-bold
-                    {{#if (eq orderStatus 'Pending')}}text-warning{{/if}}
-                    {{#if (eq orderStatus 'Confirmed')}}text-info{{/if}}
-                    {{#if (eq orderStatus 'Shipping')}}text-primary{{/if}}
-                    {{#if (eq orderStatus 'Delivered')}}text-success{{/if}}
-                    {{#if (eq orderStatus 'Cancelled')}}text-danger{{/if}}">{{orderStatus}}</span>
+                    {{#if (eq status 'Pending')}}text-warning{{/if}}
+                    {{#if (eq status 'Confirmed')}}text-info{{/if}}
+                    {{#if (eq status 'Processing')}}text-secondary{{/if}}
+                    {{#if (eq status 'Shipping')}}text-primary{{/if}}
+                    {{#if (eq status 'Delivered')}}text-success{{/if}}
+                    {{#if (eq status 'Cancelled')}}text-danger{{/if}}">{{status}}</span>
             </td>
             <td>
               <div class="d-flex align-items-center">
@@ -111,11 +113,11 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <form action="/admin/orders/update-status/{{_id}}" method="POST">
-                            <button class="dropdown-item text-warning" type="submit" name="orderStatus" value="Pending">Set Pending</button>
-                            <button class="dropdown-item text-info" type="submit" name="orderStatus" value="Confirmed">Set Confirmed</button>
-                            <button class="dropdown-item text-primary" type="submit" name="orderStatus" value="Shipping">Set Shipping</button>
-                            <button class="dropdown-item text-success" type="submit" name="orderStatus" value="Delivered">Set Delivered</button>
-                            <button class="dropdown-item text-danger" type="submit" name="orderStatus" value="Cancelled">Set Cancelled</button>
+                            <button class="dropdown-item text-warning" type="submit" name="status" value="Pending">Set Pending</button>
+                            <button class="dropdown-item text-info" type="submit" name="status" value="Confirmed">Set Confirmed</button>
+                            <button class="dropdown-item text-primary" type="submit" name="status" value="Shipping">Set Shipping</button>
+                            <button class="dropdown-item text-success" type="submit" name="status" value="Delivered">Set Delivered</button>
+                            <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">Set Cancelled</button>
                         </form>
                     </div>
                 </div>

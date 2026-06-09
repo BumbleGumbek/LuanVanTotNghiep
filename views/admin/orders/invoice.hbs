@@ -7,7 +7,6 @@
                 </div>
                 <div class="col-auto">
                     <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
-                    <button type="button" class="btn btn-primary">Pay</button>
                 </div>
             </div>
             <div class="card shadow">
@@ -35,15 +34,23 @@
                         <div class="col-md-5">
                             <p class="small text-muted text-uppercase mb-2">Invoice to</p>
                             <p class="mb-4">
-                                <strong>{{order.shippingAddress.fullName}}</strong><br /> 
-                                {{order.shippingAddress.phone}}<br /> 
-                                {{order.shippingAddress.address}}<br /> 
-                                {{order.shippingAddress.city}}<br />
+                                <strong>{{order.shippingAddress.receiverName}}</strong><br />
+                                {{order.shippingAddress.receiverPhone}}<br />
+                                {{order.shippingAddress.detailAddress}}<br />
                                 {{order.user.email}}<br />
                             </p>
                             <p>
                                 <small class="small text-muted text-uppercase">Order Date</small><br />
                                 <strong>{{order.createdAt}}</strong>
+                            </p>
+                            <p>
+                                <small class="small text-muted text-uppercase">
+                                    Status
+                                </small><br>
+
+                                <strong>
+                                    {{order.status}}
+                                </strong>
                             </p>
                         </div>
                     </div> <!-- /.row -->
@@ -60,11 +67,11 @@
                         <tbody>
                             {{#each order.items}}
                             <tr>
-                                <th scope="row">{{@index}}</th>
-                                <td> {{snapshot.name}}<br />
+                                <th scope="row">{{add @index 1}}</th>
+                                <td> {{name}}<br />
                                     <span class="small text-muted">Premium legant jewelry item</span>
                                 </td>
-                                <td class="text-right">{{snapshot.price}} VNĐ</td>
+                                <td class="text-right">{{price_at_purchase}} VNĐ</td>
                                 <td class="text-right">{{quantity}}</td>
                                 <td class="text-right">{{subtotal}} VNĐ</td>
                             </tr>

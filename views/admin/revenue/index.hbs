@@ -1,0 +1,33 @@
+<div class="card shadow">
+    <div class="card-header">
+        <h4>
+            Revenue Report
+        </h4>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Month</th>
+                <th>Total Orders</th>
+                <th>Revenue</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each revenueByMonth}}
+                <tr>
+                    <td>
+                        {{_id.month}}/{{_id.year}}
+                    </td>
+                    <td>
+                        {{orders}}
+                    </td>
+                    <td>
+                        {{revenue}}
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

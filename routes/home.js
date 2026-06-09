@@ -123,15 +123,29 @@ router.get('/my-orders', async (req, res, next) => {
 router.get('/my-orders/:id', async function(req, res, next) {
   try {
     if (!req.isAuthenticated()) return res.redirect('/login');
-    const order = await Order.findOne({ _id: req.params.id, user: req.user._id });
+
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    });
+
     if (!order) {
       req.flash('error_message', 'Cannot find your order.');
       return res.redirect('/my-orders');
     }
+
+    const plainOrder = order.toObject();
+
+    plainOrder.items = plainOrder.items.map(item => ({
+      ...item,
+      subtotal: item.price_at_purchase * item.quantity
+    }));
+
     res.render('home/my-orders-detail', {
-      order: order.toObject(),
+      order: plainOrder,
       activePage: 'orders'
     });
+
   } catch (err) {
     next(err);
   }
@@ -239,7 +253,7 @@ router.get('/search', async function(req, res, next) {
     }).populate('category');
 
     let wishlistProductIds = [];
-    if (req.user) {c
+    if (req.user) {
       const wishlist = await Wishlist.find({ user: req.user._id });
       wishlistProductIds = wishlist.map(w => w.product.toString());
     }

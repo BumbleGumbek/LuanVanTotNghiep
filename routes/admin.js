@@ -82,4 +82,50 @@ router.get('/profile', async function(req, res, next) {
     }
 });
 
+router.get('/revenue', async function(req, res, next) {
+    try {
+        const revenueByMonth =
+            await Order.aggregate([
+                {
+                    $match: {
+                        status: 'Delivered'
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            month: {
+                                $month: "$createdAt"
+                            },
+                            year: {
+                                $year: "$createdAt"
+                            }
+                        },
+                        revenue: {
+                            $sum: "$totalPrice"
+                        },
+                        orders: {
+                            $sum: 1
+                        }
+                    }
+                },
+                {
+                    $sort: {
+                        "_id.year": -1,
+                        "_id.month": -1
+                    }
+                }
+            ]);
+        res.render(
+            'admin/revenue/index',
+            {
+                title: 'Revenue Report',
+                revenueByMonth
+            }
+        );
+    } catch(err) {
+        next(err);
+    }
+});
+
 module.exports = router;
