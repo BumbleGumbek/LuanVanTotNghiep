@@ -28,20 +28,78 @@ router.get('/', async function (req, res, next) {
 
 router.post('/update-status/:id', async function (req, res, next) {
     try {
-        const { status } = req.body;
-        await Order.findByIdAndUpdate(
-            req.params.id,
-            {
-                status: status
-            }
-        );
-        req.flash('success_message', 'Order status updated successfully!');
-        res.redirect('/admin/orders');
+        const order =
+            await Order.findById(
+                req.params.id
+            );
+        if(!order){
+            req.flash(
+                'error_message',
+                'Order not found'
+            );
+            return res.redirect(
+                '/admin/orders'
+            );
+        }
+        const newStatus = req.body.status;
+        const statusFlow = {
+            PendingPayment: [
+                'Paid',
+                'Cancelled'
+            ],
+            Paid: [
+                'Confirmed',
+                'Cancelled'
+            ],
+            Confirmed: [
+                'Processing'
+            ],
+            Processing: [
+                'Shipping'
+            ],
 
+            Shipping: [
+                'Delivered'
+            ],
+            Delivered: [],
+            Cancelled: []
+        };
+        const allowedStatuses =
+            statusFlow[order.status] || [];
+        if(
+            !allowedStatuses.includes(
+                newStatus
+            )
+        ){
+            req.flash(
+                'error_message',
+                'Invalid status transition'
+            );
+            return res.redirect(
+                '/admin/orders'
+            );
+        }
+        order.status = newStatus;
+        await order.save();
+        req.flash(
+            'success_message',
+            'Order status updated successfully!'
+        );
+        res.redirect(
+            '/admin/orders'
+        );
     } catch (err) {
-        console.error("Error updating order status:", err);
-        req.flash('error_message', 'Unable to update order status');
-        res.redirect('/admin/orders');
+        console.error(
+            "Error updating order status:",
+            err
+        );
+        req.flash(
+            'error_message',
+            'Unable to update order status'
+        );
+        res.redirect(
+            '/admin/orders'
+        );
     }
 });
 

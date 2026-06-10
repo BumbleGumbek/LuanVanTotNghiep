@@ -112,33 +112,54 @@
               </td>
             <td>
               <div class="d-flex align-items-center">
+                {{#if (ne status 'Delivered')}}
+                {{#if (ne status 'Cancelled')}}
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle more-vertical" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="text-muted sr-only">Action</span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <form action="/admin/orders/update-status/{{_id}}" method="POST">
-                            <button class="dropdown-item text-info" type="submit" name="status" value="Paid">
-                                Set Paid
-                            </button>
-                            <button class="dropdown-item text-primary" type="submit" name="status" value="Confirmed">
-                                Set Confirmed
-                            </button>
-                            <button class="dropdown-item text-secondary" type="submit" name="status" value="Processing">
-                                Set Processing
-                            </button>
-                            <button class="dropdown-item text-primary" type="submit" name="status" value="Shipping">
-                                Set Shipping
-                            </button>
-                            <button class="dropdown-item text-success" type="submit" name="status" value="Delivered">
-                                Set Delivered
-                            </button>
-                            <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">
-                                Set Cancelled
-                            </button>
+                            {{#if (eq status 'PendingPayment')}}
+                                <button class="dropdown-item text-info" type="submit" name="status" value="Paid">
+                                    Set Paid
+                                </button>
+                                <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">
+                                    Set Cancelled
+                                </button>
+                            {{/if}}
+
+                            {{#if (eq status 'Paid')}}
+                                <button class="dropdown-item text-primary" type="submit" name="status" value="Confirmed">
+                                    Set Confirmed
+                                </button>
+                                <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">
+                                    Set Cancelled
+                                </button>
+                            {{/if}}
+
+                            {{#if (eq status 'Confirmed')}}
+                                <button class="dropdown-item text-secondary" type="submit" name="status" value="Processing">
+                                    Set Processing
+                                </button>
+                            {{/if}}
+
+                            {{#if (eq status 'Processing')}}
+                                <button class="dropdown-item text-primary" type="submit" name="status" value="Shipping">
+                                    Set Shipping
+                                </button>
+                            {{/if}}
+
+                            {{#if (eq status 'Shipping')}}
+                                <button class="dropdown-item text-success" type="submit" name="status" value="Delivered">
+                                    Set Delivered
+                                </button>
+                            {{/if}}
                         </form>
                     </div>
                 </div>
+                {{/if}}
+                {{/if}}
                 <a href="/admin/orders/invoice/{{_id}}" class="btn btn-sm btn-outline-primary ml-2">
                     <i class="fe fe-file-text"></i>
                 </a>
