@@ -71,9 +71,9 @@
                                 <td> {{name}}<br />
                                     <span class="small text-muted">Premium legant jewelry item</span>
                                 </td>
-                                <td class="text-right">{{price_at_purchase}} VNĐ</td>
+                                <td class="text-right">{{formatCurrency price_at_purchase}} VND</td>
                                 <td class="text-right">{{quantity}}</td>
-                                <td class="text-right">{{subtotal}} VNĐ</td>
+                                <td class="text-right">{{formatCurrency subtotal}} VND</td>
                             </tr>
                             {{/each}}
                         </tbody>
@@ -91,15 +91,15 @@
                             <div class="text-right mr-2">
                                 <p class="mb-2 h6">
                                     <span class="text-muted">Subtotal : </span>
-                                    <strong>{{order.totalPrice}} VNĐ</strong>
+                                    <strong>{{formatCurrency order.totalPrice}} VND</strong>
                                 </p>
                                 <p class="mb-2 h6">
                                     <span class="text-muted">VAT (0%) : </span>
-                                    <strong>0 VNĐ</strong>
+                                    <strong>{{formatCurrency 0}} VND</strong>
                                 </p>
                                 <p class="mb-2 h6">
                                     <span class="text-muted">Total : </span>
-                                    <span class="h4">{{order.totalPrice}} VNĐ</span>
+                                    <span class="h4">{{formatCurrency order.totalPrice}} VND</span>
                                 </p>
                             </div>
                         </div>

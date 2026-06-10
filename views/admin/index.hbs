@@ -27,7 +27,7 @@
                             <div class="col-12 col-lg-4 text-left pl-4">
                                 <p class="mb-1 small text-muted">Total Revenue</p>
                                 <span class="h3">
-                                    {{totalRevenue}} VND
+                                    {{formatCurrency totalRevenue}} VND
                                 </span>
                                 <span class="small text-muted">+20%</span>
                                 <span class="fe fe-arrow-up text-success fe-12"></span>
@@ -66,7 +66,7 @@
                                 <div class="col-md-6 my-3">
                                     <p class="mb-0"><strong class="mb-0 text-uppercase text-muted">Monthly Revenue</strong></p>
                                     <h3>
-                                        {{totalRevenue}}
+                                        {{formatCurrency totalRevenue}} VND
                                     </h3>
                                     <p class="text-muted">Revenue generated from jewelry sales this month.</p>
                                 </div>
@@ -108,16 +108,6 @@
                                     <div id="barChartWidget"></div>
                                 </div>
                             </div> <!-- .d-flex -->
-                            <div class="row border-top">
-                                <div class="col-md-6 pt-4">
-                                    <h6 class="mb-0">108 <span class="small text-muted">+37.7%</span></h6>
-                                    <p class="mb-0 text-muted">Cost</p>
-                                </div>
-                                <div class="col-md-6 pt-4">
-                                    <h6 class="mb-0">1168 <span class="small text-muted">-18.9%</span></h6>
-                                    <p class="mb-0 text-muted">Revenue</p>
-                                </div>
-                            </div> <!-- .row -->
                         </div> <!-- .card-body -->
                     </div> <!-- .card -->
                 </div>
@@ -130,8 +120,13 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Pending</span>
-                                <strong>{{orderStats.Pending}}</strong>
+                                <span>Pending Payment</span>
+                                <strong>{{orderStats.PendingPayment}}</strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Paid</span>
+                                <strong>{{orderStats.Paid}}</strong>
                             </div>
 
                             <div class="d-flex justify-content-between mb-2">
@@ -200,7 +195,7 @@
                                                  style="object-fit: cover; border-radius: 8px;">
                                         </td>
                                         <td>{{name}}</td>
-                                        <td>{{price}} VND</td>
+                                        <td>{{formatCurrency price}} VND</td>
                                         <td>{{sold}}</td>
                                     </tr>
                                 {{/each}}
@@ -241,7 +236,7 @@
                                                  style="object-fit: cover; border-radius: 8px;">
                                         </td>
                                         <td>{{name}}</td>
-                                        <td>{{price}} VND</td>
+                                        <td>{{formatCurrency price}} VND</td>
                                         <td class="text-center">
                                             {{#if (lte stock 2)}}
                                                 <span class="badge badge-danger">{{stock}}</span>
@@ -282,23 +277,28 @@
                                             {{user.lastName}}
                                         </td>
                                         <td>
-                                            {{totalPrice}} VND
+                                            {{formatCurrency totalPrice}} VND
                                         </td>
                                         <td>
                                             <span class="dot dot-lg mr-2
-                                                {{#if (eq status 'Pending')}}bg-warning{{/if}}
-                                                {{#if (eq status 'Confirmed')}}bg-info{{/if}}
+                                                {{#if (eq status 'PendingPayment')}}bg-warning{{/if}}
+                                                {{#if (eq status 'Paid')}}bg-info{{/if}}
+                                                {{#if (eq status 'Confirmed')}}bg-primary{{/if}}
                                                 {{#if (eq status 'Processing')}}bg-secondary{{/if}}
                                                 {{#if (eq status 'Shipping')}}bg-primary{{/if}}
                                                 {{#if (eq status 'Delivered')}}bg-success{{/if}}
-                                                {{#if (eq status 'Cancelled')}}bg-danger{{/if}}"></span>
-                                                                        <span class="font-weight-bold
-                                                {{#if (eq status 'Pending')}}text-warning{{/if}}
-                                                {{#if (eq status 'Confirmed')}}text-info{{/if}}
+                                                {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
+                                            </span>
+                                            <span class="font-weight-bold
+                                                {{#if (eq status 'PendingPayment')}}text-warning{{/if}}
+                                                {{#if (eq status 'Paid')}}text-info{{/if}}
+                                                {{#if (eq status 'Confirmed')}}text-primary{{/if}}
                                                 {{#if (eq status 'Processing')}}text-secondary{{/if}}
                                                 {{#if (eq status 'Shipping')}}text-primary{{/if}}
                                                 {{#if (eq status 'Delivered')}}text-success{{/if}}
-                                                {{#if (eq status 'Cancelled')}}text-danger{{/if}}">{{status}}</span>
+                                                {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
+                                                {{status}}
+                                            </span>
                                         </td>
                                     </tr>
                                 {{/each}}

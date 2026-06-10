@@ -25,7 +25,9 @@
                                         <div class="product__cart__item__text">
                                             <h6>{{name}}</h6>
                                             <p style="margin-bottom: 0; color: #b7b7b7; font-size: 14px;">Size: <span style="color: #111; font-weight: 600;">{{size}}</span></p>
-                                            <h5><span class="format-currency">{{price}}</span> VND</h5>
+                                            <h5>
+                                                {{formatCurrency price}} VND
+                                            </h5>
                                         </div>
                                     </td>
                                     <td class="quantity__item">
@@ -71,8 +73,7 @@
                             </li>
                             <li>
                                 Total Price:
-
-                                <span class="format-currency">{{totalPrice}} VND</span>
+                                <span>{{formatCurrency totalPrice}} VND</span>
                             </li>
                         </ul>
                         <a href="/checkout" class="primary-btn">

@@ -53,7 +53,7 @@
 
                                 <!-- PRICE -->
                                 <td class="cart__price">
-                                    {{product.price}} VND
+                                    {{formatCurrency product.price}} VND
                                 </td>
 
                                 <!-- STOCK -->
@@ -74,10 +74,10 @@
                                                name="qty"
                                                value="1">
 
-                                        <button type="submit"
-                                                class="primary-btn border-0">
-                                            Add to cart
-                                        </button>
+                                        <a href="/product-detail/{{product._id}}"
+                                           class="primary-btn">
+                                            View Product
+                                        </a>
 
                                     </form>
 

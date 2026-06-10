@@ -155,7 +155,7 @@ router.post('/cancel-order/:id', async function(req, res, next) {
   try {
     if (!req.isAuthenticated()) return res.redirect('/login');
     const order = await Order.findOne({ _id: req.params.id, user: req.user._id });
-    if (!order || order.status !== 'Pending') {
+    if (!order || order.status !== 'PendingPayment') {
       req.flash('error_message', 'Order not found or cannot be cancelled.');
       return res.redirect('/my-orders');
     }
@@ -170,7 +170,7 @@ router.post('/cancel-order/:id', async function(req, res, next) {
       );
     }
     req.flash('success_message', 'Order has been cancelled successfully.');
-    res.redirect('/payment/' + newOrder._id);
+    res.redirect('/payment/' + order._id);
   } catch (err) {
     next(err);
   }
@@ -315,5 +315,39 @@ router.get('/payment/:id', async function(req,res,next){
   }
 });
 
+router.post('/payment/success/:id', async function(req,res,next){
+    try{
+        const order =
+            await Order.findById(
+                req.params.id
+            );
+        if(!order){
+            return res.redirect('/');
+        }
+        if(order.status !== 'PendingPayment'){
+            req.flash(
+                'error_message',
+                'Order already processed'
+            );
+            return res.redirect(
+                '/my-orders/' + order._id
+            );
+        }
+        order.status = 'Paid';
+        await order.save();
+        console.log(
+            'PAYMENT SUCCESS:',
+            order._id,
+            order.status
+        );
+        req.flash(
+            'success_message',
+            'Payment completed successfully'
+        );
+        res.redirect('/my-orders/' + order._id);
+    }catch(err){
+        next(err);
+    }
+});
 
 module.exports = router;

@@ -28,23 +28,23 @@
                         <table>
                             <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Date</th>
+                                <th style="width:200px;">Order ID</th>
+                                <th style="width:220px;">Date</th>
                                 <th>Products</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th></th>
+                                <th style="width:200px;">Total</th>
+                                <th style="width:200px;">Status</th>
+                                <th style="width:120px;"></th>
                             </tr>
                             </thead>
                             <tbody>
                             {{#each orders}}
                                 <tr>
-                                    <td class="product__cart__item">
+                                    <td class="product__cart__item" style="width:200px;">
                                         <div class="product__cart__item__text">
                                             <h6>{{shortId _id}}</h6>
                                         </div>
                                     </td>
-                                    <td class="cart__price">
+                                    <td class="cart__price" style="width:220px;">
                                         {{formatDate createdAt}}
                                     </td>
                                     <td class="product__cart__item">
@@ -59,16 +59,18 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    <td class="cart__price">
-                                        <span class="format-currency">{{totalPrice}}</span> VND
+                                    <td class="cart__price" style="width:180px;">
+                                        <span>{{formatCurrency totalPrice}} VND</span>
                                     </td>
-                                    <td class="cart__price">
+                                    <td class="cart__price" style="width:180px;">
                                         <span class="badge badge-pill px-3 py-2
-                                            {{#if (eq status 'Pending')}}badge-warning text-dark{{/if}}
+                                            {{#if (eq status 'PendingPayment')}}badge-warning text-dark{{/if}}
+                                            {{#if (eq status 'Paid')}}badge-info{{/if}}
                                             {{#if (eq status 'Confirmed')}}badge-primary{{/if}}
+                                            {{#if (eq status 'Processing')}}badge-secondary{{/if}}
                                             {{#if (eq status 'Shipping')}}badge-info{{/if}}
                                             {{#if (eq status 'Delivered')}}badge-success{{/if}}
-                                            {{#if (eq status 'Cancelled')}}badge-danger{{/if}}">
+                                            {{#if (eq status 'Cancelled')}} badge-danger{{/if}}">
                                             {{status}}
                                         </span>
 

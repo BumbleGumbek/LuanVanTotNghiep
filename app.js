@@ -60,7 +60,14 @@ app.engine(
                 hour: '2-digit',
                 minute: '2-digit'
             });
-        }
+        },
+          formatCurrency: function(value) {
+
+              if (!value) return "0";
+
+              return Number(value)
+                  .toLocaleString('en-US');
+          }
       }
     })
 );

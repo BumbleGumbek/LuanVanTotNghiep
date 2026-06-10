@@ -288,12 +288,20 @@ router.post('/checkout', async function(req, res, next){
 
     try {
         // Đọc đúng các thuộc tính name từ file .hbs của gửi lên
-        const { firstName, lastName, phone, address, city, note } = req.body;
+        const { receiverName, receiverPhone, detailAddress, note } = req.body;
 
         // Validate thông tin giao hàng cơ bản dựa trên các trường bắt buộc (*) ngoài form
-        if (!firstName || !phone || !address || !city) {
-            req.flash('error_message', 'Please fill in all required shipping fields.');
-            return res.redirect('back');
+        if (
+            !receiverName ||
+            !receiverPhone ||
+            !detailAddress
+        ) {
+            req.flash(
+                'error_message',
+                'Please fill in all required shipping fields.'
+            );
+
+            return res.redirect('/checkout');
         }
 
         let checkoutItems = [];
@@ -348,14 +356,12 @@ router.post('/checkout', async function(req, res, next){
 
             return res.redirect('/shopping-cart');
         }
-
+        console.log(req.body);
         const newOrder = await createOrder({
             userId: req.user._id,
-            firstName,
-            lastName,
-            phone,
-            address,
-            city,
+            receiverName,
+            receiverPhone,
+            detailAddress,
             checkoutItems,
             totalPrice,
             note
@@ -369,7 +375,7 @@ router.post('/checkout', async function(req, res, next){
         }
 
         req.flash('success_message', 'Your order has been placed successfully!');
-        res.redirect('/my-orders/' + newOrder._id);
+        res.redirect('/payment/' + newOrder._id);
     } catch (error) {
         console.error("ERROR WHEN SAVING ORDERS TO MONGO:", error);
         next(error);

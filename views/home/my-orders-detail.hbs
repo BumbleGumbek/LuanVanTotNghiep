@@ -26,9 +26,14 @@
                         <tr>
                             <th>Jewelry</th>
                             <th>Size</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
+                            <th style="width:160px;text-align:center;">Price</th>
+                            <th style="width:100px;text-align:center;">
+                                Quantity
+                            </th>
+
+                            <th style="width:160px;text-align:right;">
+                                Total
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,15 +50,14 @@
                                 <td class="cart__price" style="width: 80px; text-align: center;">
                                     <span class="badge badge-light" style="font-size: 14px;">{{this.size}}</span>
                                 </td>
-                                <td class="cart__price" style="width: 130px;">
-                                    <span class="format-currency">{{this.price_at_purchase}}</span> VND
+                                <td class="cart__price" style="width: 160px;">
+                                    {{formatCurrency this.price_at_purchase}} VND
                                 </td>
-                                <td class="cart__price" style="text-align: center; width: 80px;">
+                                <td class="cart__price" style="text-align:center;width:100px;" >
                                     {{this.quantity}}
                                 </td>
-                                <td class="cart__price">
-                                    <!-- Tính subtotal trực tiếp từ giá lúc mua * số lượng -->
-                                    <span class="format-currency">{{this.subtotal}}</span> VND
+                                <td class="cart__price" style="text-align:right;width:160px;">
+                                    {{formatCurrency this.subtotal}} VND
                                 </td>
                             </tr>
                         {{/each}}
@@ -77,7 +81,8 @@
                     <ul>
                         <li>Status
                             <span class="badge
-                                {{#if (eq order.status 'Pending')}}badge-warning text-dark{{/if}}
+                                {{#if (eq order.status 'PendingPayment')}}badge-warning text-dark{{/if}}
+                                {{#if (eq order.status 'Paid')}}badge-info{{/if}}
                                 {{#if (eq order.status 'Confirmed')}}badge-primary{{/if}}
                                 {{#if (eq order.status 'Processing')}}badge-secondary{{/if}}
                                 {{#if (eq order.status 'Shipping')}}badge-info{{/if}}
@@ -87,20 +92,17 @@
                                 {{order.status}}
                             </span>
                         </li>
-                        <li>Payment Status <span style="color: #111;">{{#if order.paymentStatus}}{{order.paymentStatus}}{{else}}Unpaid{{/if}}</span></li>
-                        <li>Payment Method <span style="color: #111;">{{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}COD{{/if}}</span></li>
+                        <li>Payment Status <span style="color: #111;">{{#if (eq order.status 'PendingPayment')}}Unpaid{{else}}Paid{{/if}}</span></li>
+                        <li>Payment Method <span style="color: #111;">{{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}Bank Transfer{{/if}}</span></li>
                         <li style="border-top: 1px solid #f2f2f2; padding-top: 15px; margin-top: 15px;">
                             Total
                             <span style="color: #d10024; font-size: 20px;">
-                                <span class="format-currency">
-                                    {{order.totalPrice}}
-                                </span>
-                                VND
+                                {{formatCurrency order.totalPrice}} VND
                             </span>
                         </li>
                     </ul>
 
-                    {{#if (eq order.status 'Pending')}}
+                    {{#if (eq order.status 'PendingPayment')}}
                         <form action="/cancel-order/{{order._id}}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order? This action cannot be undone.');">
                             <button type="submit" class="site-btn" style="background:#dc3545; width: 100%; margin-top: 20px; border-radius: 2px;">
                                 Cancel Order
