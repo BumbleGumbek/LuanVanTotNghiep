@@ -49,9 +49,67 @@ router.get('/', async function(req, res, next) {
             revenueResult.length > 0
                 ? revenueResult[0].revenue
                 : 0;
+        const orderStatsResult =
+            await Order.aggregate([
+                {
+                    $group: {
+                        _id: '$status',
+                        count: { $sum: 1 }
+                    }
+                }
+            ]);
+        const orderStats = {
+            Pending: 0,
+            Confirmed: 0,
+            Processing: 0,
+            Shipping: 0,
+            Delivered: 0,
+            Cancelled: 0
+        };
+        orderStatsResult.forEach(item => {
+            orderStats[item._id] = item.count;
+        });
         const bestSellingProducts =
             await Product.find({})
                 .sort({ sold: -1 })
+                .limit(5);
+
+        const lowStockProductsRaw =
+            await Product.find({})
+                .limit(5);
+
+        const lowStockProducts =
+            (await Product.find({}))
+                .map(product => {
+
+                    const obj = product.toObject();
+
+                    obj.stock =
+                        obj.variants.reduce(
+                            (sum, variant) =>
+                                sum + variant.quantity,
+                            0
+                        );
+
+                    return obj;
+                })
+                .filter(product =>
+                    product.stock <= 5
+                )
+                .sort((a, b) =>
+                    a.stock - b.stock
+                )
+                .slice(0, 5);
+
+        const recentOrders =
+            await Order.find({})
+                .populate(
+                    'user',
+                    'firstName lastName'
+                )
+                .sort({
+                    createdAt: -1
+                })
                 .limit(5);
 
         res.render('admin/index', {
@@ -60,9 +118,15 @@ router.get('/', async function(req, res, next) {
             totalOrders,
             totalCustomers,
             totalRevenue,
+            orderStats,
             bestSellingProducts:
                 bestSellingProducts.map(
                     p => p.toObject()
+                ),
+            lowStockProducts,
+            recentOrders:
+                recentOrders.map(
+                    order => order.toObject()
                 )
         });
     } catch (err) {

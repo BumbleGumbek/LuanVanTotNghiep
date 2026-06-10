@@ -170,7 +170,7 @@ router.post('/cancel-order/:id', async function(req, res, next) {
       );
     }
     req.flash('success_message', 'Order has been cancelled successfully.');
-    res.redirect('/my-orders/' + req.params.id);
+    res.redirect('/payment/' + newOrder._id);
   } catch (err) {
     next(err);
   }
@@ -294,6 +294,25 @@ router.get('/wishlist/remove/:id', async function(req, res, next){
     await Wishlist.deleteOne({ _id: req.params.id });
     res.redirect('/wishlist');
   } catch (err) { next(err); }
+});
+
+router.get('/payment/:id', async function(req,res,next){
+  try {
+    const order = await Order.findById(
+            req.params.id
+        );
+    if(!order){
+      return res.redirect('/');
+    }
+    res.render(
+        'home/payment',
+        {
+          order: order.toObject()
+        }
+    );
+  } catch(err){
+    next(err);
+  }
 });
 
 

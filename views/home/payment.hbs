@@ -1,0 +1,24 @@
+<h2>Bank Transfer</h2>
+<p>
+    Order:
+    {{shortId order._id}}
+</p>
+<p>
+    Amount:
+    {{order.totalPrice}} VND
+</p>
+<p>
+    Transfer Content:
+    {{shortId order._id}}
+</p>
+<form action="/payment/success/{{order._id}}" method="POST">
+    <button type="submit">
+        I Have Paid
+    </button>
+</form>
+
+<form action="/cancel-order/{{order._id}}" method="POST">
+    <button type="submit">
+        Cancel Order
+    </button>
+</form>

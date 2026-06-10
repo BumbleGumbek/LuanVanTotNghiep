@@ -59,7 +59,7 @@
                 </div> <!-- .card -->
             </div>
             <div class="row items-align-baseline">
-                <div class="col-md-12 col-lg-6">
+                <div class="col-md-12 col-lg-5">
                     <div class="card shadow eq-card mb-4">
                         <div class="card-body mb-n3">
                             <div class="row items-align-baseline h-100">
@@ -93,7 +93,7 @@
                         </div> <!-- .card-body -->
                     </div> <!-- .card -->
                 </div> <!-- .col -->
-                <div class="col-md-12 col-lg-6">
+                <div class="col-md-12 col-lg-4">
                     <div class="card shadow eq-card mb-4">
                         <div class="card-body">
                             <div class="d-flex mt-3 mb-4">
@@ -121,36 +121,184 @@
                         </div> <!-- .card-body -->
                     </div> <!-- .card -->
                 </div>
+                <div class="col-md-12 col-lg-3">
+                    <div class="card shadow eq-card mb-4">
+                        <div class="card-header">
+                            <strong class="card-title">
+                                Order Statistics
+                            </strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Pending</span>
+                                <strong>{{orderStats.Pending}}</strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Confirmed</span>
+                                <strong>{{orderStats.Confirmed}}</strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Processing</span>
+                                <strong>{{orderStats.Processing}}</strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Shipping</span>
+                                <strong>{{orderStats.Shipping}}</strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Delivered</span>
+                                <strong class="text-success">
+                                    {{orderStats.Delivered}}
+                                </strong>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <span>Cancelled</span>
+                                <strong class="text-danger">
+                                    {{orderStats.Cancelled}}
+                                </strong>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card shadow">
+                    <div class="card shadow mt-4">
                         <div class="card-header">
                             <strong class="card-title">Top Selling Products</strong>
-                            <a class="float-right small text-muted" href="#!">View all</a>
+                            <a class="float-right small text-primary"
+                               href="/admin/product">
+                                View all
+                            </a>
                         </div>
                         <div class="card-body my-n2">
                             <table class="table table-striped table-hover table-borderless">
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Image</th>
                                     <th>Product Name</th>
                                     <th>Price</th>
                                     <th>Sold</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {{#each bestSellingProducts}}
                                     <tr>
                                         <td>{{add @index 1}}</td>
-                                        <td>{{name}}</td>
-                                        <td>{{price}}</td>
-                                        <td>{{sold}}</td>
                                         <td>
-                                            <a href="/admin/product/edit/{{_id}}">
-                                                View
-                                            </a>
+                                            <img src="{{image}}"
+                                                 alt="{{name}}"
+                                                 width="60"
+                                                 height="60"
+                                                 style="object-fit: cover; border-radius: 8px;">
+                                        </td>
+                                        <td>{{name}}</td>
+                                        <td>{{price}} VND</td>
+                                        <td>{{sold}}</td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card shadow mt-4">
+                        <div class="card-header">
+                            <strong>Low Stock Products</strong>
+                            <a class="float-right small text-primary"
+                               href="/admin/product">
+                                View all
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <table class="table table-striped table-hover table-borderless">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Product Name</th>
+                                    <th >Price</th>
+                                    <th class="text-center">Remaining Stock</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {{#each lowStockProducts}}
+                                    <tr>
+                                        <td>{{add @index 1}}</td>
+                                        <td>
+                                            <img src="{{image}}"
+                                                 alt="{{name}}"
+                                                 width="60"
+                                                 height="60"
+                                                 style="object-fit: cover; border-radius: 8px;">
+                                        </td>
+                                        <td>{{name}}</td>
+                                        <td>{{price}} VND</td>
+                                        <td class="text-center">
+                                            {{#if (lte stock 2)}}
+                                                <span class="badge badge-danger">{{stock}}</span>
+                                            {{else}}
+                                                <span class="badge badge-warning">{{stock}}</span>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card shadow mt-4">
+                        <div class="card-header">
+                            <strong>
+                                Recent Orders
+                            </strong>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#each recentOrders}}
+                                    <tr>
+                                        <td>
+                                            {{shortId _id}}
+                                        </td>
+                                        <td>
+                                            {{user.firstName}}
+                                            {{user.lastName}}
+                                        </td>
+                                        <td>
+                                            {{totalPrice}} VND
+                                        </td>
+                                        <td>
+                                            <span class="dot dot-lg mr-2
+                                                {{#if (eq status 'Pending')}}bg-warning{{/if}}
+                                                {{#if (eq status 'Confirmed')}}bg-info{{/if}}
+                                                {{#if (eq status 'Processing')}}bg-secondary{{/if}}
+                                                {{#if (eq status 'Shipping')}}bg-primary{{/if}}
+                                                {{#if (eq status 'Delivered')}}bg-success{{/if}}
+                                                {{#if (eq status 'Cancelled')}}bg-danger{{/if}}"></span>
+                                                                        <span class="font-weight-bold
+                                                {{#if (eq status 'Pending')}}text-warning{{/if}}
+                                                {{#if (eq status 'Confirmed')}}text-info{{/if}}
+                                                {{#if (eq status 'Processing')}}text-secondary{{/if}}
+                                                {{#if (eq status 'Shipping')}}text-primary{{/if}}
+                                                {{#if (eq status 'Delivered')}}text-success{{/if}}
+                                                {{#if (eq status 'Cancelled')}}text-danger{{/if}}">{{status}}</span>
                                         </td>
                                     </tr>
                                 {{/each}}

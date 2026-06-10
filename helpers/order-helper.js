@@ -1,12 +1,8 @@
 const Order = require("../models/Order");
 
 async function createOrder({
-                               userId,
-                               firstName,
-                               lastName,
-                               phone,
-                               address,
-                               city,
+                               userId, firstName, lastName,
+                               phone, address, city,
                                checkoutItems,
                                totalPrice,
                                note
@@ -14,13 +10,11 @@ async function createOrder({
 
     const order = new Order({
         user: userId,
-
         shippingAddress: {
             receiverName: `${firstName} ${lastName || ''}`.trim(),
             receiverPhone: phone,
             detailAddress: `${address}, ${city}`
         },
-
         items: checkoutItems.map(item => ({
             product_id: item.product_id,
             name: item.name,
@@ -29,19 +23,18 @@ async function createOrder({
             price_at_purchase: item.price,
             quantity: item.quantity
         })),
-
         totalPrice,
-
         note: note || '',
-
-        status: 'Pending'
+        status: 'PendingPayment',
+        expiredAt:
+            new Date(
+                Date.now() +
+                30 * 60 * 1000
+            )
     });
-
     await order.save();
-
     return order;
 }
-
 module.exports = {
     createOrder
 };

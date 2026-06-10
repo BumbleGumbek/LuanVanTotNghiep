@@ -69,17 +69,20 @@ const OrderSchema = new Schema({
          */
         status: {
             type: String,
-
-            // Chỉ được phép nằm trong danh sách này
             enum: [
-                'Pending',
+                'PendingPayment',
+                'Paid',
                 'Confirmed',
                 'Processing',
                 'Shipping',
-                'Cancelled',
-                'Delivered'
+                'Delivered',
+                'Cancelled'
             ],
-            default: 'Pending'
+            default: 'PendingPayment'
+        },
+        expiredAt: {
+            type: Date,
+            default: null
         },
         trackingCode: {
             type: String,
