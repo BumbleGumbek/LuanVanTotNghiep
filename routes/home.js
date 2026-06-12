@@ -5,6 +5,7 @@ const Category = require("../models/Category");
 const Wishlist = require('../models/Wishlist');
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
+const payos = require('../config/payos');
 
 router.use((req, res, next) => {
   res.app.locals.layout = 'home';
@@ -296,6 +297,78 @@ router.get('/wishlist/remove/:id', async function(req, res, next){
   } catch (err) { next(err); }
 });
 
+router.get('/payment/success', async function(req,res){
+  try{
+    console.log(req.query);
+
+    const {
+      orderCode,
+      status
+    } = req.query;
+
+    if(status !== 'PAID'){
+      req.flash(
+          'error_message',
+          'Payment failed'
+      );
+
+      return res.redirect(
+          '/my-orders'
+      );
+    }
+
+    const order =
+        await Order.findOne({
+          payosOrderCode:
+              Number(orderCode)
+        });
+
+    if(!order){
+
+      req.flash(
+          'error_message',
+          'Order not found'
+      );
+
+      return res.redirect(
+          '/my-orders'
+      );
+    }
+
+    order.status = 'Paid';
+    order.paymentStatus = 'Paid';
+    order.paidAt = new Date();
+
+    await order.save();
+
+    req.flash(
+        'success_message',
+        'Payment successful'
+    );
+    return res.redirect(
+        '/my-orders/' + order._id
+    );
+
+  }catch(err){
+    console.error(err);
+    return res.redirect(
+        '/my-orders'
+    );
+  }
+
+});
+
+router.get('/payment/cancel', function(req,res){
+
+  req.flash(
+      'error_message',
+      'Payment cancelled'
+  );
+
+  res.redirect('/my-orders');
+
+});
+
 router.get('/payment/:id', async function(req,res,next){
   try {
     const order = await Order.findById(
@@ -315,39 +388,49 @@ router.get('/payment/:id', async function(req,res,next){
   }
 });
 
-router.post('/payment/success/:id', async function(req,res,next){
-    try{
-        const order =
-            await Order.findById(
-                req.params.id
-            );
-        if(!order){
-            return res.redirect('/');
-        }
-        if(order.status !== 'PendingPayment'){
-            req.flash(
-                'error_message',
-                'Order already processed'
-            );
-            return res.redirect(
-                '/my-orders/' + order._id
-            );
-        }
-        order.status = 'Paid';
-        await order.save();
-        console.log(
-            'PAYMENT SUCCESS:',
-            order._id,
-            order.status
-        );
-        req.flash(
-            'success_message',
-            'Payment completed successfully'
-        );
-        res.redirect('/my-orders/' + order._id);
-    }catch(err){
-        next(err);
+router.post('/payment/create/:id', async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.redirect('/');
     }
+    const orderCode = Number(String(Date.now()).slice(-9));
+    const domain =
+        `${req.protocol}://${req.get('host')}`;
+    const paymentData = {
+      orderCode,
+      amount: order.totalPrice,
+      description:
+          `Order ${orderCode}`,
+      items: order.items.map(item => ({
+        name: item.name.substring(0, 25),
+        quantity: item.quantity,
+        price: item.price_at_purchase
+      })),
+      returnUrl:
+          `${domain}/payment/success`,
+      cancelUrl:
+          `${domain}/payment/cancel`
+    };
+    const result =
+        await payos.paymentRequests.create(
+            paymentData
+        );
+    order.payosOrderCode = orderCode;
+    await order.save();
+    res.redirect(
+        result.checkoutUrl
+    );
+  } catch (err) {
+
+    console.error(
+        'PAYOS ERROR:',
+        err
+    );
+    next(err);
+  }
 });
+
+
 
 module.exports = router;

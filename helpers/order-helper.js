@@ -32,7 +32,10 @@ async function createOrder({
 
         note: note || '',
 
-        status: 'PendingPayment'
+        status: 'PendingPayment',
+
+        paymentMethod: 'PayOS',
+        paymentStatus: 'Pending'
     });
 
     await order.save();

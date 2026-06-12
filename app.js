@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 
 var express = require('express');
@@ -8,6 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const passport = require('passport');
 const methodOverride = require('method-override');
+const testPayosRouter = require('./routes/test-payos');
 // const MongoStore = require('connect-mongo');
 
 
@@ -90,9 +92,12 @@ app.use(session({
     }
 }));
 
+app.use('/', testPayosRouter);
+
 app.use(flash());
 //PASSPORT
 require('./config/passport')();
+
 app.use(passport.initialize());
 app.use(passport.session());
 

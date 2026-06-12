@@ -80,6 +80,31 @@ const OrderSchema = new Schema({
             ],
             default: 'PendingPayment'
         },
+        paymentMethod: {
+            type: String,
+            default: 'PayOS'
+        },
+
+        paymentStatus: {
+            type: String,
+            enum: ['Pending', 'Paid', 'Failed'],
+            default: 'Pending'
+        },
+
+        payosOrderCode: {
+            type: Number,
+            default: null
+        },
+
+        transactionId: {
+            type: String,
+            default: ''
+        },
+
+        paidAt: {
+            type: Date,
+            default: null
+        },
         expiredAt: {
             type: Date,
             default: null
