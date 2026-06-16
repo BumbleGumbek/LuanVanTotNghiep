@@ -5,6 +5,7 @@ const Category = require("../models/Category");
 const Wishlist = require('../models/Wishlist');
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
+const User = require('../models/User');
 const payos = require('../config/payos');
 
 router.use((req, res, next) => {
@@ -431,6 +432,70 @@ router.post('/payment/create/:id', async (req, res, next) => {
   }
 });
 
+router.get('/profile', async function(req, res, next) {
 
+  try {
+
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+    }
+
+    res.render(
+        'home/profile',
+        {
+          userProfile: req.user.toObject(),
+          activePage: 'profile'
+        }
+    );
+
+  } catch (err) {
+    next(err);
+  }
+
+});
+
+router.get('/profile/edit', async function(req,res){
+
+  if(!req.isAuthenticated()){
+    return res.redirect('/login');
+  }
+  res.render(
+      'home/edit-profile',
+      {
+        userProfile: req.user.toObject()
+      }
+  );
+});
+
+router.post('/profile/edit', async function(req,res,next){
+
+  try{
+
+    if(!req.isAuthenticated()){
+      return res.redirect('/login');
+    }
+
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          phone: req.body.phone,
+          address: req.body.address
+        }
+    );
+
+    req.flash(
+        'success_message',
+        'Profile updated successfully.'
+    );
+
+    return res.redirect('/profile');
+
+  }catch(err){
+    next(err);
+  }
+});
 
 module.exports = router;

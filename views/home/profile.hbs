@@ -1,0 +1,44 @@
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="breadcrumb__text text-center mb-4">
+                <h2>My Profile</h2>
+            </div>
+
+            <div class="card-body">
+                <p>
+                    <strong>First Name:</strong>
+                    {{userProfile.firstName}}
+                </p>
+
+                <p>
+                    <strong>Last Name:</strong>
+                    {{userProfile.lastName}}
+                </p>
+
+                <p>
+                    <strong>Phone Number:</strong>
+                    {{userProfile.phone}}
+                </p>
+
+                <p>
+                    <strong>Address:</strong>
+                    {{userProfile.address}}
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    {{userProfile.email}}
+                </p>
+
+                <div class="text-center mt-4">
+                    <a href="/profile/edit" class="site-btn">
+                        Edit Profile
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

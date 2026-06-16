@@ -427,6 +427,9 @@ ol {
   padding: 2px 15px;
   cursor: pointer;
 }
+.header__top__left ul li ul li a {
+  color: #ffffff;
+}
 .header__top__left ul li ul li:after {
   display: none;
 }

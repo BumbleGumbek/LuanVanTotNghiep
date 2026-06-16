@@ -21,6 +21,14 @@ const UserSchema = new Schema({
             lowercase: true,
             minlength: 5
         },
+        phone: {
+            type: String,
+            default: ''
+        },
+        address: {
+            type: String,
+            default: ''
+        },
         password: {
             type: String,
             required: true,
@@ -35,6 +43,7 @@ const UserSchema = new Schema({
             enum: ['customer', 'admin'],
             default: 'customer'
         }
+
     },
     {
         timestamps: true

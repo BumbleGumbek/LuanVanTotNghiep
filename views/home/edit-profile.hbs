@@ -1,0 +1,64 @@
+<section class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__text">
+                    <h2>Edit Profile</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="/profile/edit" method="POST">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="firstName"
+                                value="{{userProfile.firstName}}"
+                                required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="lastName"
+                                value="{{userProfile.lastName}}"
+                                required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="phone"
+                                value="{{userProfile.phone}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+
+                        <textarea
+                                class="form-control"
+                                name="address"
+                                rows="3">{{userProfile.address}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                value="{{userProfile.email}}"
+                                required>
+                    </div>
+                    <button
+                            type="submit"
+                            class="site-btn">
+                        Update Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
