@@ -8,7 +8,6 @@ router.all('/*', function (req, res, next) {
     next();
 });
 
-/* [GET] /admin/user - Danh sách tài khoản người dùng */
 router.get('/', async function (req, res, next) {
     try {
         const users =

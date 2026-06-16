@@ -287,10 +287,7 @@ router.post('/checkout', async function(req, res, next){
     if (!req.isAuthenticated()) return res.status(401).redirect('/login');
 
     try {
-        // Đọc đúng các thuộc tính name từ file .hbs của gửi lên
         const { receiverName, receiverPhone, detailAddress, note } = req.body;
-
-        // Validate thông tin giao hàng cơ bản dựa trên các trường bắt buộc (*) ngoài form
         if (
             !receiverName ||
             !receiverPhone ||
@@ -300,10 +297,8 @@ router.post('/checkout', async function(req, res, next){
                 'error_message',
                 'Please fill in all required shipping fields.'
             );
-
             return res.redirect('/checkout');
         }
-
         let checkoutItems = [];
         let totalPrice = 0;
         let isBuyNow = false;
