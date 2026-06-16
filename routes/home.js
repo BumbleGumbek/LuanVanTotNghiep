@@ -48,23 +48,21 @@ router.get('/logout', (req, res) => {
   });
 });
 
-/* Chi tiết sản phẩm */
-/* Chi tiết sản phẩm - BẢN SỬA LỖI */
+
 router.get('/product-detail/:id', async function (req, res, next) {
   try {
     const product = await Product.findOne({_id: req.params.id}).populate('category');
     if (!product) return res.status(404).send('Product not found');
 
-    // --- SỬA ĐOẠN NÀY ---
     let relatedProductsRaw = [];
     if (product.category && product.category._id) {
       relatedProductsRaw = await Product.find({
         _id: {$ne: product._id},
-        category: product.category._id, // Chỉ truy vấn liên quan nếu có category
+        category: product.category._id,
         'variants.quantity': { $gt: 0 }
       }).populate('category').limit(4);
     }
-    // --------------------
+
 
     let wishlistProductIds = [];
     if (req.user) {
@@ -104,7 +102,6 @@ router.get('/contact', function(req, res, next) {
   res.render('home/contact', { title: 'Contact', activePage: 'contact' });
 });
 
-/* 2. Danh sách đơn hàng & Chi tiết đơn hàng */
 router.get('/my-orders', async (req, res, next) => {
   if(!req.isAuthenticated()){
     req.flash('error_message', 'Please login to view your orders');
@@ -162,9 +159,9 @@ router.post('/cancel-order/:id', async function(req, res, next) {
       return res.redirect('/my-orders');
     }
     order.status = 'Cancelled';
+    order.paymentStatus = 'Failed';
     await order.save();
 
-    // Hoàn kho theo mảng variants
     for (let item of order.items) {
       await Product.findOneAndUpdate(
           { _id: item.product_id, "variants.size": item.size },
@@ -172,7 +169,7 @@ router.post('/cancel-order/:id', async function(req, res, next) {
       );
     }
     req.flash('success_message', 'Order has been cancelled successfully.');
-    res.redirect('/payment/' + order._id);
+    res.redirect('/my-orders/' + order._id);
   } catch (err) {
     next(err);
   }
@@ -298,19 +295,22 @@ router.get('/wishlist/remove/:id', async function(req, res, next){
   } catch (err) { next(err); }
 });
 
-router.get('/payment/success', async function(req,res){
-  try{
-    console.log(req.query);
+router.get('/payment/success', async function(req, res) {
+  try {
 
     const {
       orderCode,
       status
     } = req.query;
 
-    if(status !== 'PAID'){
+    if (
+        status !== 'PAID' ||
+        !orderCode
+    ) {
+
       req.flash(
           'error_message',
-          'Payment failed'
+          'Payment failed.'
       );
 
       return res.redirect(
@@ -324,15 +324,33 @@ router.get('/payment/success', async function(req,res){
               Number(orderCode)
         });
 
-    if(!order){
+    if (!order) {
 
       req.flash(
           'error_message',
-          'Order not found'
+          'Order not found.'
       );
 
       return res.redirect(
           '/my-orders'
+      );
+    }
+
+    if (
+        order.status !== 'PendingPayment' ||
+        order.paymentStatus !== 'Pending'
+    ) {
+      return res.redirect(
+          '/my-orders'
+      );
+    }
+    if (
+        order.paymentStatus === 'Paid'
+    ) {
+
+      return res.redirect(
+          '/my-orders/' +
+          order._id
       );
     }
 
@@ -344,44 +362,189 @@ router.get('/payment/success', async function(req,res){
 
     req.flash(
         'success_message',
-        'Payment successful'
-    );
-    return res.redirect(
-        '/my-orders/' + order._id
+        'Payment successful.'
     );
 
-  }catch(err){
-    console.error(err);
+    return res.redirect(
+        '/my-orders/' +
+        order._id
+    );
+
+  } catch (err) {
+
+    console.error(
+        'PAYMENT SUCCESS ERROR:',
+        err
+    );
+
     return res.redirect(
         '/my-orders'
     );
   }
-
 });
 
-router.get('/payment/cancel', function(req,res){
+router.get('/payment/cancel', async function(req, res) {
+  try {
+    const { orderCode } = req.query;
+    if (!orderCode) {
+      req.flash(
+          'error_message',
+          'Payment cancelled.'
+      );
+      return res.redirect('/my-orders');
+    }
+    const order = await Order.findOne({
+      payosOrderCode: Number(orderCode)
+    });
+    if (!order) {
+      req.flash(
+          'error_message',
+          'Order not found.'
+      );
+      return res.redirect('/my-orders');
+    }
+    // tránh hoàn kho nhiều lần
+    if (order.status === 'Cancelled') {
 
-  req.flash(
-      'error_message',
-      'Payment cancelled'
-  );
+      req.flash(
+          'error_message',
+          'Order already cancelled.'
+      );
+      return res.redirect('/my-orders');
+    }
+    // chỉ xử lý PendingPayment
+    if (order.status === 'PendingPayment') {
+      order.status = 'Cancelled';
+      order.paymentStatus = 'Failed';
 
-  res.redirect('/my-orders');
+      await order.save();
+      // hoàn kho
+      for (const item of order.items) {
 
+        await Product.findOneAndUpdate(
+            {
+              _id: item.product_id,
+              "variants.size": item.size
+            },
+            {
+              $inc: {
+                "variants.$.quantity": item.quantity,
+                sold: -item.quantity
+              }
+            }
+        );
+      }
+    }
+    req.flash(
+        'error_message',
+        'Payment cancelled.'
+    );
+    return res.redirect('/my-orders');
+  } catch (err) {
+    console.error(
+        'PAYMENT CANCEL ERROR:',
+        err
+    );
+    return res.redirect('/my-orders');
+  }
+});
+
+router.post('/payment/webhook', async (req, res) => {
+  try {
+    const webhookData =
+        await payOS.webhooks.verify(req.body);
+    console.log(
+        'VERIFIED WEBHOOK:',
+        webhookData
+    );
+    return res.status(200).json({
+      message: 'received'
+    });
+  } catch (err) {
+
+    console.error(
+        'WEBHOOK VERIFY ERROR:',
+        err
+    );
+    return res.status(400).json({
+      message: 'invalid webhook'
+    });
+
+  }
 });
 
 router.get('/payment/:id', async function(req,res,next){
   try {
-    const order = await Order.findById(
-            req.params.id
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+    }
+
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    });
+    if (!order) {
+
+      req.flash(
+          'error_message',
+          'Order not found.'
+      );
+
+      return res.redirect(
+          '/my-orders'
+      );
+    }
+    if (
+        order.status === 'PendingPayment' &&
+        order.expiredAt &&
+        order.expiredAt < new Date()
+    ) {
+
+      order.status = 'Cancelled';
+      order.paymentStatus = 'Failed';
+
+      await order.save();
+
+      // hoàn kho
+      for (const item of order.items) {
+        await Product.findOneAndUpdate(
+            {
+              _id: item.product_id,
+              "variants.size": item.size
+            },
+            {
+              $inc: {
+                "variants.$.quantity": item.quantity,
+                sold: -item.quantity
+              }
+            }
         );
-    if(!order){
-      return res.redirect('/');
+      }
+
+      req.flash(
+          'error_message',
+          'This order has expired.'
+      );
+
+      return res.redirect('/my-orders');
+    }
+    if (
+        order.status !== 'PendingPayment' ||
+        order.paymentStatus !== 'Pending'
+    ) {
+      req.flash(
+          'error_message',
+          'This order cannot be paid.'
+      );
+
+      return res.redirect('/my-orders');
     }
     res.render(
         'home/payment',
         {
-          order: order.toObject()
+          order: order.toObject(),
+          canPay:
+              order.status === 'PendingPayment' && order.paymentStatus === 'Pending'
         }
     );
   } catch(err){
@@ -391,11 +554,36 @@ router.get('/payment/:id', async function(req,res,next){
 
 router.post('/payment/create/:id', async (req, res, next) => {
   try {
-    const order = await Order.findById(req.params.id);
-    if (!order) {
-      return res.redirect('/');
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
     }
-    const orderCode = Number(String(Date.now()).slice(-9));
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    });
+    if (!order) {
+      req.flash(
+          'error_message',
+          'Can find your order.'
+      );
+      return res.redirect('/my-orders');
+    }
+    if (
+        order.status !== 'PendingPayment' ||
+        order.paymentStatus !== 'Pending'
+    ) {
+      req.flash(
+          'error_message',
+          'This order cannot be paid for..'
+      );
+
+      return res.redirect('/my-orders');
+    }
+    const orderCode = Number(
+        `${Date.now()}${Math.floor(
+            Math.random() * 1000
+        )}`.slice(-12)
+    );
     const domain =
         `${req.protocol}://${req.get('host')}`;
     const paymentData = {

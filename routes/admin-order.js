@@ -80,6 +80,16 @@ router.post('/update-status/:id', async function (req, res, next) {
             );
         }
         order.status = newStatus;
+        if (newStatus === 'Paid') {
+            order.paymentStatus = 'Paid';
+            if (!order.paidAt) {
+                order.paidAt = new Date();
+            }
+        }
+
+        if (newStatus === 'Cancelled') {
+            order.paymentStatus = 'Failed';
+        }
         await order.save();
         req.flash(
             'success_message',
