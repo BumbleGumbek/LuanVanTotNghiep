@@ -183,10 +183,9 @@ router.get('/jewelry', async function(req, res, next) {
     let filter = { 'variants.quantity': { $gt: 0 } };
     if (categorySlug) {
       const category = await Category.findOne({
-        $or: [
-          { title: { $regex: new RegExp(categorySlug, "i") } },
-          { slug: { $regex: new RegExp(categorySlug, "i") } }
-        ]
+        name: {
+          $regex: new RegExp(categorySlug, "i")
+        }
       });
       if (category) filter.category = category._id;
     }
