@@ -1,13 +1,12 @@
 var express = require('express');
 var router = express.Router();
 const Order = require('../models/Order');
-
+const Product = require('../models/Product');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
     next();
 });
-
 
 router.get('/', async function (req, res, next) {
     try {
@@ -43,24 +42,11 @@ router.post('/update-status/:id', async function (req, res, next) {
         }
         const newStatus = req.body.status;
         const statusFlow = {
-            PendingPayment: [
-                'Paid',
-                'Cancelled'
-            ],
-            Paid: [
-                'Confirmed',
-                'Cancelled'
-            ],
-            Confirmed: [
-                'Processing'
-            ],
-            Processing: [
-                'Shipping'
-            ],
-
-            Shipping: [
-                'Delivered'
-            ],
+            PendingPayment: ['Paid', 'Cancelled'],
+            Paid: ['Confirmed'],
+            Confirmed: ['Processing'],
+            Processing: ['Shipping'],
+            Shipping: ['Delivered'],
             Delivered: [],
             Cancelled: []
         };
@@ -86,9 +72,22 @@ router.post('/update-status/:id', async function (req, res, next) {
                 order.paidAt = new Date();
             }
         }
-
         if (newStatus === 'Cancelled') {
             order.paymentStatus = 'Failed';
+            for (const item of order.items) {
+                await Product.findOneAndUpdate(
+                    {
+                        _id: item.product_id,
+                        "variants.size": item.size
+                    },
+                    {
+                        $inc: {
+                            "variants.$.quantity": item.quantity,
+                            sold: -item.quantity
+                        }
+                    }
+                );
+            }
         }
         await order.save();
         req.flash(

@@ -49,12 +49,6 @@
       <table class="table border table-hover bg-white">
         <thead>
           <tr role="row">
-            <th>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="all">
-                <label class="custom-control-label" for="all"></label>
-              </div>
-            </th>
             <th>ID</th>
             <th>Purchase Date</th>
             <th>Customer</th>
@@ -68,12 +62,6 @@
         <tbody>
           {{#each orders}}
           <tr>
-            <td class="align-center">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="{{_id}}">
-                <label class="custom-control-label" for="{{_id}}"></label>
-              </div>
-            </td>
             <td>{{shortId _id}}</td>
             <td>{{createdAt}}</td>
             <td>
@@ -112,6 +100,9 @@
               </td>
             <td>
               <div class="d-flex align-items-center">
+                  <a href="/admin/orders/invoice/{{_id}}" class="btn btn-sm btn-outline-primary ml-2">
+                      <i class="fe fe-file-text"></i>
+                  </a>
                 {{#if (ne status 'Delivered')}}
                 {{#if (ne status 'Cancelled')}}
                 <div class="dropdown">
@@ -132,9 +123,6 @@
                             {{#if (eq status 'Paid')}}
                                 <button class="dropdown-item text-primary" type="submit" name="status" value="Confirmed">
                                     Set Confirmed
-                                </button>
-                                <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">
-                                    Set Cancelled
                                 </button>
                             {{/if}}
 
@@ -160,9 +148,7 @@
                 </div>
                 {{/if}}
                 {{/if}}
-                <a href="/admin/orders/invoice/{{_id}}" class="btn btn-sm btn-outline-primary ml-2">
-                    <i class="fe fe-file-text"></i>
-                </a>
+
               </div>
             </td>
           </tr>
