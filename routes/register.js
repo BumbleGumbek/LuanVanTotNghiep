@@ -27,7 +27,6 @@ router.get('/', async function(req, res, next) {
     }
 });
 
-/* POST Xử lý Đăng ký tài khoản thành viên */
 router.post('/', async function (req, res, next) {
     try {
         let errors = [];
@@ -40,19 +39,38 @@ router.post('/', async function (req, res, next) {
         if (!req.body.email) {
             errors.push({ message: 'E-mail is required' });
         }
-
-        if (errors.length > 0) {
-            return res.render('home/register', {
-                title: 'Register',
-                errors: errors,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: req.body.password
+        if (!req.body.phone) {
+            errors.push({
+                message: 'Phone number is required'
             });
         }
+        if (req.body.password !== req.body.confirmPassword) {
+            errors.push({
+                message: 'Passwords do not match'
+            });
+        }
+        if (!req.body.address) {
+            errors.push({
+                message: 'Address is required'
+            });
+        }
+        if (errors.length > 0) {
 
-        // Kiểm tra Email xem trùng lặp hay không bằng await
+            return res.render(
+                'register/index',
+                {
+                    title: 'Register',
+                    errors,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    address: req.body.address,
+                    password: req.body.password
+                }
+            );
+        }
+
         const user = await User.findOne({ email: req.body.email });
 
         if (!user) {
@@ -61,9 +79,10 @@ router.post('/', async function (req, res, next) {
                 password: req.body.password,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
+                phone: req.body.phone,
+                address: req.body.address,
             });
 
-            // Tiến hành băm mật khẩu bảo mật
             const salt = await bcryptjs.genSalt(10);
             const hash = await bcryptjs.hash(newUser.password, salt);
 
@@ -77,7 +96,7 @@ router.post('/', async function (req, res, next) {
             return res.redirect('/login');
         }
     } catch (err) {
-        console.error("Lỗi trong quá trình đăng ký thành viên:", err);
+        console.error("Error during member registration:", err);
         next(err);
     }
 });
