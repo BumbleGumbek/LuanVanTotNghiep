@@ -17,6 +17,15 @@ module.exports = function () {
                             null, false, { message: 'users not found' }
                         );
                     }
+                    if (!user.status) {
+                        return done(
+                            null,
+                            false,
+                            {
+                                message: 'Account has been disabled'
+                            }
+                        );
+                    }
                     bcryptjs.compare(
                         password, user.password, (err, matched) => {
                             if (err) {
