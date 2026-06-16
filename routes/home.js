@@ -6,6 +6,7 @@ const Wishlist = require('../models/Wishlist');
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const User = require('../models/User');
+const bcryptjs = require('bcryptjs');
 const payos = require('../config/payos');
 
 router.use((req, res, next) => {
@@ -685,5 +686,73 @@ router.post('/profile/edit', async function(req,res,next){
     next(err);
   }
 });
+router.get('/change-password', function(req, res) {
+
+  if (!req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+
+  res.render(
+      'home/change-password'
+  );
+});
+
+router.post('/change-password', async function(req, res, next) {
+      try {
+        if (!req.isAuthenticated()) {
+          return res.redirect('/login');
+        }
+        const {
+          currentPassword,
+          newPassword,
+          confirmPassword
+        } = req.body;
+        const user = await User.findById(
+                req.user._id
+            );
+        const matched = await bcryptjs.compare(
+                currentPassword,
+                user.password
+            );
+        if (!matched) {
+          req.flash(
+              'error_message',
+              'Current password is incorrect.'
+          );
+
+          return res.redirect('/change-password'
+          );
+        }
+        if (
+            newPassword !== confirmPassword
+        ) {
+          req.flash(
+              'error_message',
+              'Passwords do not match.'
+          );
+          return res.redirect(
+              '/change-password'
+          );
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const hash = await bcryptjs.hash(
+                newPassword,
+                salt
+            );
+        user.password = hash;
+        await user.save();
+        req.flash(
+            'success_message',
+            'Password changed successfully.'
+        );
+        return res.redirect(
+            '/profile'
+        );
+      } catch(err) {
+        next(err);
+      }
+    }
+);
 
 module.exports = router;

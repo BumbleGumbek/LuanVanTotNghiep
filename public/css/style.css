@@ -429,6 +429,7 @@ ol {
 }
 .header__top__left ul li ul li a {
   color: #ffffff;
+  white-space: nowrap;
 }
 .header__top__left ul li ul li:after {
   display: none;
