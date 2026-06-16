@@ -29,17 +29,19 @@ async function createOrder({
         })),
 
         totalPrice,
-
         note: note || '',
-
         status: 'PendingPayment',
 
         paymentMethod: 'PayOS',
-        paymentStatus: 'Pending'
+        paymentStatus: 'Pending',
+        expiredAt:
+            new Date(
+                Date.now() +
+                30 * 60 * 1000
+            )
     });
 
     await order.save();
-
     return order;
 }
 module.exports = { createOrder };

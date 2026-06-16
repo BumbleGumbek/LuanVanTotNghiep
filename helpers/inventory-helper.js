@@ -27,8 +27,14 @@ async function deductInventory(checkoutItems) {
             await Product.findOneAndUpdate(
                 {
                     _id: item.product_id,
-                    "variants.size": item.size,
-                    "variants.quantity": { $gte: item.quantity }
+                    variants: {
+                        $elemMatch: {
+                            size: item.size,
+                            quantity: {
+                                $gte: item.quantity
+                            }
+                        }
+                    }
                 },
                 {
                     $inc: {
