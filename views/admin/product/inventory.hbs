@@ -15,7 +15,6 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>ID</th>
                 <th>Image</th>
                 <th>Product Name</th>
                 <th>Category</th>
@@ -30,7 +29,6 @@
             {{#each plainProduct}}
                 <tr>
                     <td>{{add @index 1}}</td>
-                    <td>{{_id}}</td>
                     <td>
                         <img src="{{image}}" alt="{{name}}" width="70" height="70" style="object-fit: cover; border-radius: 10px;">
                     </td>

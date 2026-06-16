@@ -1,7 +1,10 @@
+
 <div class="card shadow">
     <div class="card-body">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center mb-3">
+
+            <!-- Left -->
             <div>
                 <h5 class="card-title mb-1">
                     Products Table
@@ -10,10 +13,28 @@
                 <p class="card-text mb-0">
                     Manage all jewelry products here.
                 </p>
+
                 <p class="card-text mt-2 font-weight-bold">
                     Total number of products: {{plainProduct.length}}
                 </p>
             </div>
+
+            <!-- Center -->
+            <div class="flex-grow-1 d-flex justify-content-center">
+                <form class="form-inline searchform text-muted">
+                    <input
+                            class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted"
+                            type="search"
+                            name="keyword"
+                            value="{{keyword}}"
+                            placeholder="Search products..."
+                            aria-label="Search"
+                            style="width: 300px;"
+                    >
+                </form>
+            </div>
+
+            <!-- Right -->
             <div class="d-flex align-items-center">
                 <form action="/admin/product" method="GET" class="mr-3 d-flex align-items-center">
                     <select name="category" class="form-control mr-2" onchange="this.form.submit()">
@@ -33,7 +54,7 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>ID</th>
+
                 <th>Image</th>
                 <th>Product Name</th>
                 <th>Category</th>
@@ -50,7 +71,7 @@
             {{#each plainProduct}}
                 <tr>
                     <td>{{add @index 1}}</td>
-                    <td>{{_id}}</td>
+
                     <td>
                         <img src="{{image}}" alt="{{name}}" width="70" height="70" style="object-fit: cover; border-radius: 10px;">
                     </td>

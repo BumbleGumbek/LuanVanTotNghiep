@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 const Category = require('../models/Category');
 const Product = require("../models/Product");
-const Supplier = require("../models/Supplier"); // <-- 1. Thêm Model Supplier vào đây
+const Supplier = require("../models/Supplier");
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -21,27 +21,33 @@ router.all('/*', function (req, res, next) {
     next();
 });
 
-/* [GET] /admin/product - Danh sách sản phẩm (Đã populate cả danh mục & nhà cung cấp) */
+/* Danh sách sản phẩm (Đã populate cả danh mục & nhà cung cấp) */
 router.get('/', async function(req, res, next) {
     try {
         const categoryId = req.query.category;
+        const keyword = req.query.keyword || '';
         let filter = {};
         if (categoryId) {
             filter.category = categoryId;
         }
+        if (keyword) {
+            filter.name = {
+                $regex: keyword,
+                $options: 'i'
+            };
+        }
+        const products = await Product.find(filter)
+            .populate('category')
+            .populate('supplier');
 
-        // Populate luôn cả supplier để sau này hiển thị tên nhà cung cấp nếu cần
-        const products = await Product.find(filter).populate('category').populate('supplier');
         const categories = await Category.find({});
-
-        const plainProduct = products.map(p => p.toObject());
-        const plainCategories = categories.map(c => c.toObject());
-
         res.render('admin/product/index', {
-            plainProduct: plainProduct,
-            categories: plainCategories,
-            selectedCategory: categoryId
+            plainProduct: products.map(p => p.toObject()),
+            categories: categories.map(c => c.toObject()),
+            selectedCategory: categoryId,
+            keyword
         });
+
     } catch (err) {
         next(err);
     }
