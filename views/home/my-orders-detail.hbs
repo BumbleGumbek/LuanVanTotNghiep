@@ -66,15 +66,23 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                         <div class="continue__btn">
                             <a href="/my-orders"><i class="fa fa-arrow-left"></i> Back to History</a>
                         </div>
                     </div>
+                    {{#if (eq order.status 'Completed')}}
+                    {{#unless order.isFullyReviewed}}
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                        <div class="continue__btn update__btn">
+                            <a href="/review/{{order._id}}" class="site-btn">Review Products</a>
+                        </div>
+                    </div>
+                    {{/unless}}
+                    {{/if}}
                 </div>
             </div>
 
-            <!-- Right Side: Order Summary & Info -->
             <div class="col-lg-4">
                 <div class="cart__total" style="margin-top: 0; margin-bottom: 30px;">
                     <h6>Order Summary</h6>
@@ -87,6 +95,7 @@
                                 {{#if (eq order.status 'Processing')}}badge-secondary{{/if}}
                                 {{#if (eq order.status 'Shipping')}}badge-info{{/if}}
                                 {{#if (eq order.status 'Delivered')}}badge-success{{/if}}
+                                {{#if (eq order.status 'Completed')}}badge-success{{/if}}
                                 {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}"
                                   style="padding: 5px 10px; font-weight: 500;">
                                 {{order.status}}
@@ -103,7 +112,6 @@
                     </ul>
 
                     {{#if (eq order.status 'PendingPayment')}}
-
                         <a href="/payment/{{order._id}}"
                            class="site-btn"
                            style="display:block;text-align:center;margin-bottom:10px;">
@@ -118,6 +126,16 @@
                             </button>
                         </form>
 
+                    {{/if}}
+
+                    {{#if (eq order.status 'Delivered')}}
+                        <form action="/confirm-received/{{order._id}}" method="POST">
+                            <button type="submit"
+                                    class="site-btn"
+                                    style="width:100%; display:block; text-align:center; margin-bottom:10px;">
+                                Confirm Received
+                            </button>
+                        </form>
                     {{/if}}
                 </div>
 

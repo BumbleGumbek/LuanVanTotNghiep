@@ -1,0 +1,128 @@
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__text">
+                    <h2>Review Products</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__links">
+                    <a href="/">Home</a>
+                    <a href="/my-orders">My Orders</a>
+                    <span>Review Products</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Review Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <div class="row">
+                <div class="col-lg-8 col-md-6">
+                    {{#each order.items}}
+                    <div class="card mb-4 bg-light border-0">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center mb-4">
+                                <div class="col-lg-2 col-md-3 col-sm-3 col-4">
+                                    <img src="{{this.image}}" alt="{{this.name}}" class="img-fluid border rounded bg-white">
+                                </div>
+                                <div class="col-lg-10 col-md-9 col-sm-9 col-8">
+                                    <h5 class="font-weight-bold text-dark mb-1">{{this.name}}</h5>
+                                    <span class="badge badge-secondary border-0">Size: {{this.size}}</span>
+                                </div>
+                            </div>
+
+                            {{#if this.alreadyReviewed}}
+                                <div class="alert alert-success d-flex align-items-center mb-3">
+                                    <i class="fa fa-check-circle mr-2"></i> Already Reviewed
+                                </div>
+                                <div class="mb-3">
+                                    <p class="font-weight-bold mb-1 text-dark">Your Rating:</p>
+                                    <div class="text-warning mb-2 h5">
+                                        {{#if (eq this.review.rating 5)}}
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                        {{/if}}
+                                        {{#if (eq this.review.rating 4)}}
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i>
+                                        {{/if}}
+                                        {{#if (eq this.review.rating 3)}}
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i>
+                                        {{/if}}
+                                        {{#if (eq this.review.rating 2)}}
+                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i>
+                                        {{/if}}
+                                        {{#if (eq this.review.rating 1)}}
+                                            <i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i>
+                                        {{/if}}
+                                        <span class="text-muted ml-2 small">({{this.review.rating}} Stars)</span>
+                                    </div>
+                                    <p class="font-weight-bold mb-1 text-dark">Your Comment:</p>
+                                    <p class="text-dark bg-white p-3 border rounded mb-0">{{this.review.comment}}</p>
+                                </div>
+                            {{else}}
+                                <form action="/review/{{this.product_id}}/{{../order._id}}" method="POST">
+                                    <div class="checkout__input">
+                                        <p>Rating<span>*</span></p>
+                                        <div class="star-rating mb-3">
+                                            <input type="radio" id="star5_{{@index}}" name="rating" value="5" required />
+                                            <label for="star5_{{@index}}" title="5 stars"><i class="fa fa-star"></i></label>
+                                            <input type="radio" id="star4_{{@index}}" name="rating" value="4" />
+                                            <label for="star4_{{@index}}" title="4 stars"><i class="fa fa-star"></i></label>
+                                            <input type="radio" id="star3_{{@index}}" name="rating" value="3" />
+                                            <label for="star3_{{@index}}" title="3 stars"><i class="fa fa-star"></i></label>
+                                            <input type="radio" id="star2_{{@index}}" name="rating" value="2" />
+                                            <label for="star2_{{@index}}" title="2 stars"><i class="fa fa-star"></i></label>
+                                            <input type="radio" id="star1_{{@index}}" name="rating" value="1" />
+                                            <label for="star1_{{@index}}" title="1 star"><i class="fa fa-star"></i></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkout__input">
+                                        <p>Comment<span>*</span></p>
+                                        <textarea name="comment" class="form-control mb-4" rows="4" placeholder="How do you feel about this product? (e.g. design, quality, material...)" required></textarea>
+                                    </div>
+
+                                    <button type="submit" class="site-btn">Submit Review</button>
+                                </form>
+                            {{/if}}
+                        </div>
+                    </div>
+                    {{/each}}
+
+                    <div class="continue__btn mt-4">
+                        <a href="/my-orders/{{order._id}}"><i class="fa fa-arrow-left"></i> Back to Order Details</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="checkout__order">
+                        <h6 class="order__title">Your Order</h6>
+                        <div class="checkout__order__products">Product <span>Price</span></div>
+                        <ul class="checkout__total__products">
+                            {{#each order.items}}
+                                <li>
+                                    <samp>{{quantity}} x </samp>
+                                    {{name}}
+                                    <span>{{formatCurrency price_at_purchase}} VND</span>
+                                </li>
+                            {{/each}}
+                        </ul>
+                        <ul class="checkout__total__all">
+                            <li>
+                                Total
+                                <span>{{formatCurrency order.totalPrice}} VND</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Review Section End -->

@@ -3450,6 +3450,30 @@ ol {
   color: #111111;
 }
 
+/*--------------------------------- Star Rating System ---------------------------------*/
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.star-rating input {
+  display: none;
+}
+.star-rating label {
+  font-size: 24px;
+  color: #e1e1e1;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: color 0.2s;
+  margin-bottom: 0;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: #f39c12;
+}
+
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 @media only screen and (min-width: 1200px) {
   .container {
