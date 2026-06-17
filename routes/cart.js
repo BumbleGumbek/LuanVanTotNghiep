@@ -58,6 +58,12 @@ router.post('/add-cart/:id', async function(req, res, next){
             return res.redirect('back');
         }
 
+        // Đảm bảo số lượng thêm hợp lệ và không vượt quá tồn kho của size được chọn
+        if (qty <= 0) qty = 1;
+        if (qty > variant.quantity) {
+            qty = variant.quantity;
+        }
+
         if (req.isAuthenticated()) {
             let dbCart = await Cart.findOne({ user_id: req.user._id });
             if (!dbCart) {

@@ -6,6 +6,7 @@ const Wishlist = require('../models/Wishlist');
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const User = require('../models/User');
+const Review = require('../models/Review');
 const bcryptjs = require('bcryptjs');
 const payos = require('../config/payos');
 
@@ -30,8 +31,14 @@ router.get('/', async function(req, res, next) {
       return productObj;
     });
 
+    const reviews = await Review.find()
+      .populate('user', 'firstName lastName')
+      .sort({ createdAt: -1 })
+      .limit(6);
+
     res.render('home/index', {
       plainProduct: plainProduct,
+      reviews: reviews.map(r => r.toObject()),
       activePage: 'home',
       isHome: true
     });
@@ -134,7 +141,11 @@ router.get('/my-orders/:id', async function(req, res, next) {
       return res.redirect('/my-orders');
     }
 
+    const reviews = await Review.find({ order: order._id, user: req.user._id });
+    const isFullyReviewed = reviews.length === order.items.length;
+
     const plainOrder = order.toObject();
+    plainOrder.isFullyReviewed = isFullyReviewed;
 
     plainOrder.items = plainOrder.items.map(item => ({
       ...item,
@@ -620,14 +631,131 @@ router.post('/payment/create/:id', async (req, res, next) => {
   }
 });
 
+router.post('/confirm-received/:id', async function(req,res,next){
+      try{
+        if(!req.isAuthenticated()){
+          return res.redirect('/login');
+        }
+        const order = await Order.findOne({
+              _id: req.params.id,
+              user: req.user._id
+
+            });
+        if(!order){
+          req.flash(
+              'error_message',
+              'Order not found'
+          );
+          return res.redirect(
+              '/my-orders'
+          );
+        }
+        if(
+            order.status !==
+            'Delivered'
+        ){
+          req.flash(
+              'error_message',
+              'Invalid order status'
+          );
+          return res.redirect('/my-orders');
+        }
+        order.status = 'Completed';
+        await order.save();
+        req.flash(
+            'success_message',
+            'Order completed successfully'
+        );
+        res.redirect('/my-orders/' + order._id);
+      }catch(err){
+        next(err);
+      }
+    }
+);
+
+router.get('/review/:id', async function(req,res,next){
+      try{
+        if(!req.isAuthenticated()){
+          return res.redirect('/login');
+        }
+        const order = await Order.findById(req.params.id);
+        if(!order){
+          req.flash('error_message', 'Order not found');
+          return res.redirect('/my-orders');
+        }
+        
+        const reviews = await Review.find({ order: order._id, user: req.user._id });
+        const reviewsMap = {};
+        reviews.forEach(r => {
+          reviewsMap[r.product.toString()] = {
+            rating: r.rating,
+            comment: r.comment
+          };
+        });
+
+        const orderObj = order.toObject();
+        orderObj.items = orderObj.items.map(item => {
+          const review = reviewsMap[item.product_id.toString()];
+          return {
+            ...item,
+            alreadyReviewed: !!review,
+            review: review || null
+          };
+        });
+
+        res.render(
+            'home/review',
+            {
+              order: orderObj
+            }
+        );
+      }catch(err){
+        next(err);
+      }
+    }
+);
+
+router.post('/review/:productId/:orderId', async function(req,res,next){
+      try{
+        if(!req.isAuthenticated()){
+          return res.redirect('/login');
+        }
+        const existingReview = await Review.findOne({
+          user: req.user._id,
+          order: req.params.orderId,
+          product: req.params.productId
+        });
+        if(existingReview){
+          req.flash('error_message', 'You have already reviewed this product.');
+          return res.redirect('/review/' + req.params.orderId);
+        }
+
+        await Review.create({
+          user: req.user._id,
+          product: req.params.productId,
+          order: req.params.orderId,
+          rating: req.body.rating,
+          comment: req.body.comment
+        });
+        req.flash(
+            'success_message',
+            'Review submitted successfully'
+        );
+        res.redirect(
+            '/review/' +
+            req.params.orderId
+        );
+      }catch(err){
+        next(err);
+      }
+    }
+);
+
 router.get('/profile', async function(req, res, next) {
-
   try {
-
     if (!req.isAuthenticated()) {
       return res.redirect('/login');
     }
-
     res.render(
         'home/profile',
         {
@@ -635,15 +763,12 @@ router.get('/profile', async function(req, res, next) {
           activePage: 'profile'
         }
     );
-
   } catch (err) {
     next(err);
   }
-
 });
 
 router.get('/profile/edit', async function(req,res){
-
   if(!req.isAuthenticated()){
     return res.redirect('/login');
   }
@@ -656,13 +781,10 @@ router.get('/profile/edit', async function(req,res){
 });
 
 router.post('/profile/edit', async function(req,res,next){
-
   try{
-
     if(!req.isAuthenticated()){
       return res.redirect('/login');
     }
-
     await User.findByIdAndUpdate(
         req.user._id,
         {
@@ -678,19 +800,16 @@ router.post('/profile/edit', async function(req,res,next){
         'success_message',
         'Profile updated successfully.'
     );
-
     return res.redirect('/profile');
-
   }catch(err){
     next(err);
   }
 });
-router.get('/change-password', function(req, res) {
 
+router.get('/change-password', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.redirect('/login');
   }
-
   res.render(
       'home/change-password'
   );

@@ -76,6 +76,7 @@ const OrderSchema = new Schema({
                 'Processing',
                 'Shipping',
                 'Delivered',
+                'Completed',
                 'Cancelled'
             ],
             default: 'PendingPayment'
