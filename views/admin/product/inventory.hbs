@@ -35,15 +35,23 @@
                     <td>{{name}}</td>
                     <td>{{category.name}}</td>
                     <td>{{formatCurrency price}} VND</td>
-
                     <td>
                         {{#if this.variants.length}}
                             <ul class="list-unstyled mb-0" style="font-size: 13px; padding-left: 0; min-width: 120px;">
                                 {{#each this.variants}}
                                     <li class="mb-1 d-flex align-items-center">
-                                        <span class="badge badge-light text-dark font-weight-bold mr-1" style="border: 1px solid #ced4da;">Size {{this.size}}</span>:
+                                        <span class="badge badge-light text-dark font-weight-bold mr-1" style="border: 1px solid #ced4da;">{{this.size}}</span>:
                                         {{#if (eq this.quantity 0)}}
                                             <span class="badge badge-soft-danger text-danger font-weight-bold ml-1">Sold out</span>
+                                        {{else if (eq this.quantity 1)}}
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} items</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Low Stock!</span>
+                                        {{else if (eq this.quantity 2)}}
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} items</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Low Stock!</span>
+                                        {{else if (eq this.quantity 3)}}
+                                            <span class="text-dark font-weight-bold ml-1">{{this.quantity}} items</span>
+                                            <span class="badge badge-warning text-white font-weight-bold ml-2 animate-pulse" style="font-size: 10px;">Low Stock!</span>
                                         {{else}}
                                             <span class="text-secondary ml-1">{{this.quantity}} items</span>
                                         {{/if}}
@@ -51,9 +59,10 @@
                                 {{/each}}
                             </ul>
                         {{else}}
-                            <span class="badge badge-danger">No Sizes Available</span>
+                            <span class="badge badge-soft-danger text-danger">Sold / No Size</span>
                         {{/if}}
                     </td>
+
 
                     <td>
                         {{#if (eq totalInventory 0)}}

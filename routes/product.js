@@ -14,7 +14,32 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+    fileFilter: function(req, file, cb){
+        const allowedTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+        if(
+            allowedTypes.includes(
+                file.mimetype
+            )
+        ){
+            cb(null, true);
+        }else{
+            cb(
+                new Error(
+                    'Only JPG, PNG and WEBP files are allowed.'
+                )
+            );
+        }
+    },
+    limits:{
+        fileSize: 5 * 1024 * 1024
+    }
+});
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';

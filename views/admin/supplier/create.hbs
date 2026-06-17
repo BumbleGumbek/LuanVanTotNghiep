@@ -1,73 +1,38 @@
-<div class="card shadow">
-    <div class="card-body">
-
-        <form action="/admin/supplier/create" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">
-                    Product name
-                </label>
-                <input type="text" name="name" class="form-control" required>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <strong class="card-title">
+                        Add Supplier
+                    </strong>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/supplier/add" method="POST">
+                        <div class="form-group">
+                            <label>
+                                Supplier Name
+                            </label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" name="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea name="address" class="form-control" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Add Supplier
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Description
-                </label>
-                <textarea name="description" class="form-control" rows="4"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">
-                    Price
-                </label>
-                <input type="number" name="price" class="form-control" min="1" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Quantity
-                </label>
-                <input type="number" name="quantity" class="form-control" value="0" min="1" required>
-            </div>
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Product Image
-                </label>
-
-                <input type="file" name="image" class="form-control mb-2">
-                <small class="text-muted d-block mb-2">
-                    Or paste image URL below
-                </small>
-                <input type="text" name="imageUrl" class="form-control" placeholder="https://example.com/image.jpg">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Category
-                </label>
-                <select name="category"
-                        class="form-control">
-                    {{#each plainCategory}}
-                        <option value="{{_id}}">
-                            {{title}}
-                        </option>
-                    {{/each}}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
-                    Status
-                </label>
-                <select name="status" class="form-control">
-                    <option value="true">
-                        True
-                    </option>
-                    <option value="false">
-                        False
-                    </option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                Submit
-            </button>
-        </form>
+        </div>
     </div>
 </div>

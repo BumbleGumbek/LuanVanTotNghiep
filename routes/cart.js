@@ -3,22 +3,13 @@ var router = express.Router();
 const Product = require("../models/Product");
 const Cart = require('../models/Cart');
 const Order = require('../models/Order');
-const {
-    deductInventory
-} = require("../helpers/inventory-helper");
-
-const {
-    createOrder
-} = require("../helpers/order-helper");
-
+const { deductInventory } = require("../helpers/inventory-helper");
+const { createOrder } = require("../helpers/order-helper");
 const {
     getCartItems,
     calculateCartSummary
 } = require("../helpers/cart-helper");
 
-
-
-// Gán layout chung
 router.use((req, res, next) => {
     res.app.locals.layout = 'home';
     next();
@@ -26,12 +17,9 @@ router.use((req, res, next) => {
 
 /* 1. Xem giỏ hàng */
 router.get('/shopping-cart', async function(req, res, next){
-
     try {
-
         const cartItems =
             await getCartItems(req);
-
         const {
             totalPrice,
             totalQty
@@ -43,9 +31,7 @@ router.get('/shopping-cart', async function(req, res, next){
             totalPrice,
             totalQty
         });
-
     } catch (error) {
-
         next(error);
     }
 });
@@ -131,7 +117,6 @@ router.post('/add-cart/:id', async function(req, res, next){
     }
 });
 
-/* 3. Xóa sản phẩm khỏi giỏ hàng (Dùng thẻ <a> chuyển hướng - KIỂU CŨ) */
 router.get('/remove-cart/:id', async function(req, res, next){
     try {
         const productId = req.params.id.toString();
@@ -166,7 +151,7 @@ router.get('/remove-cart/:id', async function(req, res, next){
     }
 });
 
-/* 4. Cập nhật số lượng giỏ hàng bằng Form POST Array (KIỂU CŨ CỦA BÀ) */
+
 router.post('/update-cart', async function(req, res, next){
     try {
         const quantities = req.body.quantities;
@@ -252,17 +237,14 @@ router.get('/checkout', async function(req, res, next){
         } else {
 
             cartItems = await getCartItems(req);
-
             if (cartItems.length <= 0) {
 
                 req.flash(
                     'error_message',
                     'Your shopping cart is empty.'
                 );
-
                 return res.redirect('/shopping-cart');
             }
-
             const summary =
                 calculateCartSummary(cartItems);
 
@@ -285,7 +267,6 @@ router.get('/checkout', async function(req, res, next){
 
 router.post('/checkout', async function(req, res, next){
     if (!req.isAuthenticated()) return res.status(401).redirect('/login');
-
     try {
         const { receiverName, receiverPhone, detailAddress, note } = req.body;
         if (
@@ -361,8 +342,6 @@ router.post('/checkout', async function(req, res, next){
             totalPrice,
             note
         });
-
-        // Dọn dẹp bộ nhớ tạm sau khi đặt hàng thành công
         if (isBuyNow) {
             delete req.session.buyNowItem;
         } else {

@@ -8,43 +8,6 @@
           <button type="button" class="btn"><span class="fe fe-refresh-ccw fe-16 text-muted"></span></button>
         </div>
       </div>
-      <!-- Slide Modal -->
-      <div class="modal fade modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Filters</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="fe fe-x fe-12"></i>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="p-2">
-                <div class="form-group my-4">
-                  <p class="mb-2"><strong>Regions</strong></p>
-                  <label for="multi-select2" class="sr-only"></label>
-                  <select class="form-control select2-multi" id="multi-select2">
-                    <optgroup label="Mountain Time Zone">
-                      <option value="AZ">Arizona</option>
-                      <option value="CO">Colorado</option>
-                      <option value="ID">Idaho</option>
-                      <option value="MT">Montana</option>
-                      <option value="NE">Nebraska</option>
-                      <option value="NM">New Mexico</option>
-                      <option value="ND">North Dakota</option>
-                      <option value="UT">Utah</option>
-                      <option value="WY">Wyoming</option>
-                    </optgroup>
-                  </select>
-                </div> <!-- form-group -->
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn mb-2 btn-primary btn-block">Apply</button>
-              <button type="button" class="btn mb-2 btn-secondary btn-block">Reset</button>
-            </div>
-          </div>
-        </div>
       </div>
       <table class="table border table-hover bg-white">
         <thead>
@@ -52,7 +15,6 @@
             <th>ID</th>
             <th>Purchase Date</th>
             <th>Customer</th>
-            <th>Phone</th>
             <th>Products</th>
             <th>Total</th>
             <th>Status</th>
@@ -66,9 +28,9 @@
             <td>{{createdAt}}</td>
             <td>
                 <strong>{{user.firstName}} {{user.lastName}}</strong><br>
-                <small class="text-muted">{{user.email}}</small>
+                <small class="text-muted">{{user.email}}</small><br>
+                <small class="text-muted">{{shippingAddress.receiverPhone}}</small>
             </td>
-            <td>{{shippingAddress.receiverPhone}}</td>
             <td>
                 <ul class="list-unstyled mb-0">
                     {{#each items}}

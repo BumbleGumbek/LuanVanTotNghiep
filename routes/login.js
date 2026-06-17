@@ -27,7 +27,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-    // 1. Sao lưu giỏ hàng trước khi Passport tái tạo session
     const cartBackup = req.session.cart;
     const buyNowBackup = req.session.buyNowItem;
     const oldUrl = req.session.oldUrl;
@@ -38,19 +37,14 @@ router.post('/', (req, res, next) => {
             req.flash('error_message', info.message);
             return res.redirect('/login');
         }
-
-        req.logIn(user, async (err) => { // Thêm async ở đây để xử lý gọi DB
+        req.logIn(user, async (err) => {
             if (err) return next(err);
-
-            // 2. Khôi phục lại giỏ hàng và vật phẩm mua ngay sau khi login thành công
             if (cartBackup) {
                 req.session.cart = cartBackup;
             }
             if (buyNowBackup) {
                 req.session.buyNowItem = buyNowBackup;
             }
-
-            // 3. LOGIC MỚI: Tiến hành gộp giỏ hàng Session vào DB cho khách hàng
             try {
                 await mergeSessionCartToDb(
                     req.session.cart,
@@ -59,11 +53,9 @@ router.post('/', (req, res, next) => {
 
                 delete req.session.cart;
             } catch (mergeErr) {
-                console.error("Lỗi khi gộp giỏ hàng tại login.js:", mergeErr);
-                // Vẫn cho chạy tiếp luồng thanh toán nếu lỗi gộp để không làm gián đoạn trải nghiệm của khách
+                console.error("Error", mergeErr);
             }
 
-            // 4. Điều hướng thông minh (Giữ nguyên gốc của bà)
             if (user.role === 'admin') {
                 return res.redirect('/admin');
             }

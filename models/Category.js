@@ -10,7 +10,7 @@ const CategorySchema = new Schema({
     },
     status: {
         type: Boolean,
-        default: true // Bật/tắt hiển thị danh mục ngoài giao diện
+        default: true
     }
 }, { timestamps: true });
 
