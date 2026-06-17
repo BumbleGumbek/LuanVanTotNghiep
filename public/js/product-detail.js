@@ -7,9 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     sizeLabels.forEach(label => {
         const radioInput = label.querySelector('input[type="radio"]');
 
-        // Tìm số lượng tồn kho từ chuỗi text "(X left)"
-        const smallText = label.querySelector('small').innerText;
-        const maxStock = parseInt(smallText.replace(/[^0-9]/g, '')) || 1;
+        // Lấy số lượng tồn kho từ attribute data-stock
+        const maxStock = parseInt(label.getAttribute('data-stock')) || 1;
 
         label.addEventListener('click', function() {
             // 1. Cập nhật thuộc tính max cho ô số lượng dựa theo size vừa chọn

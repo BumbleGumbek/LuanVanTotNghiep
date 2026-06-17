@@ -46,7 +46,6 @@ router.all('/*', function (req, res, next) {
     next();
 });
 
-/* Danh sách sản phẩm (Đã populate cả danh mục & nhà cung cấp) */
 router.get('/', async function(req, res, next) {
     try {
         const categoryId = req.query.category;
@@ -78,22 +77,21 @@ router.get('/', async function(req, res, next) {
     }
 });
 
-/* [GET] /admin/product/create - Hiển thị Form thêm sản phẩm (Đã nhúng Supplier) */
+
 router.get('/create', async function(req, res, next) {
     try {
         const categories = await Category.find({});
-        const suppliers = await Supplier.find({ status: true }); // Chỉ lấy supplier đang hoạt động
+        const suppliers = await Supplier.find({ status: true });
 
         res.render('admin/product/create', {
             plainCategory: categories.map(c => c.toObject()),
-            plainSupplier: suppliers.map(s => s.toObject()) // <-- Truyền danh sách Supplier sang giao diện tạo
+            plainSupplier: suppliers.map(s => s.toObject())
         });
     } catch (err) {
         next(err);
     }
 });
 
-/* [POST] /admin/product/create - Xử lý thêm sản phẩm mới */
 router.post('/create', upload.single('image'), async function(req, res, next) {
     try {
         let variants = [];
@@ -105,7 +103,7 @@ router.post('/create', upload.single('image'), async function(req, res, next) {
             const quantities = Array.isArray(req.body.quantities) ? req.body.quantities : [req.body.quantities];
 
             for (let i = 0; i < sizes.length; i++) {
-                if (sizes[i].trim() !== '') { // Bỏ qua nếu dòng đó bị bỏ trống size
+                if (sizes[i].trim() !== '') {
                     variants.push({
                         size: sizes[i],
                         quantity: parseInt(quantities[i], 10) || 0
@@ -121,7 +119,7 @@ router.post('/create', upload.single('image'), async function(req, res, next) {
             category: req.body.category,
             supplier: req.body.supplier,
             price: req.body.price,
-            variants: variants, // Lưu mảng variants cực đẹp vào DB
+            variants: variants,
             status: req.body.status === 'true'
         });
 
@@ -133,7 +131,6 @@ router.post('/create', upload.single('image'), async function(req, res, next) {
     }
 });
 
-/* [GET] /admin/product/edit/:id - Hiển thị Form sửa sản phẩm */
 router.get('/edit/:id', async function (req, res, next) {
     try {
         const product = await Product.findById(req.params.id);
@@ -153,7 +150,6 @@ router.get('/edit/:id', async function (req, res, next) {
     }
 });
 
-/* [PUT hoặc POST tùy config form] /admin/product/edit/:id - Cập nhật sản phẩm */
 router.post('/edit/:id', upload.single('image'), async function (req, res, next) {
     try {
         const product = await Product.findById(req.params.id);
@@ -193,7 +189,6 @@ router.post('/edit/:id', upload.single('image'), async function (req, res, next)
     }
 });
 
-/* [DELETE hoặc GET tùy link xóa] /admin/product/delete/:id */
 router.get('/delete/:id', async function (req, res, next) {
     try {
         await Product.findByIdAndDelete(req.params.id);

@@ -47,6 +47,7 @@
                         {{#if (eq status 'Processing')}}bg-secondary{{/if}}
                         {{#if (eq status 'Shipping')}}bg-primary{{/if}}
                         {{#if (eq status 'Delivered')}}bg-success{{/if}}
+                        {{#if (eq status 'Completed')}}bg-muted{{/if}}
                         {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
                     </span>
                     <span class="font-weight-bold
@@ -56,6 +57,7 @@
                         {{#if (eq status 'Processing')}}text-secondary{{/if}}
                         {{#if (eq status 'Shipping')}}text-primary{{/if}}
                         {{#if (eq status 'Delivered')}}text-success{{/if}}
+                        {{#if (eq status 'Completed')}}bg-muted{{/if}}
                         {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
                         {{status}}
                   </span>

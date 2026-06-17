@@ -13,7 +13,6 @@
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-
                     <h4>{{product.name}}</h4>
                     <h5>
                         {{formatCurrency product.price}} VND
@@ -32,9 +31,7 @@
                         </li>
                     </ul>
 
-                    <!-- FORM ĐẶT HÀNG & CHỌN SIZE -->
                     <form action="/add-cart/{{product._id}}" method="POST">
-
                         <div class="product__details__option__size" style="margin-bottom: 30px; border-top: 1px solid #e1e1e1; padding-top: 20px;">
                             <span style="font-weight: 600; color: #111111; display: block; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
                                 Select Size:
@@ -42,7 +39,7 @@
                             <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                                 {{#each product.variants}}
                                     {{#if this.quantity}}
-                                        <label class="size-label" style="position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 85px; padding: 10px 12px; border: 1px solid #e1e1e1; cursor: pointer; border-radius: 2px; background: #ffffff; margin: 0; transition: all 0.2s;">
+                                        <label class="size-label" data-stock="{{this.quantity}}" style="position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 85px; padding: 10px 12px; border: 1px solid #e1e1e1; cursor: pointer; border-radius: 2px; background: #ffffff; margin: 0; transition: all 0.2s;">
                                             <input type="radio" name="size" value="{{this.size}}" required style="position: absolute; opacity: 0; width: 0; height: 0; margin: 0;">
                                             <div style="text-align: center; width: 100%;">
                                                 <span style="font-weight: 600; font-size: 13px; color: #111111; display: block;">Size {{this.size}}</span>

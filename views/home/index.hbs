@@ -186,41 +186,28 @@
             </div>
             <div class="class__form">
                 <form action="#">
-
                     <input type="text" placeholder="Your Name">
-
                     <input type="text" placeholder="Phone Number">
-
                     <select>
                         <option value="">Select Collection</option>
                         <option value="">Wedding Collection</option>
                         <option value="">Diamond Collection</option>
                         <option value="">Elegant Collection</option>
                     </select>
-
                     <textarea placeholder="Describe your custom design"></textarea>
-
                     <button type="submit" class="site-btn">
                         Send Request
                     </button>
-
                 </form>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- Team Section Begin -->
+
 <section class="team spad">
-
     <div class="container">
-
         <div class="row align-items-center">
-
             <div class="col-lg-8">
                 <div class="section-title">
                     <span>Our Services</span>
@@ -235,127 +222,83 @@
                     </a>
                 </div>
             </div>
-
         </div>
 
         <div class="row">
 
             <!-- ITEM -->
             <div class="col-lg-3 col-md-6 col-sm-6">
-
                 <div class="team__item">
-
                     <div class="team__image">
                         <img src="img/team/team-1.jpg" alt="">
                     </div>
-
                     <div class="team__item__text">
-
                         <h6>Diamond Collection</h6>
-
-                        <span>Premium Elegant Jewelry</span>
-
+                        <span>Elegant Jewelry</span>
                         <div class="team__item__social">
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
             <!-- ITEM -->
             <div class="col-lg-3 col-md-6 col-sm-6">
-
                 <div class="team__item">
-
                     <div class="team__image">
                         <img src="img/team/team-2.jpg" alt="">
                     </div>
-
                     <div class="team__item__text">
-
                         <h6>Wedding Jewelry</h6>
-
                         <span>Elegant Wedding Designs</span>
-
                         <div class="team__item__social">
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
             <!-- ITEM -->
             <div class="col-lg-3 col-md-6 col-sm-6">
-
                 <div class="team__item">
-
                     <div class="team__image">
                         <img src="img/team/team-3.jpg" alt="">
                     </div>
-
                     <div class="team__item__text">
-
                         <h6>Custom Design</h6>
-
                         <span>Personalized Jewelry Style</span>
-
                         <div class="team__item__social">
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
-            <!-- ITEM -->
             <div class="col-lg-3 col-md-6 col-sm-6">
-
                 <div class="team__item">
-
                     <div class="team__image">
                         <img src="img/team/team-4.jpg" alt="">
                     </div>
-
                     <div class="team__item__text">
-
                         <h6>Elegant Accessories</h6>
-
                         <span>Modern Fashion Collection</span>
-
                         <div class="team__item__social">
                             <a href="#"><i class="fa-brands fa-instagram"></i></a>
                             <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
-<!-- Team Section End -->
 
-<!-- Testimonial Section Begin -->
 <section class="testimonial spad">
     <div class="container">
         <div class="row">
@@ -369,7 +312,7 @@
 
         <div class="row">
             <div class="testimonial__slider owl-carousel">
-
+{{#each reviews}}
                 <div class="col-lg-6">
                     <div class="testimonial__item">
                         <div class="testimonial__author">
@@ -377,107 +320,21 @@
                                 <img src="img/testimonial/ta-1.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
-                                <h5>Emma Watson</h5>
+                                <h5>{{user.firstName}} {{user.lastName}}</h5>
                                 <span>Vietnam</span>
                             </div>
                         </div>
 
                         <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
+                            {{rating}}
                         </div>
 
                         <p>
-                            The jewelry quality exceeded my expectations.
-                            Every detail is beautifully crafted and feels truly luxurious.
+                            {{comment}}
                         </p>
                     </div>
                 </div>
-
-                <div class="col-lg-6">
-                    <div class="testimonial__item">
-                        <div class="testimonial__author">
-                            <div class="testimonial__author__pic">
-                                <img src="img/testimonial/ta-2.jpg" alt="">
-                            </div>
-                            <div class="testimonial__author__text">
-                                <h5>Sophia Carter</h5>
-                                <span>Vietnam</span>
-                            </div>
-                        </div>
-
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
-                        </div>
-
-                        <p>
-                            I bought a necklace as a gift and it was absolutely stunning.
-                            Elegant packaging and fast delivery too.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="testimonial__item">
-                        <div class="testimonial__author">
-                            <div class="testimonial__author__pic">
-                                <img src="img/testimonial/ta-3.jpg" alt="">
-                            </div>
-                            <div class="testimonial__author__text">
-                                <h5>Olivia Le</h5>
-                                <span>Vietnam</span>
-                            </div>
-                        </div>
-
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                        </div>
-
-                        <p>
-                            Their ring collection is modern, elegant, and perfect for special occasions.
-                            Highly recommended for jewelry lovers.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="testimonial__item">
-                        <div class="testimonial__author">
-                            <div class="testimonial__author__pic">
-                                <img src="img/testimonial/ta-4.jpg" alt="">
-                            </div>
-                            <div class="testimonial__author__text">
-                                <h5>Isabella Nguyen</h5>
-                                <span>Vietnam</span>
-                            </div>
-                        </div>
-
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
-                        </div>
-
-                        <p>
-                            Amazing customer service and premium quality jewelry.
-                            I will definitely shop here again.
-                        </p>
-                    </div>
-                </div>
-
+{{/each}}
             </div>
         </div>
     </div>

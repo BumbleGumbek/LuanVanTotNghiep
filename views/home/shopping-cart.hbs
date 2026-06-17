@@ -11,7 +11,7 @@
                                 <th>Jewelry</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
-                                <th></th>
+                                <th>x</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -30,6 +30,7 @@
                                             </h5>
                                         </div>
                                     </td>
+
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty">
@@ -37,6 +38,8 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td><h5 style="margin-bottom: 0; color: #b7b7b7; font-size: 16px;">
+                                        <span style="color: #111; font-weight: 600;">{{formatCurrency this.total}} VND</h5></td>
                                     <td class="cart__close">
                                         <a href="/remove-cart/{{this.product_id}}?size={{this.size}}">
                                             <span class="icon_close"></span>

@@ -64,9 +64,7 @@ app.engine(
             });
         },
           formatCurrency: function(value) {
-
               if (!value) return "0";
-
               return Number(value)
                   .toLocaleString('en-US');
           }
