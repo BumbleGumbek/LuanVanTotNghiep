@@ -19,7 +19,7 @@ router.get('/', async function (req, res, next) {
             plainUser: plainUser
         });
     } catch (err) {
-        console.error("Lỗi lấy danh sách User:", err);
+        console.error("Error retrieving user list:", err);
         next(err);
     }
 });
@@ -40,6 +40,20 @@ router.get('/admins', async function(req, res, next) {
             }
         );
 
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/warehouse', async function(req, res, next) {
+    try {
+        const warehouseUsers = await User.find({
+            role: 'warehouse'
+        });
+        res.render('admin/user/warehouse-list', {
+            plainUser: warehouseUsers.map(user => user.toObject()),
+            title: 'Warehouse List'
+        });
     } catch (err) {
         next(err);
     }
@@ -71,12 +85,12 @@ router.post('/create', async function (req, res, next) {
         await newUser.save();
         res.redirect('/users');
     } catch (error) {
-        console.error("Lỗi thêm mới User:", error);
+        console.error("Error adding new user:", error);
         next(error);
     }
 });
 
-/* [GET] /admin/user/edit/:id - Giao diện cập nhật User */
+
 router.get('/edit/:id', async function (req, res, next) {
     try {
         const user = await User.findById(req.params.id);
@@ -87,12 +101,11 @@ router.get('/edit/:id', async function (req, res, next) {
             user: user.toObject()
         });
     } catch (err) {
-        console.error("Lỗi tải thông tin sửa User:", err);
+        console.error("Error loading user edit information:", err);
         next(err);
     }
 });
 
-/* [POST hoặc PUT] /admin/user/edit/:id - Xử lý cập nhật thông tin */
 router.post('/edit/:id', async function (req, res, next) {
     try {
         const user = await User.findById(req.params.id);
@@ -117,18 +130,17 @@ router.post('/edit/:id', async function (req, res, next) {
         await user.save();
         res.redirect('/users');
     } catch (err) {
-        console.error("Lỗi lưu thông tin sửa User:", err);
+        console.error("Error saving user edit information:", err);
         res.redirect('back');
     }
 });
 
-/* [GET] /admin/user/delete/:id - Đồng bộ nút xóa dùng thẻ liên kết A */
 router.get('/delete/:id', async function (req, res, next) {
     try {
         await User.findByIdAndDelete(req.params.id);
         res.redirect('/users');
     } catch (err) {
-        console.error("Lỗi xóa User khỏi hệ thống:", err);
+        console.error("Error deleting user from the system:", err);
         next(err);
     }
 });

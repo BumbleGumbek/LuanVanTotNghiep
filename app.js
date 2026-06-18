@@ -103,6 +103,7 @@ app.use(passport.session());
 app.use(async (req, res, next) => {
     res.locals.user = req.user ? req.user.toObject() : null;
     res.locals.isAdmin = (req.user && req.user.role === 'admin');
+    res.locals.isWarehouse = (req.user && req.user.role === 'warehouse');
     
     let totalQty = 0;
     let totalPrice = 0;
@@ -180,15 +181,46 @@ function isAdmin(req, res, next){
     res.status(403).send('Access Denied: You do not have admin privileges');
 }
 
+function isWarehouse(req, res, next){
+    if(
+        req.isAuthenticated() &&
+        req.user &&
+        req.user.role === 'warehouse'
+    ){
+        return next();
+    }
+
+    res.status(403).send(
+        'Access Denied: Warehouse only'
+    );
+}
+
+function isWarehouseOrAdmin(req, res, next){
+    if(
+        req.isAuthenticated() &&
+        req.user &&
+        (
+            req.user.role === 'warehouse' ||
+            req.user.role === 'admin'
+        )
+    ){
+        return next();
+    }
+
+    res.status(403).send(
+        'Access Denied'
+    );
+}
+
 app.use('/', homeRouter);
 app.use('/', cartRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
-app.use('/admin', isAdmin, adminRouter);
+app.use('/admin', isWarehouseOrAdmin, adminRouter);
 app.use('/admin/category', isAdmin, categoryRouter);
-app.use('/admin/product', isAdmin, productRouter);
+app.use('/admin/product', isWarehouseOrAdmin, productRouter);
 app.use('/admin/supplier', isAdmin, supplierRouter);
-app.use('/admin/orders', isAdmin, adminOrderRouter);
+app.use('/admin/orders', isWarehouseOrAdmin, adminOrderRouter);
 app.use('/users', isAdmin, usersRouter);
 
 // catch 404 and forward to error handler
