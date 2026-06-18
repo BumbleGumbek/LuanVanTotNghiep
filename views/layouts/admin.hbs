@@ -27,6 +27,13 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="css/app-light.css" id="lightTheme">
     <link rel="stylesheet" href="css/app-dark.css" id="darkTheme" disabled>
+    <style>
+    .disabled-menu {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+    </style>
 </head>
 <body class="vertical  light  ">
 <div class="wrapper">
@@ -78,7 +85,7 @@
                 </a>
             </div>
             <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}}">
                     <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-home fe-16"></i>
                         <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
@@ -110,10 +117,10 @@
                             <a class="nav-link pl-3" href="admin/product"><span class="ml-1 item-text">Product List</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{#if isWarehouse}}disabled-menu{{/if}}">
                             <a class="nav-link pl-3" href="admin/category"><span class="ml-1 item-text">Product Categories</span></a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{#if isWarehouse}}disabled-menu{{/if}}">
                             <a class="nav-link pl-3" href="/admin/supplier"><span class="ml-1 item-text">Suppliers</span></a>
                         </li>
                     </ul>
@@ -134,17 +141,11 @@
                             <a class="nav-link pl-3" href="admin/orders"><span class="ml-1 item-text">Order List</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="./form_advanced.html"><span class="ml-1 item-text">Pending Orders</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-3" href="./form_validation.html"><span class="ml-1 item-text">Completed Orders</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-3" href="#"><span class="ml-1 item-text">Cancelled Orders</span></a>
+                            <a class="nav-link pl-3" href="admin/orders"><span class="ml-1 item-text">Completed Orders</span></a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}}">
                     <a href="#tables" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-grid fe-16"></i>
                         <span class="ml-3 item-text">User Management</span>
@@ -156,15 +157,18 @@
                         <li class="nav-item">
                             <a class="nav-link pl-3" href="/users/admins"><span class="ml-1 item-text">Admin List</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/users/warehouse"><span class="ml-1 item-text">Warehouse List</span></a>
+                        </li>
                     </ul>
                 </li>
-                <li class="nav-item w-100">
+                <li class="nav-item w-100 {{#if isWarehouse}}disabled-menu{{/if}}">
                     <a class="nav-link" href="/admin">
                         <i class="fe fe-layers fe-16"></i>
                         <span class="ml-3 item-text">Promotions</span>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}}">
                     <a href="#charts" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-pie-chart fe-16"></i>
                         <span class="ml-3 item-text">Reports & Statistics</span>
@@ -465,3 +469,4 @@
 </script>
 </body>
 </html>
+

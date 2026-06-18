@@ -130,25 +130,8 @@
                             </div>
 
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Confirmed</span>
-                                <strong>{{orderStats.Confirmed}}</strong>
-                            </div>
-
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Processing</span>
-                                <strong>{{orderStats.Processing}}</strong>
-                            </div>
-
-                            <div class="d-flex justify-content-between mb-2">
                                 <span>Shipping</span>
                                 <strong>{{orderStats.Shipping}}</strong>
-                            </div>
-
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Delivered</span>
-                                <strong class="text-success">
-                                    {{orderStats.Delivered}}
-                                </strong>
                             </div>
 
                             <div class="d-flex justify-content-between">
@@ -281,24 +264,18 @@
                                         </td>
                                         <td>
                                             <span class="dot dot-lg mr-2
-                                                {{#if (eq status 'PendingPayment')}}bg-warning{{/if}}
-                                                {{#if (eq status 'Paid')}}bg-info{{/if}}
-                                                {{#if (eq status 'Confirmed')}}bg-primary{{/if}}
-                                                {{#if (eq status 'Processing')}}bg-secondary{{/if}}
-                                                {{#if (eq status 'Shipping')}}bg-primary{{/if}}
-                                                {{#if (eq status 'Delivered')}}bg-success{{/if}}
-                                                {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
-                                            </span>
-                                            <span class="font-weight-bold
-                                                {{#if (eq status 'PendingPayment')}}text-warning{{/if}}
-                                                {{#if (eq status 'Paid')}}text-info{{/if}}
-                                                {{#if (eq status 'Confirmed')}}text-primary{{/if}}
-                                                {{#if (eq status 'Processing')}}text-secondary{{/if}}
-                                                {{#if (eq status 'Shipping')}}text-primary{{/if}}
-                                                {{#if (eq status 'Delivered')}}text-success{{/if}}
-                                                {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
-                                                {{status}}
-                                            </span>
+                                                 {{#if (eq status 'PendingPayment')}}bg-warning{{/if}}
+                                                 {{#if (eq status 'Paid')}}bg-info{{/if}}
+                                                 {{#if (eq status 'Shipping')}}bg-primary{{/if}}
+                                                 {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
+                                             </span>
+                                             <span class="font-weight-bold
+                                                 {{#if (eq status 'PendingPayment')}}text-warning{{/if}}
+                                                 {{#if (eq status 'Paid')}}text-info{{/if}}
+                                                 {{#if (eq status 'Shipping')}}text-primary{{/if}}
+                                                 {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
+                                                 {{status}}
+                                             </span>
                                         </td>
                                     </tr>
                                 {{/each}}

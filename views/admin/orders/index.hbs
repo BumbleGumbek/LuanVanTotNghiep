@@ -41,22 +41,14 @@
             <td><span class="font-weight-bold text-danger">{{formatCurrency totalPrice}} VND</span></td>
               <td>
                     <span class="dot dot-lg mr-2
-                        {{#if (eq status 'PendingPayment')}}bg-warning{{/if}}
                         {{#if (eq status 'Paid')}}bg-info{{/if}}
-                        {{#if (eq status 'Confirmed')}}bg-primary{{/if}}
-                        {{#if (eq status 'Processing')}}bg-secondary{{/if}}
                         {{#if (eq status 'Shipping')}}bg-primary{{/if}}
-                        {{#if (eq status 'Delivered')}}bg-success{{/if}}
                         {{#if (eq status 'Completed')}}bg-muted{{/if}}
                         {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
                     </span>
                     <span class="font-weight-bold
-                        {{#if (eq status 'PendingPayment')}}text-warning{{/if}}
                         {{#if (eq status 'Paid')}}text-info{{/if}}
-                        {{#if (eq status 'Confirmed')}}text-primary{{/if}}
-                        {{#if (eq status 'Processing')}}text-secondary{{/if}}
                         {{#if (eq status 'Shipping')}}text-primary{{/if}}
-                        {{#if (eq status 'Delivered')}}text-success{{/if}}
                         {{#if (eq status 'Completed')}}bg-muted{{/if}}
                         {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
                         {{status}}
@@ -67,8 +59,9 @@
                   <a href="/admin/orders/invoice/{{_id}}" class="btn btn-sm btn-outline-primary ml-2">
                       <i class="fe fe-file-text"></i>
                   </a>
-                {{#if (ne status 'Delivered')}}
+                {{#if (ne status 'Completed')}}
                 {{#if (ne status 'Cancelled')}}
+                {{#if ../isWarehouse}}
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle more-vertical" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="text-muted sr-only">Action</span>
@@ -85,31 +78,14 @@
                             {{/if}}
 
                             {{#if (eq status 'Paid')}}
-                                <button class="dropdown-item text-primary" type="submit" name="status" value="Confirmed">
-                                    Set Confirmed
-                                </button>
-                            {{/if}}
-
-                            {{#if (eq status 'Confirmed')}}
-                                <button class="dropdown-item text-secondary" type="submit" name="status" value="Processing">
-                                    Set Processing
-                                </button>
-                            {{/if}}
-
-                            {{#if (eq status 'Processing')}}
                                 <button class="dropdown-item text-primary" type="submit" name="status" value="Shipping">
                                     Set Shipping
-                                </button>
-                            {{/if}}
-
-                            {{#if (eq status 'Shipping')}}
-                                <button class="dropdown-item text-success" type="submit" name="status" value="Delivered">
-                                    Set Delivered
                                 </button>
                             {{/if}}
                         </form>
                     </div>
                 </div>
+                {{/if}}
                 {{/if}}
                 {{/if}}
 
