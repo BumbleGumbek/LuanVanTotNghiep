@@ -326,18 +326,6 @@ router.post('/checkout', async function(req, res, next){
             });
         }
 
-        const inventoryResult =
-            await deductInventory(checkoutItems);
-
-        if (!inventoryResult.success) {
-
-            req.flash(
-                'error_message',
-                `Sorry, product "${inventoryResult.item.name}" (Size ${inventoryResult.item.size}) is out of stock.`
-            );
-
-            return res.redirect('/shopping-cart');
-        }
         console.log(req.body);
         const newOrder = await createOrder({
             userId: req.user._id,

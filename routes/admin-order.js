@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const { deductInventory } = require('../helpers/inventory-helper');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
@@ -27,44 +28,44 @@ router.get('/', async function (req, res, next) {
 
 router.post('/update-status/:id', async function (req, res, next) {
     try {
-        const order =
-            await Order.findById(
-                req.params.id
-            );
+        if (req.user.role !== 'warehouse') {
+            req.flash('error_message', 'Chỉ nhân viên kho mới được phép cập nhật trạng thái đơn hàng.');
+            return res.redirect('/admin/orders');
+        }
+
+        const order = await Order.findById(req.params.id);
         if(!order){
-            req.flash(
-                'error_message',
-                'Order not found'
-            );
-            return res.redirect(
-                '/admin/orders'
-            );
+            req.flash('error_message', 'Order not found');
+            return res.redirect('/admin/orders');
         }
         const newStatus = req.body.status;
         const statusFlow = {
             PendingPayment: ['Paid', 'Cancelled'],
-            Paid: ['Confirmed'],
-            Confirmed: ['Processing'],
-            Processing: ['Shipping'],
-            Shipping: ['Delivered'],
-            Delivered: [],
+            Paid: ['Shipping'],
+            Shipping: ['Completed'],
+            Completed: [],
             Cancelled: []
         };
-        const allowedStatuses =
-            statusFlow[order.status] || [];
-        if(
-            !allowedStatuses.includes(
-                newStatus
-            )
-        ){
-            req.flash(
-                'error_message',
-                'Invalid status transition'
-            );
-            return res.redirect(
-                '/admin/orders'
-            );
+        const allowedStatuses = statusFlow[order.status] || [];
+        if(!allowedStatuses.includes(newStatus)){
+            req.flash('error_message', 'Invalid status transition');
+            return res.redirect('/admin/orders');
         }
+
+        if (newStatus === 'Shipping') {
+            const checkoutItems = order.items.map(item => ({
+                product_id: item.product_id,
+                size: item.size,
+                quantity: item.quantity,
+                name: item.name
+            }));
+            const inventoryResult = await deductInventory(checkoutItems);
+            if (!inventoryResult.success) {
+                req.flash('error_message', `Không đủ hàng trong kho cho sản phẩm: "${inventoryResult.item.name}" (Size ${inventoryResult.item.size})`);
+                return res.redirect('/admin/orders');
+            }
+        }
+
         order.status = newStatus;
         if (newStatus === 'Paid') {
             order.paymentStatus = 'Paid';
@@ -74,19 +75,21 @@ router.post('/update-status/:id', async function (req, res, next) {
         }
         if (newStatus === 'Cancelled') {
             order.paymentStatus = 'Failed';
-            for (const item of order.items) {
-                await Product.findOneAndUpdate(
-                    {
-                        _id: item.product_id,
-                        "variants.size": item.size
-                    },
-                    {
-                        $inc: {
-                            "variants.$.quantity": item.quantity,
-                            sold: -item.quantity
+            if (order.status === 'Shipping') {
+                for (const item of order.items) {
+                    await Product.findOneAndUpdate(
+                        {
+                            _id: item.product_id,
+                            "variants.size": item.size
+                        },
+                        {
+                            $inc: {
+                                "variants.$.quantity": item.quantity,
+                                sold: -item.quantity
+                            }
                         }
-                    }
-                );
+                    );
+                }
             }
         }
         await order.save();

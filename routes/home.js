@@ -152,6 +152,10 @@ router.get('/my-orders/:id', async function(req, res, next) {
       subtotal: item.price_at_purchase * item.quantity
     }));
 
+    plainOrder.isPaidStep = ['Paid', 'Shipping', 'Completed'].includes(order.status);
+    plainOrder.isShippingStep = ['Shipping', 'Completed'].includes(order.status);
+    plainOrder.isCompletedStep = order.status === 'Completed';
+
     res.render('home/my-orders-detail', {
       order: plainOrder,
       activePage: 'orders'
@@ -423,28 +427,11 @@ router.get('/payment/cancel', async function(req, res) {
       );
       return res.redirect('/my-orders');
     }
-    // chỉ xử lý PendingPayment
     if (order.status === 'PendingPayment') {
       order.status = 'Cancelled';
       order.paymentStatus = 'Failed';
 
       await order.save();
-      // hoàn kho
-      for (const item of order.items) {
-
-        await Product.findOneAndUpdate(
-            {
-              _id: item.product_id,
-              "variants.size": item.size
-            },
-            {
-              $inc: {
-                "variants.$.quantity": item.quantity,
-                sold: -item.quantity
-              }
-            }
-        );
-      }
     }
     req.flash(
         'error_message',
@@ -515,23 +502,6 @@ router.get('/payment/:id', async function(req,res,next){
       order.paymentStatus = 'Failed';
 
       await order.save();
-
-      // hoàn kho
-      for (const item of order.items) {
-        await Product.findOneAndUpdate(
-            {
-              _id: item.product_id,
-              "variants.size": item.size
-            },
-            {
-              $inc: {
-                "variants.$.quantity": item.quantity,
-                sold: -item.quantity
-              }
-            }
-        );
-      }
-
       req.flash(
           'error_message',
           'This order has expired.'
@@ -652,7 +622,7 @@ router.post('/confirm-received/:id', async function(req,res,next){
         }
         if(
             order.status !==
-            'Delivered'
+            'Shipping'
         ){
           req.flash(
               'error_message',

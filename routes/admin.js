@@ -59,11 +59,10 @@ router.get('/', async function(req, res, next) {
                 }
             ]);
         const orderStats = {
-            Pending: 0,
-            Confirmed: 0,
-            Processing: 0,
+            PendingPayment: 0,
+            Paid: 0,
             Shipping: 0,
-            Delivered: 0,
+            Completed: 0,
             Cancelled: 0
         };
         orderStatsResult.forEach(item => {
@@ -152,7 +151,7 @@ router.get('/revenue', async function(req, res, next) {
             await Order.aggregate([
                 {
                     $match: {
-                        status: 'Delivered'
+                        status: 'Completed'
                     }
                 },
                 {

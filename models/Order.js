@@ -72,10 +72,7 @@ const OrderSchema = new Schema({
             enum: [
                 'PendingPayment',
                 'Paid',
-                'Confirmed',
-                'Processing',
                 'Shipping',
-                'Delivered',
                 'Completed',
                 'Cancelled'
             ],
