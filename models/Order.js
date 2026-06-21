@@ -80,7 +80,7 @@ const OrderSchema = new Schema({
         },
         paymentMethod: {
             type: String,
-            default: 'PayOS'
+            default: 'Banking'
         },
 
         paymentStatus: {

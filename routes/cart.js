@@ -5,17 +5,13 @@ const Cart = require('../models/Cart');
 const Order = require('../models/Order');
 const { deductInventory } = require("../helpers/inventory-helper");
 const { createOrder } = require("../helpers/order-helper");
-const {
-    getCartItems,
-    calculateCartSummary
-} = require("../helpers/cart-helper");
+const {getCartItems, calculateCartSummary} = require("../helpers/cart-helper");
 
 router.use((req, res, next) => {
     res.app.locals.layout = 'home';
     next();
 });
 
-/* 1. Xem giỏ hàng */
 router.get('/shopping-cart', async function(req, res, next){
     try {
         const cartItems =
@@ -36,7 +32,6 @@ router.get('/shopping-cart', async function(req, res, next){
     }
 });
 
-/* 2. Thêm vào giỏ hàng */
 router.post('/add-cart/:id', async function(req, res, next){
     try {
         const productId = req.params.id;
@@ -309,7 +304,6 @@ router.post('/checkout', async function(req, res, next){
             if(!dbCart || !dbCart.items || dbCart.items.length <= 0) {
                 return res.redirect('/shopping-cart');
             }
-
             dbCart.items.forEach(item => {
                 let p = item.product_id;
                 if (p) {

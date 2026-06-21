@@ -10,8 +10,7 @@ router.all('/*', function (req, res, next) {
 
 router.get('/', async function (req, res, next) {
     try {
-        const users =
-            await User.find({
+        const users = await User.find({
                 role: 'customer'
             });
         const plainUser = users.map(user => user.toObject());
@@ -30,16 +29,12 @@ router.get('/admins', async function(req, res, next) {
         const admins = await User.find({
             role: 'admin'
         });
-        res.render(
-            'admin/user/admin-list',
-            {
-                plainUser:
-                    admins.map(
+        res.render('admin/user/admin-list', {
+                plainUser: admins.map(
                         user => user.toObject()
                     )
             }
         );
-
     } catch (err) {
         next(err);
     }
@@ -59,7 +54,6 @@ router.get('/warehouse', async function(req, res, next) {
     }
 });
 
-/* [GET] /admin/user/create - Giao diện tạo mới User */
 router.get('/create', async function (req, res, next) {
     try {
         res.render('admin/user/create');
@@ -68,7 +62,6 @@ router.get('/create', async function (req, res, next) {
     }
 });
 
-/* [POST] /admin/user/create - Xử lý thêm mới User */
 router.post('/create', async function (req, res, next) {
     try {
         const salt = await bcryptjs.genSalt(10);

@@ -68,21 +68,17 @@ router.get('/', async function(req, res, next) {
         orderStatsResult.forEach(item => {
             orderStats[item._id] = item.count;
         });
-        const bestSellingProducts =
-            await Product.find({})
+        const bestSellingProducts = await Product.find({})
                 .sort({ sold: -1 })
                 .limit(5);
 
-        const lowStockProductsRaw =
-            await Product.find({})
+        const lowStockProductsRaw = await Product.find({})
                 .limit(5);
 
         const lowStockProducts =
             (await Product.find({}))
                 .map(product => {
-
                     const obj = product.toObject();
-
                     obj.stock =
                         obj.variants.reduce(
                             (sum, variant) =>
@@ -100,11 +96,8 @@ router.get('/', async function(req, res, next) {
                 )
                 .slice(0, 5);
 
-        const recentOrders =
-            await Order.find({})
-                .populate(
-                    'user',
-                    'firstName lastName'
+        const recentOrders = await Order.find({}).populate(
+            'user', 'firstName lastName'
                 )
                 .sort({
                     createdAt: -1

@@ -312,45 +312,32 @@ router.get('/wishlist/remove/:id', async function(req, res, next){
 
 router.get('/payment/success', async function(req, res) {
   try {
-
     const {
-      orderCode,
-      status
+      orderCode, status
     } = req.query;
-
     if (
-        status !== 'PAID' ||
-        !orderCode
+        status !== 'PAID' || !orderCode
     ) {
-
       req.flash(
-          'error_message',
-          'Payment failed.'
+          'error_message', 'Payment failed.'
       );
-
       return res.redirect(
           '/my-orders'
       );
     }
-
-    const order =
-        await Order.findOne({
+    const order = await Order.findOne({
           payosOrderCode:
               Number(orderCode)
         });
-
     if (!order) {
-
       req.flash(
           'error_message',
           'Order not found.'
       );
-
       return res.redirect(
           '/my-orders'
       );
     }
-
     if (
         order.status !== 'PendingPayment' ||
         order.paymentStatus !== 'Pending'
@@ -362,7 +349,6 @@ router.get('/payment/success', async function(req, res) {
     if (
         order.paymentStatus === 'Paid'
     ) {
-
       return res.redirect(
           '/my-orders/' +
           order._id
@@ -379,19 +365,15 @@ router.get('/payment/success', async function(req, res) {
         'success_message',
         'Payment successful.'
     );
-
     return res.redirect(
         '/my-orders/' +
         order._id
     );
-
   } catch (err) {
-
     console.error(
         'PAYMENT SUCCESS ERROR:',
         err
     );
-
     return res.redirect(
         '/my-orders'
     );
