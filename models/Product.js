@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 /*
@@ -68,6 +67,11 @@ const ProductSchema = new Schema({
         status: {
             type: Boolean,
             default: true
+        },
+        lowStockThreshold: {
+            type: Number,
+            required: true,
+            default: 5
         }
     },
     {
