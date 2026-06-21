@@ -139,7 +139,7 @@ app.use(async (req, res, next) => {
     
     res.locals.success_message = req.flash('success_message');
     res.locals.error_message = req.flash('error_message');
-    res.locals.error = req.flash('error'); // Passport.js often uses 'error'
+    res.locals.error = req.flash('error');
     res.locals.errors = req.flash('errors');
     next();
 });
@@ -151,10 +151,10 @@ var categoryRouter = require('./routes/category');
 var productRouter = require('./routes/product');
 var supplierRouter = require('./routes/supplier');
 var loginRouter = require('./routes/login');
-
 var registerRouter = require('./routes/register');
 var usersRouter = require('./routes/users');
 var adminOrderRouter = require('./routes/admin-order');
+var inventoryRouter = require('./routes/inventory');
 
 
 // view engine setup
@@ -197,8 +197,7 @@ function isWarehouse(req, res, next){
 
 function isWarehouseOrAdmin(req, res, next){
     if(
-        req.isAuthenticated() &&
-        req.user &&
+        req.isAuthenticated() && req.user &&
         (
             req.user.role === 'warehouse' ||
             req.user.role === 'admin'
@@ -206,7 +205,6 @@ function isWarehouseOrAdmin(req, res, next){
     ){
         return next();
     }
-
     res.status(403).send(
         'Access Denied'
     );
@@ -221,6 +219,7 @@ app.use('/admin/category', isAdmin, categoryRouter);
 app.use('/admin/product', isWarehouseOrAdmin, productRouter);
 app.use('/admin/supplier', isAdmin, supplierRouter);
 app.use('/admin/orders', isWarehouseOrAdmin, adminOrderRouter);
+app.use('/admin/inventory', isWarehouseOrAdmin, inventoryRouter);
 app.use('/users', isAdmin, usersRouter);
 
 // catch 404 and forward to error handler

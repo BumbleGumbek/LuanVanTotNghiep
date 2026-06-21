@@ -125,11 +125,25 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item w-100">
-                    <a class="nav-link" href="admin/product/inventory">
+                <li class="nav-item dropdown">
+                    <a href="#inventory-menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-database fe-16"></i>
                         <span class="ml-3 item-text">Inventory</span>
                     </a>
+                    <ul class="collapse list-unstyled pl-4 w-100" id="inventory-menu">
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/admin/inventory/overview"><span class="ml-1 item-text">Stock Overview</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/admin/inventory/import"><span class="ml-1 item-text">Import Stock</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/admin/inventory/report"><span class="ml-1 item-text">Inventory Report</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/admin/inventory/low-stock"><span class="ml-1 item-text">Low Stock Alert</span></a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a href="#forms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
@@ -235,6 +249,7 @@
 <script src="js/datamaps-zoomto.js"></script>
 <script src="js/datamaps.custom.js"></script>
 <script src="js/Chart.min.js"></script>
+
 <script>
     /* defind global options */
     Chart.defaults.global.defaultFontFamily = base.defaultFontFamily;
