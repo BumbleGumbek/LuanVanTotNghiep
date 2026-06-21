@@ -1,0 +1,92 @@
+<div class="card shadow">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="card-title mb-1 text-warning"><i class="fe fe-alert-triangle mr-2"></i>Low Stock Alerts</h3>
+                <p class="card-text text-muted mb-0">List of products whose current stock levels are at or below their custom alert threshold.</p>
+            </div>
+            <div>
+                <a href="/admin/inventory/overview" class="btn btn-secondary px-4">
+                    <i class="fe fe-grid mr-1"></i> Stock Overview
+                </a>
+            </div>
+        </div>
+
+        {{#if success_message}}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{success_message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {{/if}}
+        {{#if error_message}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{error_message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {{/if}}
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 10%;">Image</th>
+                        <th style="width: 30%;" class="text-left">Product Name</th>
+                        <th style="width: 15%;" class="text-left">Category</th>
+                        <th style="width: 12%;">Current Stock</th>
+                        <th style="width: 18%;">Low Stock Threshold</th>
+                        <th style="width: 10%;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each lowStockProducts}}
+                        <tr>
+                            <td class="align-middle">{{add @index 1}}</td>
+                            <td class="align-middle">
+                                <img src="{{image}}" alt="{{name}}" width="55" height="55" style="object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6;">
+                            </td>
+                            <td class="text-left align-middle">
+                                <span class="font-weight-bold text-dark d-block">{{name}}</span>
+                            </td>
+                            <td class="text-left align-middle">
+                                <span class="text-secondary">{{category.name}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span class="font-weight-bold text-danger" style="font-size: 15px;">{{currentStock}} pcs</span>
+                            </td>
+                            <td class="align-middle">
+                                <form action="/admin/inventory/update-threshold/{{_id}}" method="POST" class="d-inline-block">
+                                    <div class="input-group input-group-sm" style="max-width: 130px; margin: 0 auto;">
+                                        <input type="number" name="threshold" class="form-control text-center font-weight-bold" value="{{threshold}}" min="0" required>
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-warning text-dark font-weight-bold" title="Save Threshold">
+                                                <i class="fe fe-save"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                            <td class="align-middle">
+                                <span class="badge badge-pill badge-{{statusBadge}} px-3 py-2" style="font-size: 11px;">
+                                    {{statusText}}
+                                </span>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    {{#unless lowStockProducts.length}}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                <i class="fe fe-check-circle fe-24 text-success d-block mb-2"></i>
+                                Good job! No products are currently running low on stock.
+                            </td>
+                        </tr>
+                    {{/unless}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

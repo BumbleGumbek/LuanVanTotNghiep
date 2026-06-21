@@ -1,0 +1,134 @@
+<div class="card shadow">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="card-title mb-1">Stock Overview</h3>
+                <p class="card-text text-muted mb-0">Monitor real-time inventory levels, imports, sales, shelf-life, and stock statuses.</p>
+            </div>
+            <div>
+                <a href="/admin/inventory/import" class="btn btn-primary px-4">
+                    <i class="fe fe-plus-circle mr-1"></i> Import Stock
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter and Sort Controls Form -->
+        <div class="bg-light p-3 rounded mb-4 shadow-sm border">
+            <form action="/admin/inventory/overview" method="GET" class="form-inline d-flex justify-content-between align-items-center flex-wrap">
+                <div class="d-flex flex-wrap align-items-center">
+                    <div class="form-group mr-4">
+                        <label for="filter" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-filter mr-1"></i>Filter Status:</label>
+                        <select name="filter" id="filter" class="form-control custom-select custom-select-sm" onchange="this.form.submit()" style="min-width: 160px;">
+                            {{#each filterOptions}}
+                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.text}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sort" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-list mr-1"></i>Sort By:</label>
+                        <select name="sort" id="sort" class="form-control custom-select custom-select-sm" onchange="this.form.submit()" style="min-width: 180px;">
+                            {{#each sortOptions}}
+                                <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.text}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="text-muted mt-2 mt-sm-0">
+                    Showing <strong class="text-dark">{{plainProducts.length}}</strong> products
+                </div>
+            </form>
+        </div>
+
+        {{#if success_message}}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{success_message}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {{/if}}
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 10%;">Image</th>
+                        <th style="width: 20%;">Product Name</th>
+                        <th style="width: 12%;">Sizes & Stock</th>
+                        <th style="width: 8%;" class="text-center">Imported</th>
+                        <th style="width: 8%;" class="text-center">Sold</th>
+                        <th style="width: 10%;" class="text-center">Current Stock</th>
+                        <th style="width: 10%;">Last Import Date</th>
+                        <th style="width: 8%;" class="text-center">Days On Shelf</th>
+                        <th style="width: 9%;" class="text-center">Status</th>
+                        <th style="width: 10%;" class="text-center">Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each plainProducts}}
+                        <tr>
+                            <td>{{add @index 1}}</td>
+                            <td>
+                                <img src="{{image}}" alt="{{name}}" width="60" height="60" style="object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6;">
+                            </td>
+                            <td>
+                                <span class="font-weight-bold text-dark d-block">{{name}}</span>
+                                <small class="text-muted">Category: {{category.name}}</small>
+                            </td>
+                            <td>
+                                {{#if variants.length}}
+                                    <ul class="list-unstyled mb-0" style="font-size: 13px; padding-left: 0;">
+                                        {{#each variants}}
+                                            <li class="mb-1 d-flex align-items-center">
+                                                <span class="badge badge-light text-dark font-weight-bold mr-1" style="border: 1px solid #ced4da; min-width: 24px; text-align: center;">{{this.size}}</span>:
+                                                {{#if (eq this.quantity 0)}}
+                                                    <span class="badge badge-soft-danger text-danger font-weight-bold ml-1">Out</span>
+                                                {{else}}
+                                                    <span class="text-secondary ml-1 font-weight-bold">{{this.quantity}} pcs</span>
+                                                {{/if}}
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                {{else}}
+                                    <span class="badge badge-soft-danger text-danger">No variants</span>
+                                {{/if}}
+                            </td>
+                            <td class="text-center font-weight-bold text-info">{{imported}}</td>
+                            <td class="text-center font-weight-bold text-success">{{sold}}</td>
+                            <td class="text-center font-weight-bold text-dark">{{currentStock}}</td>
+                            <td>
+                                <span class="d-block">{{lastImportDate}}</span>
+                            </td>
+                            <td class="text-center font-weight-bold">
+                                {{#if (eq daysOnShelf 'N/A')}}
+                                    <span class="text-muted">N/A</span>
+                                {{else}}
+                                    <span class="text-dark">{{daysOnShelf}} days</span>
+                                {{/if}}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-pill badge-{{statusBadge}} px-2 py-1" style="font-size: 11px;">
+                                    {{statusText}}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-pill badge-{{perfBadge}} px-2 py-1" style="font-size: 11px;">
+                                    {{perfText}}
+                                </span>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    {{#unless plainProducts.length}}
+                        <tr>
+                            <td colspan="11" class="text-center text-muted py-5">
+                                <i class="fe fe-inbox fe-24 d-block mb-2"></i>
+                                No products match the selected filters.
+                            </td>
+                        </tr>
+                    {{/unless}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
