@@ -85,7 +85,7 @@
                 </a>
             </div>
             <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}}">
+                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}} {{#if isSupplier}}disabled-menu{{/if}}">
                     <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-home fe-16"></i>
                         <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
@@ -107,7 +107,7 @@
                 <span>Store Management</span>
             </p>
             <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{#if isSupplier}}disabled-menu{{/if}}">
                     <a href="#ui-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-box fe-16"></i>
                         <span class="ml-3 item-text">Product Management</span>
@@ -120,12 +120,57 @@
                         <li class="nav-item {{#if isWarehouse}}disabled-menu{{/if}}">
                             <a class="nav-link pl-3" href="admin/category"><span class="ml-1 item-text">Product Categories</span></a>
                         </li>
-                        <li class="nav-item {{#if isWarehouse}}disabled-menu{{/if}}">
-                            <a class="nav-link pl-3" href="/admin/supplier"><span class="ml-1 item-text">Suppliers</span></a>
+                        <li class="nav-item {{#unless isAdmin}}disabled-menu{{/unless}}">
+                            <a class="nav-link pl-3" href="admin/review"><span class="ml-1 item-text">Review Management</span></a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{#unless isAdmin}}{{#unless isSupplier}}disabled-menu{{/unless}}{{/unless}}">
+                    <a href="#supplier-menu"
+                       data-toggle="collapse"
+                       aria-expanded="false"
+                       class="dropdown-toggle nav-link">
+                        <i class="fe fe-truck fe-16"></i>
+                        <span class="ml-3 item-text">Supplier</span>
+                    </a>
+
+                    <ul class="collapse list-unstyled pl-4 w-100" id="supplier-menu">
+
+                        {{#if isAdmin}}
+                            <li class="nav-item">
+                                <a class="nav-link pl-3" href="/admin/supplier">
+                                    <span class="ml-1 item-text">Supplier List</span>
+                                </a>
+                            </li>
+                        {{/if}}
+
+                        {{#if isAdmin}}
+                            <li class="nav-item">
+                                <a class="nav-link pl-3" href="/admin/import-request">
+                                    <span class="ml-1 item-text">Import Requests</span>
+                                </a>
+                            </li>
+                        {{/if}}
+
+                        {{#if isWarehouse}}
+                            <li class="nav-item">
+                                <a class="nav-link pl-3" href="/admin/import-request">
+                                    <span class="ml-1 item-text">Import Requests</span>
+                                </a>
+                            </li>
+                        {{/if}}
+
+                        {{#if isSupplier}}
+                            <li class="nav-item">
+                                <a class="nav-link pl-3" href="/supplier/import-request">
+                                    <span class="ml-1 item-text">My Import Requests</span>
+                                </a>
+                            </li>
+                        {{/if}}
+
+                    </ul>
+                </li>
+                <li class="nav-item dropdown {{#if isSupplier}}disabled-menu{{/if}}">
                     <a href="#inventory-menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-database fe-16"></i>
                         <span class="ml-3 item-text">Inventory</span>
@@ -135,17 +180,17 @@
                             <a class="nav-link pl-3" href="/admin/inventory/overview"><span class="ml-1 item-text">Stock Overview</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="/admin/inventory/import"><span class="ml-1 item-text">Import Stock</span></a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link pl-3" href="/admin/inventory/report"><span class="ml-1 item-text">Inventory Report</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link pl-3" href="/admin/inventory/low-stock"><span class="ml-1 item-text">Low Stock Alert</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/admin/import-request"><span class="ml-1 item-text">Import Requests</span></a>
+                        </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown {{#if isSupplier}}disabled-menu{{/if}} {{#if isWarehouse}}disabled-menu{{/if}}">
                     <a href="#forms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-credit-card fe-16"></i>
                         <span class="ml-3 item-text">Order Management</span>
@@ -159,7 +204,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}}">
+                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}} {{#if isSupplier}}disabled-menu{{/if}}">
                     <a href="#tables" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-grid fe-16"></i>
                         <span class="ml-3 item-text">User Management</span>
@@ -174,15 +219,25 @@
                         <li class="nav-item">
                             <a class="nav-link pl-3" href="/users/warehouse"><span class="ml-1 item-text">Warehouse List</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-3" href="/users/suppliers"><span class="ml-1 item-text">Supplier List</span></a>
+                        </li>
                     </ul>
                 </li>
-                <li class="nav-item w-100 {{#if isWarehouse}}disabled-menu{{/if}}">
+                <li class="nav-item w-100 {{#if isWarehouse}}disabled-menu{{/if}} {{#if isSupplier}}disabled-menu{{/if}}">
                     <a class="nav-link" href="/admin">
                         <i class="fe fe-layers fe-16"></i>
                         <span class="ml-3 item-text">Promotions</span>
                     </a>
                 </li>
-                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}}">
+                <li class="nav-item w-100">
+                    <a class="nav-link" href="/admin/review">
+                        <i class="fe fe-star fe-16"></i>
+                        <span class="ml-3 item-text">Review Management</span>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown {{#if isWarehouse}}disabled-menu{{/if}} {{#if isSupplier}}disabled-menu{{/if}}">
                     <a href="#charts" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-pie-chart fe-16"></i>
                         <span class="ml-3 item-text">Reports & Statistics</span>
@@ -199,6 +254,7 @@
                         </li>
                     </ul>
                 </li>
+
             </ul>
             <p class="text-muted nav-heading mt-4 mb-1">
                 <span>Account</span>

@@ -9,7 +9,6 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const passport = require('passport');
 const methodOverride = require('method-override');
-const testPayosRouter = require('./routes/test-payos');
 // const MongoStore = require('connect-mongo');
 
 
@@ -90,8 +89,6 @@ app.use(session({
     }
 }));
 
-app.use('/', testPayosRouter);
-
 app.use(flash());
 //PASSPORT
 require('./config/passport')();
@@ -104,6 +101,7 @@ app.use(async (req, res, next) => {
     res.locals.user = req.user ? req.user.toObject() : null;
     res.locals.isAdmin = (req.user && req.user.role === 'admin');
     res.locals.isWarehouse = (req.user && req.user.role === 'warehouse');
+    res.locals.isSupplier = (req.user && req.user.role === 'supplier');
     
     let totalQty = 0;
     let totalPrice = 0;
@@ -155,6 +153,9 @@ var registerRouter = require('./routes/register');
 var usersRouter = require('./routes/users');
 var adminOrderRouter = require('./routes/admin-order');
 var inventoryRouter = require('./routes/inventory');
+var importRequestRouter = require('./routes/import-request');
+var supplierPortalRouter = require('./routes/supplier-portal');
+var reviewRouter = require('./routes/review');
 
 
 // view engine setup
@@ -210,6 +211,15 @@ function isWarehouseOrAdmin(req, res, next){
     );
 }
 
+function isSupplier(req, res, next){
+    if(req.isAuthenticated() && req.user && req.user.role === 'supplier'){
+        return next();
+    }
+    res.status(403).send(
+        'Access Denied: Supplier Only'
+    );
+}
+
 app.use('/', homeRouter);
 app.use('/', cartRouter);
 app.use('/login', loginRouter);
@@ -217,9 +227,12 @@ app.use('/register', registerRouter);
 app.use('/admin', isWarehouseOrAdmin, adminRouter);
 app.use('/admin/category', isAdmin, categoryRouter);
 app.use('/admin/product', isWarehouseOrAdmin, productRouter);
+app.use('/admin/review', isAdmin, reviewRouter);
 app.use('/admin/supplier', isAdmin, supplierRouter);
 app.use('/admin/orders', isWarehouseOrAdmin, adminOrderRouter);
 app.use('/admin/inventory', isWarehouseOrAdmin, inventoryRouter);
+app.use('/admin/import-request', isWarehouseOrAdmin, importRequestRouter);
+app.use('/supplier/import-request', isSupplier, supplierPortalRouter);
 app.use('/users', isAdmin, usersRouter);
 
 // catch 404 and forward to error handler
