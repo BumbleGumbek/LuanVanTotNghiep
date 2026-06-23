@@ -40,8 +40,13 @@ const UserSchema = new Schema({
         },
         role: {
             type: String,
-            enum: ['customer', 'admin', 'warehouse', 'staff', 'sales_staff'],
+            enum: ['customer', 'admin', 'warehouse', 'supplier', 'staff', 'sales_staff'],
             default: 'customer'
+        },
+        supplierId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Supplier',
+            default: null
         }
 
     },
