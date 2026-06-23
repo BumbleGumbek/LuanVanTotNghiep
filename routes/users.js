@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/User');
 const bcryptjs = require('bcryptjs');
+const Supplier = require('../models/Supplier');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
@@ -54,9 +55,34 @@ router.get('/warehouse', async function(req, res, next) {
     }
 });
 
+router.get('/suppliers', async function(req, res, next) {
+    try {
+        const suppliers = await User.find({
+            role: 'supplier'
+        }).populate('supplierId');
+        res.render('admin/user/supplier-list', {
+            plainUser: suppliers.map(user => {
+                const uObj = user.toObject();
+                if (uObj.supplierId) {
+                    uObj.supplierName = uObj.supplierId.name;
+                } else {
+                    uObj.supplierName = 'N/A';
+                }
+                return uObj;
+            }),
+            title: 'Supplier User List'
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.get('/create', async function (req, res, next) {
     try {
-        res.render('admin/user/create');
+        const suppliers = await Supplier.find({ status: true });
+        res.render('admin/user/create', {
+            plainSupplier: suppliers.map(s => s.toObject())
+        });
     } catch (err) {
         next(err);
     }
@@ -73,6 +99,7 @@ router.post('/create', async function (req, res, next) {
             email: req.body.email,
             password: hash,
             role: req.body.role || 'customer',
+            supplierId: req.body.role === 'supplier' ? req.body.supplierId : null,
             status: req.body.status === 'true'
         });
         await newUser.save();
@@ -89,9 +116,18 @@ router.get('/edit/:id', async function (req, res, next) {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).send('User not found');
 
+        const suppliers = await Supplier.find({ status: true });
+        const selectedSupplierId = user.supplierId ? user.supplierId.toString() : '';
+
         res.render('admin/user/edit', {
             title: 'Edit User',
-            user: user.toObject()
+            user: user.toObject(),
+            selectedSupplierId: selectedSupplierId,
+            plainSupplier: suppliers.map(s => {
+                const sObj = s.toObject();
+                sObj._idStr = s._id.toString();
+                return sObj;
+            })
         });
     } catch (err) {
         console.error("Error loading user edit information:", err);
@@ -108,16 +144,11 @@ router.post('/edit/:id', async function (req, res, next) {
         user.lastName = req.body.lastName;
         user.email = req.body.email;
         if (req.body.password) {
-
             const salt = await bcryptjs.genSalt(10);
-
-            user.password =
-                await bcryptjs.hash(
-                    req.body.password,
-                    salt
-                );
+            user.password = await bcryptjs.hash(req.body.password, salt);
         }
         user.role = req.body.role;
+        user.supplierId = req.body.role === 'supplier' ? req.body.supplierId : null;
         user.status = req.body.status === 'true';
 
         await user.save();

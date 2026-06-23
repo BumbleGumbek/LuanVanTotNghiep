@@ -21,10 +21,21 @@
             </div>
             <div class="form-group mb-3">
                 <label>Role</label>
-                <select name="role" class="form-control">
+                <select name="role" id="roleSelect" class="form-control">
                     <option value="customer">Customer</option>
                     <option value="admin">Admin</option>
                     <option value="warehouse">Warehouse</option>
+                    <option value="supplier">Supplier</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3" id="supplierSelectGroup" style="display: none;">
+                <label>Supplier Partner</label>
+                <select name="supplierId" class="form-control">
+                    <option value="" disabled selected>-- Select Supplier --</option>
+                    {{#each plainSupplier}}
+                        <option value="{{_id}}">{{name}}</option>
+                    {{/each}}
                 </select>
             </div>
 
@@ -47,3 +58,20 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSelect = document.getElementById('roleSelect');
+        const supplierSelectGroup = document.getElementById('supplierSelectGroup');
+
+        if (roleSelect && supplierSelectGroup) {
+            roleSelect.addEventListener('change', function() {
+                if (this.value === 'supplier') {
+                    supplierSelectGroup.style.display = 'block';
+                } else {
+                    supplierSelectGroup.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>

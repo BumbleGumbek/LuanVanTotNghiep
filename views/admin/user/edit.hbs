@@ -19,7 +19,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Role</label>
-                <select name="role" class="form-control">
+                <select name="role" id="roleSelect" class="form-control">
                     <option value="customer"
                         {{#if (eq user.role 'customer')}}
                             selected
@@ -41,6 +41,28 @@
                         Warehouse
                     </option>
 
+                    <option value="supplier"
+                        {{#if (eq user.role 'supplier')}}
+                            selected
+                        {{/if}}>
+                        Supplier
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="mb-3" id="supplierSelectGroup" style="display: none;">
+                <label class="form-label">Supplier Partner</label>
+                <select name="supplierId" class="form-control">
+                    <option value="" disabled selected>-- Select Supplier --</option>
+                    {{#each plainSupplier}}
+                        <option value="{{this._idStr}}"
+                            {{#if (eq this._idStr ../selectedSupplierId)}}
+                                selected
+                            {{/if}}>
+                            {{this.name}}
+                        </option>
+                    {{/each}}
                 </select>
             </div>
             <div class="mb-3">
@@ -69,3 +91,28 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSelect = document.getElementById('roleSelect');
+        const supplierSelectGroup = document.getElementById('supplierSelectGroup');
+
+        function toggleSupplierSelect(roleValue) {
+            if (roleValue === 'supplier') {
+                supplierSelectGroup.style.display = 'block';
+            } else {
+                supplierSelectGroup.style.display = 'none';
+            }
+        }
+
+        if (roleSelect && supplierSelectGroup) {
+            // Check initial state
+            toggleSupplierSelect(roleSelect.value);
+
+            // Listen for changes
+            roleSelect.addEventListener('change', function() {
+                toggleSupplierSelect(this.value);
+            });
+        }
+    });
+</script>
