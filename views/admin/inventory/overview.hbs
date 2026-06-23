@@ -5,6 +5,18 @@
                 <h3 class="card-title mb-1">Stock Overview</h3>
                 <p class="card-text text-muted mb-0">Monitor real-time inventory levels, imports, sales, shelf-life, and stock statuses.</p>
             </div>
+            <div class="flex-grow-1 d-flex justify-content-center">
+                <form class="form-inline searchform text-muted">
+                    <input
+                            class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted"
+                            type="search"
+                            name="keyword"
+                            value="{{keyword}}"
+                            placeholder="Search products..."
+                            aria-label="Search"
+                            style="width: 300px;">
+                </form>
+            </div>
             <div>
                 <a href="/admin/inventory/import" class="btn btn-primary px-4">
                     <i class="fe fe-plus-circle mr-1"></i> Import Stock
