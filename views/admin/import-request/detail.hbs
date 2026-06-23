@@ -1,0 +1,122 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="row align-items-center mb-4">
+                <div class="col">
+                    <h2>Import Request Details</h2>
+                    <p class="text-muted">Detailed view of the requested items and supplier information.</p>
+                </div>
+                <div class="col-auto d-flex align-items-center">
+
+                    {{#if (eq request.status "Delivered")}}
+                        <form action="/admin/import-request/import/{{request._id}}"
+                              method="POST"
+                              class="mr-2">
+
+                            <button type="submit"
+                                    class="btn btn-success"
+                                    onclick="return confirm('Import stock and complete this request?')">
+
+                                <i class="fe fe-check-circle mr-1"></i>
+                                Import Stock & Complete
+                            </button>
+
+                        </form>
+                    {{/if}}
+
+                    <a href="/admin/import-request"
+                       class="btn btn-secondary px-4">
+                        <i class="fe fe-arrow-left mr-1"></i>
+                        Back to List
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Left Column: Request Information -->
+                <div class="col-md-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <strong class="card-title"><i class="fe fe-info mr-2"></i>General Information</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label font-weight-bold text-muted mb-0">Request Code</label>
+                                <p class="h5 font-weight-bold text-primary">{{request.requestCode}}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label font-weight-bold text-muted mb-0">Supplier</label>
+                                <p class="h6 font-weight-bold">{{request.supplier.name}}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label font-weight-bold text-muted mb-0">Status</label>
+                                <div>
+                                    {{#if (eq request.status "Pending")}}
+                                        <span class="badge badge-warning">Pending</span>
+                                    {{/if}}
+                                    {{#if (eq request.status "Delivered")}}
+                                        <span class="badge badge-info">Delivered</span>
+                                    {{/if}}
+                                    {{#if (eq request.status "Completed")}}
+                                        <span class="badge badge-success">Completed</span>
+                                    {{/if}}
+                                    {{#if (eq request.status "Rejected")}}
+                                        <span class="badge badge-danger">Rejected</span>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label font-weight-bold text-muted mb-0">Created By</label>
+                                <p class="mb-0">{{request.createdBy.firstName}} {{request.createdBy.lastName}}</p>
+                                <small class="text-muted">{{request.createdBy.email}}</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label font-weight-bold text-muted mb-0">Created Date</label>
+                                <p class="mb-0">{{request.createdAt}}</p>
+                            </div>
+                            {{#if request.note}}
+                                <div class="mb-0">
+                                    <label class="form-label font-weight-bold text-muted mb-0">Note</label>
+                                    <p class="mb-0 text-muted">{{request.note}}</p>
+                                </div>
+                            {{/if}}
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Requested Items -->
+                <div class="col-md-8">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <strong class="card-title"><i class="fe fe-package mr-2"></i>Requested Items</strong>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0" style="min-width: 500px;">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th style="width: 25%;">Size</th>
+                                            <th style="width: 25%;" class="text-right">Quantity Requested</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each request.items}}
+                                            <tr>
+                                                <td>{{product.name}}</td>
+                                                <td>{{size}}</td>
+                                                <td class="text-right font-weight-bold">{{quantityRequested}}</td>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
