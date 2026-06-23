@@ -60,6 +60,10 @@ router.post('/', (req, res, next) => {
                 return res.redirect('/admin');
             }
 
+            if (user.role === 'supplier') {
+                return res.redirect('/supplier/import-request');
+            }
+
             if (oldUrl) {
                 delete req.session.oldUrl;
                 return res.redirect(oldUrl);
