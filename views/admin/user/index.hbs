@@ -1,21 +1,52 @@
 <div class="card shadow">
     <div class="card-body">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center mb-3">
             <div>
                 <h5 class="card-title mb-1">
-                    Customers Table
+                    User Table
                 </h5>
                 <p class="card-text mb-0">
-                    Manage all registered customers here.
+                    Manage all registered customers and non-admin accounts.
                 </p>
                 <p class="card-text mt-2 font-weight-bold">
                     Total number of customers : {{plainUser.length}}
                 </p>
             </div>
-            <a href="/users/create" class="btn btn-primary">
-                Add Customer
-            </a>
+            <div class="flex-grow-1 d-flex justify-content-center">
+                <form action="/users" method="GET" class="form-inline searchform text-muted">
+                    <input
+                            class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted"
+                            type="search"
+                            name="keyword"
+                            value="{{keyword}}"
+                            placeholder="Search customers..."
+                            aria-label="Search"
+                            style="width: 300px;">
+                    {{#if selectedRole}}
+                        <input type="hidden" name="role" value="{{selectedRole}}">
+                    {{/if}}
+                </form>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <form action="/users" method="GET" class="mr-3 d-flex align-items-center">
+                    {{#if keyword}}
+                        <input type="hidden" name="keyword" value="{{keyword}}">
+                    {{/if}}
+                    <select name="role" class="form-control mr-2" onchange="this.form.submit()">
+                        <option value="">All Roles</option>
+                        <option value="customer" {{#if (eq selectedRole 'customer')}}selected{{/if}}>Customer</option>
+                        <option value="warehouse" {{#if (eq selectedRole 'warehouse')}}selected{{/if}}>Warehouse</option>
+                        <option value="supplier" {{#if (eq selectedRole 'supplier')}}selected{{/if}}>Supplier</option>
+                        <option value="store_manager" {{#if (eq selectedRole 'store_manager')}}selected{{/if}}>Store Manager</option>
+                    </select>
+                </form>
+
+                <a href="/users/create" class="btn btn-primary">
+                    Add Customer
+                </a>
+            </div>
         </div>
 
         <table class="table table-hover align-middle">
@@ -37,7 +68,7 @@
                     <td>{{firstName}} {{lastName}}</td>
                     <td>{{email}}</td>
                     <td>
-                        <span class="badge {{#if (eq role 'admin')}}badge-danger{{else}}badge-primary{{/if}}">
+                        <span class="badge {{#if (eq role 'admin')}}badge-danger{{else}}{{#if (eq role 'customer')}}badge-primary{{else}}{{#if (eq role 'warehouse')}}badge-info text-dark{{else}}{{#if (eq role 'supplier')}}badge-warning text-dark{{else}}badge-secondary{{/if}}{{/if}}{{/if}}{{/if}}">
                             {{role}}
                         </span>
                     </td>

@@ -48,6 +48,13 @@
                         Supplier
                     </option>
 
+                    <option value="store_manager"
+                        {{#if (eq user.role 'store_manager')}}
+                            selected
+                        {{/if}}>
+                        Store Manager
+                    </option>
+
                 </select>
             </div>
 

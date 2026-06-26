@@ -11,12 +11,46 @@ router.all('/*', function (req, res, next) {
 
 router.get('/', async function (req, res, next) {
     try {
-        const users = await User.find({
-                role: 'customer'
-            });
-        const plainUser = users.map(user => user.toObject());
+        const keyword = req.query.keyword || '';
+        const selectedRole = req.query.role || '';
+
+        let filter = {
+            role: {
+                $in: [
+                    'customer',
+                    'warehouse',
+                    'supplier',
+                    'store_manager'
+                ]
+            }
+        };
+
+        if (selectedRole) {
+            filter.role = selectedRole;
+        }
+
+        if (keyword) {
+            filter.$or = [
+                { firstName: { $regex: keyword, $options: 'i' } },
+                { lastName: { $regex: keyword, $options: 'i' } },
+                { email: { $regex: keyword, $options: 'i' } }
+            ];
+        }
+
+        const users = await User.find(filter).populate('supplierId');
+        
         res.render('admin/user/index', {
-            plainUser: plainUser
+            plainUser: users.map(user => {
+                const uObj = user.toObject();
+                if (uObj.supplierId) {
+                    uObj.supplierName = uObj.supplierId.name;
+                } else {
+                    uObj.supplierName = 'N/A';
+                }
+                return uObj;
+            }),
+            keyword,
+            selectedRole
         });
     } catch (err) {
         console.error("Error retrieving user list:", err);
@@ -27,50 +61,23 @@ router.get('/', async function (req, res, next) {
 
 router.get('/admins', async function(req, res, next) {
     try {
-        const admins = await User.find({
+        const keyword = req.query.keyword || '';
+        let filter = {
             role: 'admin'
-        });
+        };
+
+        if (keyword) {
+            filter.$or = [
+                { firstName: { $regex: keyword, $options: 'i' } },
+                { lastName: { $regex: keyword, $options: 'i' } },
+                { email: { $regex: keyword, $options: 'i' } }
+            ];
+        }
+
+        const admins = await User.find(filter);
         res.render('admin/user/admin-list', {
-                plainUser: admins.map(
-                        user => user.toObject()
-                    )
-            }
-        );
-    } catch (err) {
-        next(err);
-    }
-});
-
-router.get('/warehouse', async function(req, res, next) {
-    try {
-        const warehouseUsers = await User.find({
-            role: 'warehouse'
-        });
-        res.render('admin/user/warehouse-list', {
-            plainUser: warehouseUsers.map(user => user.toObject()),
-            title: 'Warehouse List'
-        });
-    } catch (err) {
-        next(err);
-    }
-});
-
-router.get('/suppliers', async function(req, res, next) {
-    try {
-        const suppliers = await User.find({
-            role: 'supplier'
-        }).populate('supplierId');
-        res.render('admin/user/supplier-list', {
-            plainUser: suppliers.map(user => {
-                const uObj = user.toObject();
-                if (uObj.supplierId) {
-                    uObj.supplierName = uObj.supplierId.name;
-                } else {
-                    uObj.supplierName = 'N/A';
-                }
-                return uObj;
-            }),
-            title: 'Supplier User List'
+            plainUser: admins.map(user => user.toObject()),
+            keyword
         });
     } catch (err) {
         next(err);
@@ -159,7 +166,7 @@ router.post('/edit/:id', async function (req, res, next) {
     }
 });
 
-router.get('/delete/:id', async function (req, res, next) {
+router.get('/:id', async function (req, res, next) {
     try {
         await User.findByIdAndDelete(req.params.id);
         res.redirect('/users');
