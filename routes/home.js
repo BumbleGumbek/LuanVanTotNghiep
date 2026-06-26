@@ -7,8 +7,11 @@ const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const User = require('../models/User');
 const Review = require('../models/Review');
+const Coupon = require('../models/Coupon');
 const bcryptjs = require('bcryptjs');
 const payos = require('../config/payos');
+const QRCode = require('qrcode');
+const { sendOrderPaidEmail } = require('../helpers/mail-helper');
 
 router.use((req, res, next) => {
   res.app.locals.layout = 'home';
@@ -129,6 +132,7 @@ router.get('/my-orders', async (req, res, next) => {
 
 router.get('/my-orders/:id', async function(req, res, next) {
   try {
+    console.log('APP_URL:', process.env.APP_URL);
     if (!req.isAuthenticated()) return res.redirect('/login');
 
     const order = await Order.findOne({
@@ -156,9 +160,57 @@ router.get('/my-orders/:id', async function(req, res, next) {
     plainOrder.isShippingStep = ['Shipping', 'Completed'].includes(order.status);
     plainOrder.isCompletedStep = order.status === 'Completed';
 
+    let qrCodeImage = null;
+    if (order.status === 'Shipping') {
+      const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+      const qrUrl = `${appUrl}/order-track/${order._id}`;
+      qrCodeImage = await QRCode.toDataURL(qrUrl);
+      console.log('QR URL:', qrUrl);
+      console.log('QR GENERATED:', qrCodeImage ? 'YES' : 'NO');
+    }
+
     res.render('home/my-orders-detail', {
       order: plainOrder,
+      qrCodeImage,
       activePage: 'orders'
+    });
+
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/order-track/:id', async function (req, res, next) {
+  try {
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.redirect('/');
+    }
+
+    const plainOrder = order.toObject();
+
+    plainOrder.isPaidStep =
+        ['Paid', 'Shipping', 'Completed']
+            .includes(order.status);
+
+    plainOrder.isShippingStep =
+        ['Shipping', 'Completed']
+            .includes(order.status);
+
+    plainOrder.isCompletedStep =
+        order.status === 'Completed';
+
+    plainOrder.items = plainOrder.items.map(item => ({
+      ...item,
+      subtotal: item.price_at_purchase * item.quantity
+    }));
+
+    res.render('home/order-track', {
+      layout: false,
+      order: plainOrder,
+      title: 'Order Tracking'
     });
 
   } catch (err) {
@@ -361,6 +413,27 @@ router.get('/payment/success', async function(req, res) {
 
     await order.save();
 
+    const user = await User.findById(order.user);
+
+    await sendOrderPaidEmail(
+        order,
+        user
+    );
+
+    if (order.couponUsed) {
+      const coupon = await Coupon.findById(order.couponUsed);
+      if (
+          coupon &&
+          !coupon.usedBy.some(
+              userId => userId.toString() === order.user.toString()
+          )
+      ) {
+        coupon.usedBy.push(order.user);
+        coupon.usedCount += 1;
+
+        await coupon.save();
+      }
+    }
     req.flash(
         'success_message',
         'Payment successful.'
@@ -583,47 +656,44 @@ router.post('/payment/create/:id', async (req, res, next) => {
   }
 });
 
-router.post('/confirm-received/:id', async function(req,res,next){
-      try{
-        if(!req.isAuthenticated()){
-          return res.redirect('/login');
-        }
-        const order = await Order.findOne({
-              _id: req.params.id,
-              user: req.user._id
+router.post('/confirm-received/:id', async function(req, res, next) {
 
-            });
-        if(!order){
-          req.flash(
-              'error_message',
-              'Order not found'
-          );
-          return res.redirect(
-              '/my-orders'
-          );
-        }
-        if(
-            order.status !==
-            'Shipping'
-        ){
-          req.flash(
-              'error_message',
-              'Invalid order status'
-          );
-          return res.redirect('/my-orders');
-        }
-        order.status = 'Completed';
-        await order.save();
-        req.flash(
-            'success_message',
-            'Order completed successfully'
-        );
-        res.redirect('/my-orders/' + order._id);
-      }catch(err){
-        next(err);
-      }
+  try {
+
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
     }
-);
+
+    const order = await Order.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    });
+
+    if (!order) {
+      req.flash('error_message', 'Order not found');
+      return res.redirect('/my-orders');
+    }
+
+    if (order.status !== 'Shipping') {
+      req.flash('error_message', 'Order is not in shipping status');
+      return res.redirect('/my-orders/' + order._id);
+    }
+
+    order.status = 'Completed';
+
+    await order.save();
+
+    req.flash(
+        'success_message',
+        'Order completed successfully'
+    );
+
+    res.redirect('/my-orders/' + order._id);
+
+  } catch(err) {
+    next(err);
+  }
+});
 
 router.get('/review/:id', async function(req,res,next){
       try{

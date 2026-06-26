@@ -7,6 +7,7 @@ async function createOrder({
                                detailAddress,
                                checkoutItems,
                                totalPrice,
+                               couponId = null,
                                note
                            }) {
 
@@ -29,6 +30,7 @@ async function createOrder({
         })),
 
         totalPrice,
+        couponUsed: couponId,
         note: note || '',
         status: 'PendingPayment',
 

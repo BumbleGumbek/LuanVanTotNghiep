@@ -3,20 +3,29 @@ var router = express.Router();
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const { deductInventory } = require('../helpers/inventory-helper');
+const { hasRole } = require('../middlewares/authorization');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
     next();
 });
 
-router.get('/', async function (req, res, next) {
+router.get('/', hasRole('admin', 'store_manager', 'warehouse'), async function (req, res, next) {
     try {
         const orders = await Order.find({})
             .populate('user', 'firstName lastName email')
             .sort({ createdAt: -1 });
 
+        const sortedOrders = orders.map(order => order.toObject()).sort((a, b) => {
+            const aPaid = a.paymentStatus === 'Paid';
+            const bPaid = b.paymentStatus === 'Paid';
+            if (aPaid && !bPaid) return -1;
+            if (!aPaid && bPaid) return 1;
+            return 0;
+        });
+
         res.render('admin/orders/index', {
-            orders: orders.map(order => order.toObject()),
+            orders: sortedOrders,
             title: 'Order Management'
         });
     } catch (err) {
@@ -26,13 +35,8 @@ router.get('/', async function (req, res, next) {
 });
 
 
-router.post('/update-status/:id', async function (req, res, next) {
+router.post('/update-status/:id', hasRole('admin', 'warehouse'), async function (req, res, next) {
     try {
-        if (req.user.role !== 'warehouse') {
-            req.flash('error_message', 'Chỉ nhân viên kho mới được phép cập nhật trạng thái đơn hàng.');
-            return res.redirect('/admin/orders');
-        }
-
         const order = await Order.findById(req.params.id);
         if(!order){
             req.flash('error_message', 'Order not found');
@@ -116,7 +120,7 @@ router.post('/update-status/:id', async function (req, res, next) {
 });
 
 
-router.get('/invoice/:id', async function (req, res, next) {
+router.get('/invoice/:id', hasRole('admin', 'store_manager', 'warehouse'), async function (req, res, next) {
     try {
         const order = await Order.findById(req.params.id)
             .populate('user');

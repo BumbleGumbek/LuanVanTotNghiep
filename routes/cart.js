@@ -5,6 +5,7 @@ const Cart = require('../models/Cart');
 const Order = require('../models/Order');
 const { deductInventory } = require("../helpers/inventory-helper");
 const { createOrder } = require("../helpers/order-helper");
+const Coupon = require('../models/Coupon');
 const {getCartItems, calculateCartSummary} = require("../helpers/cart-helper");
 
 router.use((req, res, next) => {
@@ -269,7 +270,7 @@ router.get('/checkout', async function(req, res, next){
 router.post('/checkout', async function(req, res, next){
     if (!req.isAuthenticated()) return res.status(401).redirect('/login');
     try {
-        const { receiverName, receiverPhone, detailAddress, note } = req.body;
+        const { receiverName, receiverPhone, detailAddress, note, couponCode } = req.body;
         if (
             !receiverName ||
             !receiverPhone ||
@@ -319,6 +320,43 @@ router.post('/checkout', async function(req, res, next){
                 }
             });
         }
+        let coupon = null;
+
+        if (couponCode && couponCode.trim() !== '') {
+
+            coupon = await Coupon.findOne({
+                code: couponCode.trim().toUpperCase(),
+                status: true
+            });
+
+            if (!coupon) {
+                req.flash('error_message', 'Invalid coupon code.');
+                return res.redirect('/checkout');
+            }
+
+            if (coupon.expiryDate < new Date()) {
+                req.flash('error_message', 'Coupon has expired.');
+                return res.redirect('/checkout');
+            }
+
+            if (coupon.usedCount >= coupon.usageLimit) {
+                req.flash('error_message', 'Coupon usage limit reached.');
+                return res.redirect('/checkout');
+            }
+
+            if (totalPrice < coupon.minOrderValue) {
+                req.flash(
+                    'error_message',
+                    `Minimum order value is ${coupon.minOrderValue.toLocaleString()} VND`
+                );
+                return res.redirect('/checkout');
+            }
+
+            totalPrice = Math.max(
+                totalPrice - coupon.discountValue,
+                0
+            );
+        }
 
         console.log(req.body);
         const newOrder = await createOrder({
@@ -328,8 +366,10 @@ router.post('/checkout', async function(req, res, next){
             detailAddress,
             checkoutItems,
             totalPrice,
+            couponId: coupon ? coupon._id : null,
             note
         });
+
         if (isBuyNow) {
             delete req.session.buyNowItem;
         } else {

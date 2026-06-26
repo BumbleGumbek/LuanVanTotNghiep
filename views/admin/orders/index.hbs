@@ -25,7 +25,7 @@
           {{#each orders}}
           <tr>
             <td>{{shortId _id}}</td>
-            <td>{{createdAt}}</td>
+            <td>{{formatDate createdAt}}</td>
             <td>
                 <strong>{{user.firstName}} {{user.lastName}}</strong><br>
                 <small class="text-muted">{{user.email}}</small><br>
@@ -61,7 +61,7 @@
                   </a>
                 {{#if (ne status 'Completed')}}
                 {{#if (ne status 'Cancelled')}}
-                {{#if ../isWarehouse}}
+                {{#if ../canReceiveGoods}}
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle more-vertical" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="text-muted sr-only">Action</span>
@@ -69,9 +69,6 @@
                     <div class="dropdown-menu dropdown-menu-right">
                         <form action="/admin/orders/update-status/{{_id}}" method="POST">
                             {{#if (eq status 'PendingPayment')}}
-                                <button class="dropdown-item text-info" type="submit" name="status" value="Paid">
-                                    Set Paid
-                                </button>
                                 <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">
                                     Set Cancelled
                                 </button>

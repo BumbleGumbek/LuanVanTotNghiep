@@ -41,7 +41,6 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-lg-8">
                 <div class="shopping__cart__table">
@@ -133,6 +132,23 @@
                                 {{formatCurrency order.totalPrice}} VND
                             </span>
                         </li>
+                        {{#if qrCodeImage}}
+                        <div class="card mt-4">
+                            <div class="card-body text-center">
+
+                                <h5>
+                                    Scan QR To Track Order
+                                </h5>
+
+                                <img
+                                        src="{{{qrCodeImage}}}"
+                                        width="220"
+                                        class="img-fluid"
+                                        alt="QR Code">
+
+                            </div>
+                        </div>
+                        {{/if}}
                     </ul>
 
                     {{#if (eq order.status 'PendingPayment')}}

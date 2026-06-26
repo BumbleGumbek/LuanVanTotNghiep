@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order - {{shortId order._id}}</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <style>
+        body {
+            background-color: #f7f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #2b2b2b;
+        }
+        .tracking-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: #ffffff;
+            margin-bottom: 16px;
+        }
+        .shopee-progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 16px;
+            position: relative;
+            background: #fff;
+            border-radius: 12px;
+        }
+        .progress-line-bg {
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        .progress-line-active {
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            height: 4px;
+            background: #28a745;
+            z-index: 2;
+            transition: width 0.4s ease;
+        }
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+            width: 30%;
+        }
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .progress-step.active .step-circle {
+            background: #28a745;
+        }
+        .step-title {
+            font-size: 12px;
+            color: #888;
+            font-weight: 500;
+        }
+        .progress-step.active .step-title {
+            color: #2b2b2b;
+            font-weight: 600;
+        }
+        .product-item {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #f2f2f2;
+        }
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        .product-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #eef2f3;
+            margin-right: 12px;
+        }
+        .product-details {
+            flex-grow: 1;
+        }
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #2b2b2b;
+        }
+        .product-meta {
+            font-size: 12px;
+            color: #888;
+        }
+        .price-qty {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+        }
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #d10024;
+        }
+        .info-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 2px;
+        }
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2b2b2b;
+        }
+        .confirm-btn {
+            background: #28a745;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(40,167,69,0.2);
+        }
+        .confirm-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-3" style="max-width: 600px;">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="font-weight-bold mb-0">Luna Jewelry</h4>
+            <span class="badge badge-pill py-2 px-3 
+                {{#if (eq order.status 'Shipping')}}badge-info text-white{{/if}}
+                {{#if (eq order.status 'Completed')}}badge-success{{/if}}
+                {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}" style="font-size: 13px;">
+                {{order.status}}
+            </span>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="tracking-card p-3">
+            <div class="shopee-progress-bar">
+                <div class="progress-line-bg"></div>
+                <div class="progress-line-active" style="width: {{#if order.isCompletedStep}}80%{{else}}{{#if order.isShippingStep}}40%{{else}}0%{{/if}}{{/if}};"></div>
+                
+                <div class="progress-step {{#if order.isPaidStep}}active{{/if}}">
+                    <div class="step-circle"><i class="fa fa-credit-card"></i></div>
+                    <div class="step-title">Paid</div>
+                </div>
+                <div class="progress-step {{#if order.isShippingStep}}active{{/if}}">
+                    <div class="step-circle"><i class="fa fa-truck"></i></div>
+                    <div class="step-title">Delivering</div>
+                </div>
+                <div class="progress-step {{#if order.isCompletedStep}}active{{/if}}">
+                    <div class="step-circle"><i class="fa fa-check-circle"></i></div>
+                    <div class="step-title">Completed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert messages -->
+        {{#if success_message}}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{success_message}}
+            </div>
+        {{/if}}
+        {{#if error_message}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{error_message}}
+            </div>
+        {{/if}}
+
+        <!-- Order Info -->
+        <div class="tracking-card p-3">
+            <h6 class="font-weight-bold mb-3 border-bottom pb-2">Order Information</h6>
+            <div class="row mb-2">
+                <div class="col-6">
+                    <div class="info-label">Order Code</div>
+                    <div class="info-value text-primary font-weight-bold">{{shortId order._id}}</div>
+                </div>
+                <div class="col-6">
+                    <div class="info-label">Order Date</div>
+                    <div class="info-value">{{formatDate order.createdAt}}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="info-label">Payment Status</div>
+                    <div class="info-value">{{order.paymentStatus}}</div>
+                </div>
+                <div class="col-6">
+                    <div class="info-label">Payment Method</div>
+                    <div class="info-value">{{order.paymentMethod}}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="tracking-card p-3">
+            <h6 class="font-weight-bold mb-2 border-bottom pb-2">Product List</h6>
+            {{#each order.items}}
+                <div class="product-item">
+                    <img src="{{this.image}}" alt="{{this.name}}" class="product-img">
+                    <div class="product-details">
+                        <div class="product-name">{{this.name}}</div>
+                        <div class="product-meta">Size: <span class="badge badge-light border">{{this.size}}</span></div>
+                        <div class="price-qty">
+                            <span class="product-price">{{formatCurrency this.price_at_purchase}} VND</span>
+                            <span class="text-muted" style="font-size: 13px;">x{{this.quantity}}</span>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                <span class="font-weight-bold" style="font-size: 15px;">Total Amount</span>
+                <span class="font-weight-bold text-danger" style="font-size: 18px;">{{formatCurrency order.totalPrice}} VND</span>
+            </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="tracking-card p-3">
+            <h6 class="font-weight-bold mb-3 border-bottom pb-2">Delivery Address</h6>
+            <div class="mb-2">
+                <div class="info-label">Receiver</div>
+                <div class="info-value font-weight-bold">{{order.shippingAddress.receiverName}}</div>
+            </div>
+            <div class="mb-2">
+                <div class="info-label">Phone Number</div>
+                <div class="info-value">{{order.shippingAddress.receiverPhone}}</div>
+            </div>
+            <div>
+                <div class="info-label">Address</div>
+                <div class="info-value">{{order.shippingAddress.detailAddress}}</div>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        {{#if (eq order.status 'Shipping')}}
+            <div class="mt-4">
+                <form action="/confirm-received/{{order._id}}" method="POST">
+                    <button type="submit" class="confirm-btn">
+                        <i class="fa fa-check mr-2"></i> Confirm Received
+                    </button>
+                </form>
+            </div>
+        {{/if}}
+        {{#if (eq order.status 'Completed')}}
+            <div class="alert alert-success text-center font-weight-bold p-3 mt-4" style="border-radius: 8px;">
+                <i class="fa fa-check-circle mr-2"></i> Order Completed successfully! Thank you for purchasing at Luna Jewelry.
+            </div>
+        {{/if}}
+    </div>
+</body>
+</html>
