@@ -32,6 +32,10 @@ const CouponSchema = new Schema({
                 ref: 'User'
             }
         ],
+        usedCount: {
+            type: Number,
+            default: 0
+        },
         expiryDate: {
             type: Date,
             required: true
