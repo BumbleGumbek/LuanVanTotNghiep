@@ -4,6 +4,7 @@ var router = express.Router();
 const Category = require('../models/Category');
 const Product = require("../models/Product");
 const Supplier = require("../models/Supplier");
+const { hasRole } = require('../middlewares/authorization');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -46,7 +47,7 @@ router.all('/*', function (req, res, next) {
     next();
 });
 
-router.get('/', async function(req, res, next) {
+router.get('/', hasRole('admin', 'store_manager', 'warehouse'), async function(req, res, next) {
     try {
         const categoryId = req.query.category;
         const keyword = req.query.keyword || '';
@@ -78,7 +79,7 @@ router.get('/', async function(req, res, next) {
 });
 
 
-router.get('/create', async function(req, res, next) {
+router.get('/create', hasRole('admin', 'store_manager'), async function(req, res, next) {
     try {
         const categories = await Category.find({});
         const suppliers = await Supplier.find({ status: true });
@@ -92,7 +93,7 @@ router.get('/create', async function(req, res, next) {
     }
 });
 
-router.post('/create', upload.single('image'), async function(req, res, next) {
+router.post('/create', hasRole('admin', 'store_manager'), upload.single('image'), async function(req, res, next) {
     try {
         let variants = [];
 
@@ -131,7 +132,7 @@ router.post('/create', upload.single('image'), async function(req, res, next) {
     }
 });
 
-router.get('/edit/:id', async function (req, res, next) {
+router.get('/edit/:id', hasRole('admin', 'store_manager'), async function (req, res, next) {
     try {
         const product = await Product.findById(req.params.id);
         const categories = await Category.find({});
@@ -150,7 +151,7 @@ router.get('/edit/:id', async function (req, res, next) {
     }
 });
 
-router.post('/edit/:id', upload.single('image'), async function (req, res, next) {
+router.post('/edit/:id', hasRole('admin', 'store_manager'), upload.single('image'), async function (req, res, next) {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).send('Product not found');
@@ -189,7 +190,7 @@ router.post('/edit/:id', upload.single('image'), async function (req, res, next)
     }
 });
 
-router.get('/delete/:id', async function (req, res, next) {
+router.get('/delete/:id', hasRole('admin', 'store_manager'), async function (req, res, next) {
     try {
         await Product.findByIdAndDelete(req.params.id);
         res.redirect('/admin/product');
@@ -198,7 +199,7 @@ router.get('/delete/:id', async function (req, res, next) {
     }
 });
 
-router.get('/inventory', async function(req, res, next) {
+router.get('/inventory', hasRole('admin', 'store_manager', 'warehouse'), async function(req, res, next) {
     try {
         const products = await Product.find({}).populate('category');
 

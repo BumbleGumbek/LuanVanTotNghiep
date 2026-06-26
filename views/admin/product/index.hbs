@@ -38,11 +38,11 @@
                     </select>
                 </form>
 
-                {{#unless isWarehouse}}
+                {{#if canManageProducts}}
                     <a href="/admin/product/create" class="btn btn-primary">
                         Add Product
                     </a>
-                {{/unless}}
+                {{/if}}
             </div>
         </div>
         <table class="table table-hover align-middle">
