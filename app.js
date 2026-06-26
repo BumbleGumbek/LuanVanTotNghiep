@@ -102,6 +102,23 @@ app.use(async (req, res, next) => {
     res.locals.isAdmin = (req.user && req.user.role === 'admin');
     res.locals.isWarehouse = (req.user && req.user.role === 'warehouse');
     res.locals.isSupplier = (req.user && req.user.role === 'supplier');
+    res.locals.isStoreManager = req.user && req.user.role === 'store_manager';
+    
+    const role = req.user ? req.user.role : null;
+    res.locals.canAccessDashboard = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
+    res.locals.canViewProducts = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
+    res.locals.canManageProducts = !!(req.user && ['admin', 'store_manager'].includes(role));
+    res.locals.canManageCategories = !!(req.user && ['admin'].includes(role));
+    res.locals.canManageUsers = !!(req.user && ['admin'].includes(role));
+    res.locals.canManageSuppliers = !!(req.user && ['admin'].includes(role));
+    res.locals.canManageCoupons = !!(req.user && ['admin'].includes(role));
+    res.locals.canViewInventory = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
+    res.locals.canViewInventoryReport = !!(req.user && ['admin', 'store_manager'].includes(role));
+    res.locals.canCreateImportRequest = !!(req.user && ['admin', 'store_manager'].includes(role));
+    res.locals.canReceiveGoods = !!(req.user && ['admin', 'warehouse'].includes(role));
+    res.locals.canViewOrders = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
+    res.locals.canManageReviews = !!(req.user && ['admin'].includes(role));
+    res.locals.canViewRevenue = !!(req.user && ['admin'].includes(role));
     
     let totalQty = 0;
     let totalPrice = 0;
@@ -155,7 +172,9 @@ var adminOrderRouter = require('./routes/admin-order');
 var inventoryRouter = require('./routes/inventory');
 var importRequestRouter = require('./routes/import-request');
 var supplierPortalRouter = require('./routes/supplier-portal');
+var couponRouter = require('./routes/coupon');
 var reviewRouter = require('./routes/review');
+const { hasRole } = require('./middlewares/authorization');
 
 
 // view engine setup
@@ -175,65 +194,23 @@ function isLoggedIn(req, res, next){
     res.redirect('/login');
 }
 
-function isAdmin(req, res, next){
-    if(req.isAuthenticated() && req.user && req.user.role === 'admin'){
-        return next();
-    }
-    res.status(403).send('Access Denied: You do not have admin privileges');
-}
-
-function isWarehouse(req, res, next){
-    if(
-        req.isAuthenticated() &&
-        req.user &&
-        req.user.role === 'warehouse'
-    ){
-        return next();
-    }
-
-    res.status(403).send(
-        'Access Denied: Warehouse only'
-    );
-}
-
-function isWarehouseOrAdmin(req, res, next){
-    if(
-        req.isAuthenticated() && req.user &&
-        (
-            req.user.role === 'warehouse' ||
-            req.user.role === 'admin'
-        )
-    ){
-        return next();
-    }
-    res.status(403).send(
-        'Access Denied'
-    );
-}
-
-function isSupplier(req, res, next){
-    if(req.isAuthenticated() && req.user && req.user.role === 'supplier'){
-        return next();
-    }
-    res.status(403).send(
-        'Access Denied: Supplier Only'
-    );
-}
 
 app.use('/', homeRouter);
 app.use('/', cartRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
-app.use('/admin', isWarehouseOrAdmin, adminRouter);
-app.use('/admin/category', isAdmin, categoryRouter);
-app.use('/admin/product', isWarehouseOrAdmin, productRouter);
-app.use('/admin/review', isAdmin, reviewRouter);
-app.use('/admin/supplier', isAdmin, supplierRouter);
-app.use('/admin/orders', isWarehouseOrAdmin, adminOrderRouter);
-app.use('/admin/inventory', isWarehouseOrAdmin, inventoryRouter);
-app.use('/admin/import-request', isWarehouseOrAdmin, importRequestRouter);
-app.use('/supplier/import-request', isSupplier, supplierPortalRouter);
-app.use('/users', isAdmin, usersRouter);
+app.use('/admin', hasRole('admin', 'store_manager', 'warehouse'), adminRouter);
+app.use('/admin/category', hasRole('admin'), categoryRouter);
+app.use('/admin/product', hasRole('admin', 'warehouse', 'store_manager'), productRouter);
+app.use('/admin/orders', hasRole('admin', 'store_manager', 'warehouse'), adminOrderRouter);
+app.use('/admin/import-request', hasRole('admin', 'warehouse', 'store_manager'), importRequestRouter);
+app.use('/admin/review', hasRole('admin'), reviewRouter);
+app.use('/admin/supplier', hasRole('admin'), supplierRouter);
+app.use('/admin/inventory', hasRole('admin', 'store_manager', 'warehouse'), inventoryRouter);
+app.use('/supplier/import-request', hasRole('supplier'), supplierPortalRouter);
+app.use('/admin/coupon', hasRole('admin'), couponRouter);
+app.use('/users', hasRole('admin'), usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
