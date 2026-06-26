@@ -4,13 +4,14 @@ const Product = require('../models/Product');
 const Supplier = require('../models/Supplier');
 const ImportRequest = require('../models/ImportRequest');
 const StockImport = require('../models/StockImport');
+const { hasRole } = require('../middlewares/authorization');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
     next();
 });
 
-router.get('/', async function(req, res, next) {
+router.get('/', hasRole('admin', 'store_manager', 'warehouse'), async function(req, res, next) {
     try {
         const requests = await ImportRequest.find({})
             .populate('supplier')
@@ -27,7 +28,7 @@ router.get('/', async function(req, res, next) {
     }
 });
 
-router.get('/create', async function(req, res, next) {
+router.get('/create', hasRole('admin', 'store_manager'), async function(req, res, next) {
     try {
         const products = await Product.find({ status: true });
         const suppliers = await Supplier.find({ status: true });
@@ -44,18 +45,39 @@ router.get('/create', async function(req, res, next) {
             return sObj;
         });
 
+        let selectedProducts = [];
+        const { productIds } = req.query;
+        if (productIds) {
+            const idList = productIds.split(',')
+                .map(id => id.trim())
+                .filter(id => /^[0-9a-fA-F]{24}$/.test(id));
+            if (idList.length > 0) {
+                const loadedProducts = await Product.find({ _id: { $in: idList } });
+                selectedProducts = idList.map(id => {
+                    const prod = loadedProducts.find(p => p._id.toString() === id);
+                    if (prod) {
+                        const pObj = prod.toObject();
+                        pObj._idStr = prod._id.toString();
+                        return pObj;
+                    }
+                    return null;
+                }).filter(p => p !== null);
+            }
+        }
+
         res.render('admin/import-request/create', {
             title: 'Create Import Request',
             plainProducts,
             plainSuppliers,
-            productsJson: JSON.stringify(plainProducts)
+            productsJson: JSON.stringify(plainProducts),
+            selectedProductsJson: selectedProducts.length > 0 ? JSON.stringify(selectedProducts) : '[]'
         });
     } catch (err) {
         next(err);
     }
 });
 
-router.get('/edit/:id', async function(req, res, next) {
+router.get('/edit/:id', hasRole('admin', 'store_manager'), async function(req, res, next) {
     try {
         const request = await ImportRequest.findById(req.params.id)
             .populate('supplier')
@@ -99,7 +121,7 @@ router.get('/edit/:id', async function(req, res, next) {
     }
 });
 
-router.post('/edit/:id', async function(req, res, next) {
+router.post('/edit/:id', hasRole('admin', 'store_manager'), async function(req, res, next) {
     try {
         const request = await ImportRequest.findById(req.params.id);
         if (!request) {
@@ -149,7 +171,7 @@ router.post('/edit/:id', async function(req, res, next) {
     }
 });
 
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', hasRole('admin', 'store_manager', 'warehouse'), async function(req, res, next) {
     try {
         const request = await ImportRequest.findById(req.params.id)
             .populate('supplier')
@@ -172,7 +194,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 
-router.post('/create', async function(req, res, next) {
+router.post('/create', hasRole('admin', 'store_manager'), async function(req, res, next) {
     try {
         const { supplier, items, note } = req.body;
 
@@ -251,7 +273,7 @@ router.post('/create', async function(req, res, next) {
     }
 });
 
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', hasRole('admin', 'store_manager'), async function(req, res, next) {
     try {
         const request = await ImportRequest.findById(req.params.id);
         if (!request) {
@@ -273,7 +295,7 @@ router.delete('/:id', async function(req, res, next) {
     }
 });
 
-router.post('/import/:id', async function(req, res, next) {
+router.post('/import/:id', hasRole('admin', 'warehouse'), async function(req, res, next) {
     try {
         const request = await ImportRequest.findById(req.params.id);
         if (!request) {

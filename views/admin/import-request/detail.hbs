@@ -9,19 +9,13 @@
                 <div class="col-auto d-flex align-items-center">
 
                     {{#if (eq request.status "Delivered")}}
-                        <form action="/admin/import-request/import/{{request._id}}"
-                              method="POST"
-                              class="mr-2">
-
-                            <button type="submit"
-                                    class="btn btn-success"
-                                    onclick="return confirm('Import stock and complete this request?')">
-
-                                <i class="fe fe-check-circle mr-1"></i>
-                                Import Stock & Complete
-                            </button>
-
-                        </form>
+                        {{#if canReceiveGoods}}
+                            <form action="/admin/import-request/import/{{request._id}}" method="POST">
+                                <button type="submit" class="btn btn-success">
+                                    Receive Goods
+                                </button>
+                            </form>
+                        {{/if}}
                     {{/if}}
 
                     <a href="/admin/import-request"

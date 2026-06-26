@@ -15,6 +15,10 @@ const ImportRequestItemSchema = new Schema({
         type: Number,
         required: true,
         min: 1
+    },
+    quantityReceived: {
+        type: Number,
+        default: 0
     }
 }, { _id: false });
 

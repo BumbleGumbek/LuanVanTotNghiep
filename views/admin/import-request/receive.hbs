@@ -1,0 +1,62 @@
+<form action="/admin/import-request/receive/{{request._id}}" method="POST">
+
+    <h3>{{request.requestCode}}</h3>
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Size</th>
+            <th>Requested</th>
+            <th>Received</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {{#each request.items}}
+
+            <tr>
+
+                <td>
+                    {{this.product.name}}
+                </td>
+
+                <td>
+                    {{this.size}}
+                </td>
+
+                <td>
+                    {{this.quantityRequested}}
+                </td>
+
+                <td>
+
+                    <input
+                            type="number"
+                            class="form-control"
+                            min="0"
+                            name="items[{{@index}}][quantityReceived]"
+                            value="{{this.quantityRequested}}"
+                            required>
+
+                </td>
+
+            </tr>
+
+        {{/each}}
+
+        </tbody>
+
+    </table>
+
+    <button
+            type="submit"
+            class="btn btn-success">
+
+        Confirm Receipt
+
+    </button>
+
+</form>

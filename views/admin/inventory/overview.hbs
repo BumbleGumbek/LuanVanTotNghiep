@@ -6,7 +6,7 @@
                 <p class="card-text text-muted mb-0">Monitor real-time inventory levels, imports, sales, shelf-life, and stock statuses.</p>
             </div>
             <div class="flex-grow-1 d-flex justify-content-center">
-                <form class="form-inline searchform text-muted">
+                <form action="/admin/inventory/overview" method="GET" class="form-inline searchform text-muted">
                     <input
                             class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted"
                             type="search"
@@ -15,18 +15,35 @@
                             placeholder="Search products..."
                             aria-label="Search"
                             style="width: 300px;">
+                    {{#if selectedFilter}}
+                        <input type="hidden" name="filter" value="{{selectedFilter}}">
+                    {{/if}}
+                    {{#if selectedSort}}
+                        <input type="hidden" name="sort" value="{{selectedSort}}">
+                    {{/if}}
                 </form>
             </div>
-            <div>
-                <a href="/admin/inventory/import" class="btn btn-primary px-4">
-                    <i class="fe fe-plus-circle mr-1"></i> Import Stock
-                </a>
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" id="btn-select-all">
+                    Select All
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-warning mr-2" id="btn-select-low-stock">
+                    <i class="fe fe-alert-triangle mr-1"></i> Select Low Stock
+                </button>
+                {{#if canCreateImportRequest}}
+                <button type="button" class="btn btn-sm btn-primary" id="btn-create-import-request">
+                    <i class="fe fe-plus mr-1"></i> Create Import Request
+                </button>
+                {{/if}}
             </div>
         </div>
 
         <!-- Filter and Sort Controls Form -->
         <div class="bg-light p-3 rounded mb-4 shadow-sm border">
             <form action="/admin/inventory/overview" method="GET" class="form-inline d-flex justify-content-between align-items-center flex-wrap">
+                {{#if keyword}}
+                    <input type="hidden" name="keyword" value="{{keyword}}">
+                {{/if}}
                 <div class="d-flex flex-wrap align-items-center">
                     <div class="form-group mr-4">
                         <label for="filter" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-filter mr-1"></i>Filter Status:</label>
@@ -64,6 +81,9 @@
             <table class="table table-hover align-middle">
                 <thead class="thead-light">
                     <tr>
+                        <th style="width: 4%;" class="text-center">
+                            <input type="checkbox" id="check-all-products">
+                        </th>
                         <th style="width: 5%;">#</th>
                         <th style="width: 10%;">Image</th>
                         <th style="width: 20%;">Product Name</th>
@@ -80,6 +100,9 @@
                 <tbody>
                     {{#each plainProducts}}
                         <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="product-checkbox" value="{{_id}}" data-status="{{statusKey}}">
+                            </td>
                             <td>{{add @index 1}}</td>
                             <td>
                                 <img src="{{image}}" alt="{{name}}" width="60" height="60" style="object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6;">
@@ -133,7 +156,7 @@
                     {{/each}}
                     {{#unless plainProducts.length}}
                         <tr>
-                            <td colspan="11" class="text-center text-muted py-5">
+                            <td colspan="12" class="text-center text-muted py-5">
                                 <i class="fe fe-inbox fe-24 d-block mb-2"></i>
                                 No products match the selected filters.
                             </td>
@@ -144,3 +167,65 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const checkAll = document.getElementById('check-all-products');
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const btnSelectAll = document.getElementById('btn-select-all');
+    const btnSelectLowStock = document.getElementById('btn-select-low-stock');
+    const btnCreateImportRequest = document.getElementById('btn-create-import-request');
+
+    // Header checkbox toggles all
+    if (checkAll) {
+        checkAll.addEventListener('change', function () {
+            checkboxes.forEach(cb => cb.checked = checkAll.checked);
+        });
+    }
+
+    // Select All Button
+    if (btnSelectAll) {
+        btnSelectAll.addEventListener('click', function () {
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+            if (checkAll) checkAll.checked = !allChecked;
+        });
+    }
+
+    // Select Low Stock Button
+    if (btnSelectLowStock) {
+        btnSelectLowStock.addEventListener('click', function () {
+            // First uncheck all
+            checkboxes.forEach(cb => cb.checked = false);
+            if (checkAll) checkAll.checked = false;
+
+            // Check only low stock
+            checkboxes.forEach(cb => {
+                if (cb.getAttribute('data-status') === 'lowStock') {
+                    cb.checked = true;
+                }
+            });
+        });
+    }
+
+    // Create Import Request Button
+    if (btnCreateImportRequest) {
+        btnCreateImportRequest.addEventListener('click', function () {
+            const selectedIds = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selectedIds.push(cb.value);
+                }
+            });
+
+            if (selectedIds.length === 0) {
+                alert('Please select at least one product.');
+                return;
+            }
+
+            // Redirect to create request page with query param
+            window.location.href = '/admin/import-request/create?productIds=' + selectedIds.join(',');
+        });
+    }
+});
+</script>

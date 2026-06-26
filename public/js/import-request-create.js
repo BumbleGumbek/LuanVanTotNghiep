@@ -87,7 +87,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Add initial rows
-    if (window.preExistingItems && window.preExistingItems.length > 0) {
+    if (window.selectedProductsData && window.selectedProductsData.length > 0) {
+        window.selectedProductsData.forEach(product => {
+            if (product.variants && product.variants.length > 0) {
+                product.variants.forEach(variant => {
+                    addItemRow({
+                        product: product._idStr,
+                        size: variant.size,
+                        quantityRequested:
+                            variant.quantity <= product.lowStockThreshold ? 20 : 0
+                    });
+
+                });
+            }
+        });
+    } else if (window.preExistingItems && window.preExistingItems.length > 0) {
         window.preExistingItems.forEach(item => {
             addItemRow(item);
         });

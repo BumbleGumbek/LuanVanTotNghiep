@@ -5,6 +5,7 @@ const Product = require('../models/Product');
 const StockImport = require('../models/StockImport');
 const Category = require('../models/Category');
 const Supplier = require('../models/Supplier');
+const { hasRole } = require('../middlewares/authorization');
 
 // Setup multer for uploading new product images
 const storage = multer.diskStorage({
@@ -36,11 +37,19 @@ router.all('/*', function (req, res, next) {
     next();
 });
 
-router.get('/overview', async function(req, res, next) {
+router.get('/overview', hasRole('admin', 'store_manager', 'warehouse'), async function(req, res, next) {
     try {
-        const { filter = 'all', sort = '' } = req.query;
+        const { filter = 'all', sort = '', keyword = '' } = req.query;
 
-        const products = await Product.find({}).populate('category');
+        let dbFilter = {};
+        if (keyword) {
+            dbFilter.name = {
+                $regex: keyword,
+                $options: 'i'
+            };
+        }
+
+        const products = await Product.find(dbFilter).populate('category');
         let plainProducts = [];
         const today = new Date();
 
@@ -183,6 +192,7 @@ router.get('/overview', async function(req, res, next) {
             sortOptions,
             selectedFilter: filter,
             selectedSort: sort,
+            keyword,
             success_message: req.flash('success_message')
         });
     } catch (err) {
@@ -190,7 +200,7 @@ router.get('/overview', async function(req, res, next) {
     }
 });
 
-router.get('/import', async function(req, res, next) {
+router.get('/import', hasRole('admin', 'warehouse'), async function(req, res, next) {
     try {
         const products = await Product.find({}).populate('category').populate('supplier');
         const categories = await Category.find({});
@@ -212,7 +222,7 @@ router.get('/import', async function(req, res, next) {
     }
 });
 
-router.post('/import', upload.single('image'), async function(req, res, next) {
+router.post('/import', hasRole('admin', 'warehouse'), upload.single('image'), async function(req, res, next) {
     try {
         const {
             productSelect,
@@ -323,11 +333,11 @@ router.post('/import', upload.single('image'), async function(req, res, next) {
     }
 });
 
-router.get('/report', function(req, res, next) {
+router.get('/report', hasRole('admin', 'store_manager'), function(req, res, next) {
     res.render('admin/inventory/report', { title: 'Inventory Report' });
 });
 
-router.get('/low-stock', async function(req, res, next) {
+router.get('/low-stock', hasRole('admin', 'store_manager', 'warehouse'), async function(req, res, next) {
     try {
         const products = await Product.find({}).populate('category');
         const lowStockProducts = [];
@@ -368,7 +378,7 @@ router.get('/low-stock', async function(req, res, next) {
     }
 });
 
-router.post('/update-threshold/:id', async function(req, res, next) {
+router.post('/update-threshold/:id', hasRole('admin'), async function(req, res, next) {
     try {
         const { threshold } = req.body;
         const thresholdVal = parseInt(threshold, 10);
