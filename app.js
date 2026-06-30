@@ -108,7 +108,7 @@ app.use(async (req, res, next) => {
     res.locals.canAccessDashboard = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
     res.locals.canViewProducts = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
     res.locals.canManageProducts = !!(req.user && ['admin', 'store_manager'].includes(role));
-    res.locals.canManageCategories = !!(req.user && ['admin'].includes(role));
+    res.locals.canManageCategories = !!(req.user && ['admin', 'store_manager'].includes(role));
     res.locals.canManageUsers = !!(req.user && ['admin'].includes(role));
     res.locals.canManageSuppliers = !!(req.user && ['admin'].includes(role));
     res.locals.canManageCoupons = !!(req.user && ['admin'].includes(role));
@@ -118,7 +118,8 @@ app.use(async (req, res, next) => {
     res.locals.canReceiveGoods = !!(req.user && ['admin', 'warehouse'].includes(role));
     res.locals.canViewOrders = !!(req.user && ['admin', 'store_manager', 'warehouse'].includes(role));
     res.locals.canManageReviews = !!(req.user && ['admin'].includes(role));
-    res.locals.canViewRevenue = !!(req.user && ['admin'].includes(role));
+    res.locals.canViewRevenue = ['admin','store_manager'].includes(role);
+    res.locals.canViewReviews = !!(req.user && ['admin', 'store_manager'].includes(role));
     
     let totalQty = 0;
     let totalPrice = 0;
@@ -200,11 +201,11 @@ app.use('/', cartRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/admin', hasRole('admin', 'store_manager', 'warehouse'), adminRouter);
-app.use('/admin/category', hasRole('admin'), categoryRouter);
-app.use('/admin/product', hasRole('admin', 'warehouse', 'store_manager'), productRouter);
+app.use('/admin/category', hasRole('admin', 'store_manager'), categoryRouter);
+app.use('/admin/product', hasRole('admin', 'store_manager'), productRouter);
 app.use('/admin/orders', hasRole('admin', 'store_manager', 'warehouse'), adminOrderRouter);
 app.use('/admin/import-request', hasRole('admin', 'warehouse', 'store_manager'), importRequestRouter);
-app.use('/admin/review', hasRole('admin'), reviewRouter);
+app.use('/admin/review', hasRole('admin', 'store_manager'), reviewRouter);
 app.use('/admin/supplier', hasRole('admin'), supplierRouter);
 app.use('/admin/inventory', hasRole('admin', 'store_manager', 'warehouse'), inventoryRouter);
 app.use('/supplier/import-request', hasRole('supplier'), supplierPortalRouter);

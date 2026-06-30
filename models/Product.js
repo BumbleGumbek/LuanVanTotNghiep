@@ -62,7 +62,8 @@ const ProductSchema = new Schema({
         //Tổng số lượng sản phẩm đã bán
         sold: {
             type: Number,
-            default: 0
+            default: 0,
+            min: 0
         },
         status: {
             type: Boolean,

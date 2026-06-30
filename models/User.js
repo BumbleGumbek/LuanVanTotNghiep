@@ -40,15 +40,23 @@ const UserSchema = new Schema({
         },
         role: {
             type: String,
-            enum: ['customer', 'admin', 'store_manager', 'warehouse', 'supplier', 'staff', 'sales_staff'],
+            enum: ['customer', 'admin', 'store_manager', 'warehouse', 'supplier'],
             default: 'customer'
         },
         supplierId: {
             type: Schema.Types.ObjectId,
             ref: 'Supplier',
             default: null
-        }
+        },
+        resetPasswordToken: {
+            type: String,
+            default: null
+        },
 
+        resetPasswordExpire: {
+            type: Date,
+            default: null
+        }
     },
     {
         timestamps: true
