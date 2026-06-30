@@ -1,7 +1,68 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-12">
-      <h2 class="h3 mb-3 page-title">Orders</h2>
+      <h2 class="h3 mb-3 page-title">Quản lý đơn hàng</h2>
+        <form method="GET" action="/admin/orders" class="mb-3">
+            <div class="form-row align-items-end">
+
+                <div class="col-md-3">
+                    <label>Tìm kiếm</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            name="keyword"
+                            value="{{keyword}}"
+                            placeholder="Mã đơn, tên, email, SĐT...">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Trạng thái</label>
+                    <select class="form-control" name="status">
+                        <option value="">Tất cả</option>
+                        <option value="PendingPayment" {{#if (eq status 'PendingPayment')}}selected{{/if}}>Chờ thanh toán</option>
+                        <option value="Paid" {{#if (eq status 'Paid')}}selected{{/if}}>Đã thanh toán</option>
+                        <option value="Shipping" {{#if (eq status 'Shipping')}}selected{{/if}}>Đang vận chuyển</option>
+                        <option value="Completed" {{#if (eq status 'Completed')}}selected{{/if}}>Hoàn thành</option>
+                        <option value="Cancelled" {{#if (eq status 'Cancelled')}}selected{{/if}}>Đã hủy</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label>Từ ngày</label>
+                    <input
+                            type="date"
+                            class="form-control"
+                            name="fromDate"
+                            value="{{fromDate}}">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Đến ngày</label>
+                    <input
+                            type="date"
+                            class="form-control"
+                            name="toDate"
+                            value="{{toDate}}">
+                </div>
+
+                <div class="col-md-1.5" style="flex: 0 0 12.5%; max-width: 12.5%;">
+                    <button
+                            type="submit"
+                            class="btn btn-primary btn-block">
+                        Lọc
+                    </button>
+                </div>
+
+                <div class="col-md-1.5" style="flex: 0 0 12.5%; max-width: 12.5%;">
+                    <a
+                            href="/admin/orders"
+                            class="btn btn-secondary btn-block">
+                        Đặt lại
+                    </a>
+                </div>
+
+            </div>
+        </form>
       <div class="row mb-4 items-align-center">
         <div class="col-md-auto ml-auto text-right">
           <button type="button" class="btn" data-toggle="modal" data-target=".modal-slide"><span class="fe fe-filter fe-16 text-muted"></span></button>
@@ -12,13 +73,13 @@
       <table class="table border table-hover bg-white">
         <thead>
           <tr role="row">
-            <th>ID</th>
-            <th>Purchase Date</th>
-            <th>Customer</th>
-            <th>Products</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>Mã đơn hàng</th>
+            <th>Ngày mua</th>
+            <th>Khách hàng</th>
+            <th>Sản phẩm</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
@@ -31,27 +92,36 @@
                 <small class="text-muted">{{user.email}}</small><br>
                 <small class="text-muted">{{shippingAddress.receiverPhone}}</small>
             </td>
-            <td>
-                <ul class="list-unstyled mb-0">
-                    {{#each items}}
-                    <li><small>- {{name}} (x{{quantity}})</small></li>
-                    {{/each}}
-                </ul>
-            </td>
+              <td style="min-width: 280px;">
+                  <ul class="list-unstyled mb-0">
+                      {{#each items}}
+                          <li class="mb-2">
+                              <div class="font-weight-bold">{{name}}</div>
+                              <small class="text-muted">
+                                  Kích cỡ: {{size}} | SL: {{quantity}}
+                              </small>
+                          </li>
+                      {{/each}}
+                  </ul>
+              </td>
             <td><span class="font-weight-bold text-danger">{{formatCurrency totalPrice}} VND</span></td>
               <td>
                     <span class="dot dot-lg mr-2
                         {{#if (eq status 'Paid')}}bg-info{{/if}}
                         {{#if (eq status 'Shipping')}}bg-primary{{/if}}
-                        {{#if (eq status 'Completed')}}bg-muted{{/if}}
+                        {{#if (eq status 'Completed')}}bg-success{{/if}}
                         {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
                     </span>
                     <span class="font-weight-bold
                         {{#if (eq status 'Paid')}}text-info{{/if}}
                         {{#if (eq status 'Shipping')}}text-primary{{/if}}
-                        {{#if (eq status 'Completed')}}bg-muted{{/if}}
+                        {{#if (eq status 'Completed')}}text-success{{/if}}
                         {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
-                        {{status}}
+                        {{#if (eq status 'PendingPayment')}}Chờ thanh toán{{/if}}
+                        {{#if (eq status 'Paid')}}Đã thanh toán{{/if}}
+                        {{#if (eq status 'Shipping')}}Đang vận chuyển{{/if}}
+                        {{#if (eq status 'Completed')}}Hoàn thành{{/if}}
+                        {{#if (eq status 'Cancelled')}}Đã hủy{{/if}}
                   </span>
               </td>
             <td>
@@ -64,19 +134,19 @@
                 {{#if ../canReceiveGoods}}
                 <div class="dropdown">
                     <button class="btn btn-sm dropdown-toggle more-vertical" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="text-muted sr-only">Action</span>
+                      <span class="text-muted sr-only">Thao tác</span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <form action="/admin/orders/update-status/{{_id}}" method="POST">
                             {{#if (eq status 'PendingPayment')}}
                                 <button class="dropdown-item text-danger" type="submit" name="status" value="Cancelled">
-                                    Set Cancelled
+                                    Hủy đơn hàng
                                 </button>
                             {{/if}}
 
                             {{#if (eq status 'Paid')}}
                                 <button class="dropdown-item text-primary" type="submit" name="status" value="Shipping">
-                                    Set Shipping
+                                    Giao hàng
                                 </button>
                             {{/if}}
                         </form>
@@ -92,13 +162,31 @@
           {{/each}}
         </tbody>
       </table>
+      {{#if (gt totalPages 1)}}
       <nav aria-label="Table Paging" class="my-3">
         <ul class="pagination justify-content-end mb-0">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          {{#if hasPrev}}
+            <li class="page-item"><a class="page-link" href="/admin/orders?page={{prevPage}}&{{queryParams}}">Trước</a></li>
+          {{else}}
+            <li class="page-item disabled"><span class="page-link">Trước</span></li>
+          {{/if}}
+
+          {{#each pagesList}}
+            {{#if isCurrent}}
+              <li class="page-item active"><span class="page-link">{{number}}</span></li>
+            {{else}}
+              <li class="page-item"><a class="page-link" href="/admin/orders?page={{number}}&{{queryParams}}">{{number}}</a></li>
+            {{/if}}
+          {{/each}}
+
+          {{#if hasNext}}
+            <li class="page-item"><a class="page-link" href="/admin/orders?page={{nextPage}}&{{queryParams}}">Sau</a></li>
+          {{else}}
+            <li class="page-item disabled"><span class="page-link">Sau</span></li>
+          {{/if}}
         </ul>
       </nav>
+      {{/if}}
     </div>
   </div> <!-- .row -->
 </div> <!-- .container-fluid -->

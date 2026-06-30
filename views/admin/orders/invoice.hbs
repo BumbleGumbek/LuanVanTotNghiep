@@ -3,10 +3,10 @@
         <div class="col-12 col-lg-10 col-xl-8">
             <div class="row align-items-center mb-4">
                 <div class="col">
-                    <h2 class="h5 page-title"><small class="text-muted text-uppercase">Invoice</small><br />{{shortId order._id}}</h2>
+                    <h2 class="h5 page-title"><small class="text-muted text-uppercase">Hóa đơn</small><br />{{shortId order._id}}</h2>
                 </div>
                 <div class="col-auto">
-                    <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.print()">In</button>
                 </div>
             </div>
             <div class="card shadow">
@@ -14,11 +14,11 @@
                     <div class="row mb-5">
                         <div class="col-12 text-center mb-4">
                             <img src="/img/logo.jpg" class="navbar-brand-img brand-sm mx-auto mb-4" alt="Elegant Jewelry" style="max-width: 100px;">
-                            <h2 class="mb-0 text-uppercase">Invoice</h2>
-                            <p class="text-muted"> Elegant Jewelry Co.<br /> Fashion District, Ho Chi Minh City </p>
+                            <h2 class="mb-0 text-uppercase">Hóa đơn</h2>
+                            <p class="text-muted"> Elegant Jewelry Co.<br /> Quận 1, Thành phố Hồ Chí Minh </p>
                         </div>
                         <div class="col-md-7">
-                            <p class="small text-muted text-uppercase mb-2">Invoice from</p>
+                            <p class="small text-muted text-uppercase mb-2">Bên xuất hóa đơn</p>
                             <p class="mb-4">
                                 <strong> Jewelry Co.</strong><br />
                                 Jewelry Dept.<br /> 
@@ -27,12 +27,12 @@
                                 (+84) 123-456-789<br />
                             </p>
                             <p>
-                                <span class="small text-muted text-uppercase">Invoice #</span><br />
+                                <span class="small text-muted text-uppercase">Số hóa đơn #</span><br />
                                 <strong>{{shortId order._id}}</strong>
                             </p>
                         </div>
                         <div class="col-md-5">
-                            <p class="small text-muted text-uppercase mb-2">Invoice to</p>
+                            <p class="small text-muted text-uppercase mb-2">Bên nhận hóa đơn</p>
                             <p class="mb-4">
                                 <strong>{{order.shippingAddress.receiverName}}</strong><br />
                                 {{order.shippingAddress.receiverPhone}}<br />
@@ -40,16 +40,20 @@
                                 {{order.user.email}}<br />
                             </p>
                             <p>
-                                <small class="small text-muted text-uppercase">Order Date</small><br />
-                                <strong>{{order.createdAt}}</strong>
+                                <small class="small text-muted text-uppercase">Ngày đặt hàng</small><br />
+                                <strong>{{formatDate order.createdAt}}</strong>
                             </p>
                             <p>
                                 <small class="small text-muted text-uppercase">
-                                    Status
+                                    Trạng thái
                                 </small><br>
 
                                 <strong>
-                                    {{order.status}}
+                                    {{#if (eq order.status 'PendingPayment')}}Chờ thanh toán{{/if}}
+                                    {{#if (eq order.status 'Paid')}}Đã thanh toán{{/if}}
+                                    {{#if (eq order.status 'Shipping')}}Đang vận chuyển{{/if}}
+                                    {{#if (eq order.status 'Completed')}}Hoàn thành{{/if}}
+                                    {{#if (eq order.status 'Cancelled')}}Đã hủy{{/if}}
                                 </strong>
                             </p>
                         </div>
@@ -58,10 +62,10 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Description</th>
-                                <th scope="col" class="text-right">Price</th>
-                                <th scope="col" class="text-right">Quantity</th>
-                                <th scope="col" class="text-right">Amount</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col" class="text-right">Đơn giá</th>
+                                <th scope="col" class="text-right">Số lượng</th>
+                                <th scope="col" class="text-right">Thành tiền</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,7 +73,7 @@
                             <tr>
                                 <th scope="row">{{add @index 1}}</th>
                                 <td> {{name}}<br />
-                                    <span class="small text-muted">Elegant jewelry item</span>
+                                    <span class="small text-muted">Sản phẩm trang sức cao cấp</span>
                                 </td>
                                 <td class="text-right">{{formatCurrency price_at_purchase}} VND</td>
                                 <td class="text-right">{{quantity}}</td>
@@ -81,13 +85,13 @@
                     <div class="row mt-5">
                         <div class="col-md-5">
                             <p class="text-muted small">
-                                <strong>Note :</strong> {{#if order.note}}{{order.note}}{{else}}Thank you for choosing Elegant Jewelry. We hope you enjoy your purchase!{{/if}}
+                                <strong>Ghi chú :</strong> {{#if order.note}}{{order.note}}{{else}}Cảm ơn đã lựa chọn Elegant Jewelry. Hy vọng quý khách sẽ hài lòng với sản phẩm!{{/if}}
                             </p>
                         </div>
                         <div class="col-md-5">
                             <div class="text-right mr-2">
                                 <p class="mb-2 h6">
-                                    <span class="text-muted">Subtotal : </span>
+                                    <span class="text-muted">Tạm tính : </span>
                                     <strong>{{formatCurrency order.totalPrice}} VND</strong>
                                 </p>
                                 <p class="mb-2 h6">
@@ -95,7 +99,7 @@
                                     <strong>{{formatCurrency 0}} VND</strong>
                                 </p>
                                 <p class="mb-2 h6">
-                                    <span class="text-muted">Total : </span>
+                                    <span class="text-muted">Tổng cộng : </span>
                                     <span class="h4">{{formatCurrency order.totalPrice}} VND</span>
                                 </p>
                             </div>
