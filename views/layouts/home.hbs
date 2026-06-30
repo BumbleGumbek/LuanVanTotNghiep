@@ -4,7 +4,7 @@
     <base href="/" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna Jewelry</title>
+    <title>Luna Jewelry - Trang sức cao cấp</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -113,29 +113,29 @@
                                 {{#if user}}
                                     <li>
                                         <a href="">
-                                            Welcome {{user.firstName}}
+                                            Xin chào, {{user.firstName}}
                                             <span class="arrow_carrot-down"></span>
                                         </a>
                                         <ul>
                                             <li>
                                                 <a href="/profile">
-                                                    My Profile
+                                                    Hồ sơ của tôi
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="/my-orders">
-                                                    My Orders
+                                                    Đơn hàng của tôi
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="/logout">
-                                                    Logout
+                                                    Đăng xuất
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
                                 {{else}}
-                                    <li><a href="/login">Login</a></li>
+                                    <li><a href="/login">Đăng nhập</a></li>
                                 {{/if}}
                             </ul>
                         </div>
@@ -147,7 +147,7 @@
                         <div class="header__top__right">
                             <div class="header__search">
                                 <form action="/search" method="GET" class="header__search__form">
-                                    <input type="text" name="keyword" placeholder="Search jewelry...">
+                                    <input type="text" name="keyword" placeholder="Tìm kiếm trang sức...">
                                     <button type="submit">
                                         <img src="/img/icon/search.png" alt="">
                                     </button>
@@ -168,7 +168,7 @@
                                     {{/if}}
                                 </a>
                                 <div class="cart__price">
-                                    Cart:
+                                    Giỏ hàng:
                                     <span>
                                         {{formatCurrency totalPrice}} VND
                                     </span>
@@ -187,40 +187,40 @@
                 <nav class="header__menu mobile-menu">
                     <ul>
                         <li class="{{#if (eq activePage 'home')}}active{{/if}}">
-                            <a href="/">Home</a>
+                            <a href="/">Trang chủ</a>
                         </li>
                         <li class="{{#if (eq activePage 'jewelry')}}active{{/if}}">
-                            <a href="/jewelry">Jewelry</a>
+                            <a href="/jewelry">Trang sức</a>
                             <ul class="dropdown">
-                                <li><a href="/jewelry?cat=rings">Rings</a></li>
-                                <li><a href="/jewelry?cat=necklaces">Necklaces</a></li>
-                                <li><a href="/jewelry?cat=bracelets">Bracelets</a></li>
-                                <li><a href="/jewelry?cat=earrings">Earrings</a></li>
-                                <li><a href="/jewelry?cat=watches">Watches</a></li>
+                                <li><a href="/jewelry?cat=rings">Nhẫn</a></li>
+                                <li><a href="/jewelry?cat=necklaces">Dây chuyền</a></li>
+                                <li><a href="/jewelry?cat=bracelets">Vòng tay</a></li>
+                                <li><a href="/jewelry?cat=earrings">Bông tai</a></li>
+                                <li><a href="/jewelry?cat=watches">Đồng hồ</a></li>
                             </ul>
                         </li>
                         <li class="{{#if (eq activePage 'collections')}}active{{/if}}">
-                            <a href="/collections">Collections</a>
+                            <a href="/collections">Bộ sưu tập</a>
                             <ul class="dropdown">
-                                <li><a href="/collections?col=new">New Arrivals</a></li>
-                                <li><a href="/collections?col=bestseller">Best Sellers</a></li>
-                                <li><a href="/collections?col=sale">Sale</a></li>
-                                <li><a href="/collections?col=gift">Gift Sets</a></li>
+                                <li><a href="/collections?col=new">Hàng mới về</a></li>
+                                <li><a href="/collections?col=bestseller">Bán chạy nhất</a></li>
+                                <li><a href="/collections?col=sale">Khuyến mãi</a></li>
+                                <li><a href="/collections?col=gift">Quà tặng</a></li>
                             </ul>
                         </li>
-                        <li class="{{#if (eq activePage 'about')}}active{{/if}}"><a href="/about">About</a></li>
-                        <li class="{{#if (eq activePage 'contact')}}active{{/if}}"><a href="/contact">Contact</a></li>
+                        <li class="{{#if (eq activePage 'about')}}active{{/if}}"><a href="/about">Giới thiệu</a></li>
+                        <li class="{{#if (eq activePage 'contact')}}active{{/if}}"><a href="/contact">Liên hệ</a></li>
                         {{#if isAdmin}}
-                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/admin">Quản trị</a></li>
                         {{/if}}
                         {{#if isWarehouse}}
-                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/admin">Quản trị</a></li>
                         {{/if}}
                         {{#if isSupplier}}
-                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/admin">Quản trị</a></li>
                         {{/if}}
                         {{#if isStoreManager}}
-                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/admin">Quản trị</a></li>
                         {{/if}}
                     </ul>
                 </nav>
@@ -236,11 +236,11 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="footer__widget">
-                    <h6>WORKING HOURS</h6>
+                    <h6>GIỜ HOẠT ĐỘNG</h6>
                     <ul>
-                        <li>Monday - Friday: 08:00 am – 08:30 pm</li>
-                        <li>Saturday: 10:00 am – 16:30 pm</li>
-                        <li>Sunday: 10:00 am – 16:30 pm</li>
+                        <li>Thứ Hai - Thứ Sáu: 08:00 - 20:30</li>
+                        <li>Thứ Bảy: 10:00 - 16:30</li>
+                        <li>Chủ Nhật: 10:00 - 16:30</li>
                     </ul>
                 </div>
             </div>
@@ -249,13 +249,13 @@
                     <div class="footer__logo">
                         <a href="/"><img src="/img/footer-logo.png" alt=""></a>
                     </div>
-                    <p>Elegant jewelry designed for modern women.</p>
+                    <p>Trang sức thanh lịch dành cho phụ nữ hiện đại.</p>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="footer__newslatter">
-                    <h6>Subscribe</h6>
-                    <p>Get latest jewelry collections and offers.</p>
+                    <h6>Đăng ký nhận tin</h6>
+                    <p>Nhận các bộ sưu tập và ưu đãi mới nhất từ chúng tôi.</p>
                 </div>
             </div>
         </div>

@@ -4,14 +4,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="/">Home</a>
-                    <a href="/my-orders">My Orders</a>
-                    <span>Order Details</span>
+                    <a href="/">Trang chủ</a>
+                    <a href="/my-orders">Đơn hàng của tôi</a>
+                    <span>Chi tiết đơn hàng</span>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="section-title" style="text-align: left; margin-bottom: 30px;">
-                    <h2>Order</h2>
+                    <h2>Đơn hàng</h2>
                     <h3>{{shortId order._id}}</h3>
                     <p>{{formatDate order.createdAt}}</p>
                 </div>
@@ -24,17 +24,17 @@
                     <div class="order-status-tracker">
                         <div class="tracker-step {{#if order.isPaidStep}}active{{/if}}">
                             <div class="step-icon"><i class="fa fa-credit-card "></i></div>
-                            <div class="step-label">Paid</div>
+                            <div class="step-label">Đã thanh toán</div>
                         </div>
                         <div class="tracker-line {{#if order.isShippingStep}}active{{/if}}"></div>
                         <div class="tracker-step {{#if order.isShippingStep}}active{{/if}}">
                             <div class="step-icon"><i class="fa fa-truck"></i></div>
-                            <div class="step-label">Delivering</div>
+                            <div class="step-label">Đang giao hàng</div>
                         </div>
                         <div class="tracker-line {{#if order.isCompletedStep}}active{{/if}}"></div>
                         <div class="tracker-step {{#if order.isCompletedStep}}active{{/if}}">
                             <div class="step-icon"><i class="fa fa-check-circle"></i></div>
-                            <div class="step-label">Confirm</div>
+                            <div class="step-label">Hoàn thành</div>
                         </div>
                     </div>
                 </div>
@@ -47,15 +47,15 @@
                     <table>
                         <thead>
                         <tr>
-                            <th>Jewelry</th>
-                            <th>Size</th>
-                            <th style="width:160px;text-align:center;">Price</th>
+                            <th>Trang sức</th>
+                            <th>Kích cỡ</th>
+                            <th style="width:160px;text-align:center;">Đơn giá</th>
                             <th style="width:100px;text-align:center;">
-                                Quantity
+                                Số lượng
                             </th>
 
                             <th style="width:160px;text-align:right;">
-                                Total
+                                Thành tiền
                             </th>
                         </tr>
                         </thead>
@@ -91,43 +91,50 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                         <div class="continue__btn">
-                            <a href="/my-orders"><i class="fa fa-arrow-left"></i> Back to History</a>
+                            <a href="/my-orders"><i class="fa fa-arrow-left"></i> Quay lại lịch sử</a>
                         </div>
                     </div>
                     {{#if (eq order.status 'Completed')}}
-                    {{#unless order.isFullyReviewed}}
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                        <div class="continue__btn update__btn">
-                            <a href="/review/{{order._id}}" class="site-btn">Review Products</a>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                            <div class="continue__btn update__btn">
+                                {{#if order.isFullyReviewed}}
+                                    <a href="/review/{{order._id}}" class="site-btn">
+                                        Xem đánh giá
+                                    </a>
+                                {{else}}
+                                    <a href="/review/{{order._id}}" class="site-btn">
+                                        Đánh giá sản phẩm
+                                    </a>
+                                {{/if}}
+                            </div>
                         </div>
-                    </div>
-                    {{/unless}}
                     {{/if}}
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="cart__total" style="margin-top: 0; margin-bottom: 30px;">
-                    <h6>Order Summary</h6>
+                    <h6>Tóm tắt đơn hàng</h6>
                     <ul>
-                        <li>Status
-                            <span class="badge
+                        <li>Trạng thái
+                            <span class="badge badge-pill px-3 py-2
                                 {{#if (eq order.status 'PendingPayment')}}badge-warning text-dark{{/if}}
-                                {{#if (eq order.status 'Paid')}}badge-info{{/if}}
-                                {{#if (eq order.status 'Confirmed')}}badge-primary{{/if}}
-                                {{#if (eq order.status 'Processing')}}badge-secondary{{/if}}
+                                {{#if (eq order.status 'Paid')}}badge-primary{{/if}}
                                 {{#if (eq order.status 'Shipping')}}badge-info{{/if}}
-                                {{#if (eq order.status 'Delivered')}}badge-success{{/if}}
                                 {{#if (eq order.status 'Completed')}}badge-success{{/if}}
-                                {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}"
-                                  style="padding: 5px 10px; font-weight: 500;">
-                                {{order.status}}
+                                {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}">
+
+                                {{#if (eq order.status 'PendingPayment')}}Chờ thanh toán{{/if}}
+                                {{#if (eq order.status 'Paid')}}Đã thanh toán{{/if}}
+                                {{#if (eq order.status 'Shipping')}}Đang giao hàng{{/if}}
+                                {{#if (eq order.status 'Completed')}}Hoàn thành{{/if}}
+                                {{#if (eq order.status 'Cancelled')}}Đã hủy{{/if}}
                             </span>
                         </li>
-                        <li>Payment Status <span style="color: #111;">{{#if (eq order.status 'PendingPayment')}}Unpaid{{else}}Paid{{/if}}</span></li>
-                        <li>Payment Method <span style="color: #111;">{{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}Bank Transfer{{/if}}</span></li>
+                        <li>Trạng thái thanh toán <span style="color: #111;">{{#if (eq order.status 'PendingPayment')}}Chưa thanh toán{{else}}Đã thanh toán{{/if}}</span></li>
+                        <li>Phương thức thanh toán <span style="color: #111;">{{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}Chuyển khoản ngân hàng{{/if}}</span></li>
                         <li style="border-top: 1px solid #f2f2f2; padding-top: 15px; margin-top: 15px;">
-                            Total
+                            Tổng tiền
                             <span style="color: #d10024; font-size: 20px;">
                                 {{formatCurrency order.totalPrice}} VND
                             </span>
@@ -137,15 +144,13 @@
                             <div class="card-body text-center">
 
                                 <h5>
-                                    Scan QR To Track Order
+                                    Quét mã QR để theo dõi đơn hàng
                                 </h5>
-
                                 <img
                                         src="{{{qrCodeImage}}}"
                                         width="220"
                                         class="img-fluid"
                                         alt="QR Code">
-
                             </div>
                         </div>
                         {{/if}}
@@ -155,43 +160,43 @@
                         <a href="/payment/{{order._id}}"
                            class="site-btn"
                            style="display:block;text-align:center;margin-bottom:10px;">
-                            Proceed To Payment
+                            Tiến hành thanh toán
                         </a>
 
                         <form action="/cancel-order/{{order._id}}" method="POST">
                             <button type="submit"
                                     class="site-btn"
                                     style="background:#dc3545;width:100%;">
-                                Cancel Order
+                                Hủy đơn hàng
                             </button>
                         </form>
 
                     {{/if}}
 
-                    {{#if (eq order.status 'Shipping')}}
-                        <form action="/confirm-received/{{order._id}}" method="POST">
-                            <button type="submit"
-                                    class="site-btn"
-                                    style="width:100%; display:block; text-align:center; margin-bottom:10px; background: #28a745;">
-                                Confirm received
-                            </button>
-                        </form>
-                    {{/if}}
+<!--                    {{#if (eq order.status 'Shipping')}}-->
+<!--                        <form action="/confirm-received/{{order._id}}" method="POST">-->
+<!--                            <button type="submit"-->
+<!--                                    class="site-btn"-->
+<!--                                    style="width:100%; display:block; text-align:center; margin-bottom:10px; background: #28a745;">-->
+<!--                                Confirm received-->
+<!--                            </button>-->
+<!--                        </form>-->
+<!--                    {{/if}}-->
                 </div>
 
                 <div class="cart__total" style="margin-top: 0;">
-                    <h6>Delivery Information</h6>
+                    <h6>Thông tin giao hàng</h6>
                     <ul style="border-bottom: none;">
                         <li style="display: block; margin-bottom: 10px;">
-                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Recipient</p>
+                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Người nhận</p>
                             <span style="float: none; font-size: 14px; color: #444;">{{order.shippingAddress.receiverName}}</span>
                         </li>
                         <li style="display: block; margin-bottom: 10px;">
-                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Phone Number</p>
+                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Số điện thoại</p>
                             <span style="float: none; font-size: 14px; color: #444;">{{order.shippingAddress.receiverPhone}}</span>
                         </li>
                         <li style="display: block; margin-bottom: 10px;">
-                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Address</p>
+                            <p style="margin-bottom: 0; font-weight: 600; color: #111;">Địa chỉ</p>
                             <span style="float: none; font-size: 14px; color: #444; line-height: 1.4;">
                                 {{order.shippingAddress.detailAddress}}
                             </span>

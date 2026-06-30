@@ -4,13 +4,13 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__text">
-                    <h2>Payment</h2>
+                    <h2>Thanh toán</h2>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="/">Home</a>
-                    <span>Payment</span>
+                    <a href="/">Trang chủ</a>
+                    <span>Thanh toán</span>
                 </div>
             </div>
         </div>
@@ -24,16 +24,16 @@
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 <div class="checkout__order">
-                    <h6 class="order__title">Bank Transfer Details</h6>
-                    <div class="checkout__order__products">Recipient Information <span>Details</span></div>
+                    <h6 class="order__title">Thông tin chuyển khoản ngân hàng</h6>
+                    <div class="checkout__order__products">Thông tin người nhận <span>Chi tiết</span></div>
                     
                     <ul class="checkout__total__all">
-                        <li>Order ID <span>{{shortId order._id}}</span></li>
-                        <li>Bank Name <span>LUNA BANK</span></li>
-                        <li>Account Number <span>1234 5678 90</span></li>
-                        <li>Account Holder <span>LUNA JEWELRY CO</span></li>
+                        <li>Mã đơn hàng <span>{{shortId order._id}}</span></li>
+                        <li>Tên ngân hàng <span>LUNA BANK</span></li>
+                        <li>Số tài khoản <span>1234 5678 90</span></li>
+                        <li>Chủ tài khoản <span>LUNA JEWELRY CO</span></li>
                         <li style="border-top: 1px solid #f2f2f2; padding-top: 20px; margin-top: 15px;">
-                            Transfer Amount 
+                            Số tiền chuyển khoản 
                             <span style="color: #d10024; font-size: 20px; font-weight: 700;">
                                 {{formatCurrency order.totalPrice}} VND
                             </span>
@@ -42,26 +42,26 @@
 
                     <div style="background: #fdfdfd; padding: 25px; border: 1px dashed #d10024; margin: 30px 0; text-align: center;">
                         <p style="margin-bottom: 5px; font-weight: 600; color: #111; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">
-                            Transfer Content
+                            Nội dung chuyển khoản
                         </p>
                         <h3 style="color: #d10024; font-weight: 700; letter-spacing: 2px; margin-bottom: 5px;">
                             {{shortId order._id}}
                         </h3>
-                        <small class="text-muted" style="font-style: italic;">(Please include this code exactly in your bank transfer note)</small>
+                        <small class="text-muted" style="font-style: italic;">(Vui lòng ghi đúng mã này trong nội dung chuyển tiền)</small>
                     </div>
 
                     <div class="row">
                         <div class="col-lg-12">
                             <form action="/payment/create/{{order._id}}" method="POST">
                                 <button type="submit" class="site-btn">
-                                    PAY WITH PAYOS
+                                    CHUYỂN KHOẢN
                                 </button>
                             </form>
                         </div>
                         <div class="col-lg-12">
-                            <form action="/cancel-order/{{order._id}}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order? This action cannot be undone.');">
+                            <form action="/cancel-order/{{order._id}}" method="POST" onsubmit="return confirm('Xác nhận hủy đơn hàng này? Hành động này không thể hoàn tác.');">
                                 <button type="submit" class="site-btn" style="background: #ffffff; color: #111111; border: 1px solid #111111; width: 100%;">
-                                    CANCEL ORDER
+                                    HỦY ĐƠN HÀNG
                                 </button>
                             </form>
                         </div>

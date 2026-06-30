@@ -4,13 +4,13 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__text">
-                    <h2>My Orders</h2>
+                    <h2>Đơn hàng của tôi</h2>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="/">Home</a>
-                    <span>My Orders</span>
+                    <a href="/">Trang chủ</a>
+                    <span>Đơn hàng của tôi</span>
                 </div>
             </div>
         </div>
@@ -28,11 +28,11 @@
                         <table>
                             <thead>
                             <tr>
-                                <th style="width:200px;">Order ID</th>
-                                <th style="width:220px;">Date</th>
-                                <th>Products</th>
-                                <th style="width:200px;">Total</th>
-                                <th style="width:200px;">Status</th>
+                                <th style="width:200px;">Mã đơn hàng</th>
+                                <th style="width:220px;">Ngày đặt</th>
+                                <th>Sản phẩm</th>
+                                <th style="width:200px;">Tổng tiền</th>
+                                <th style="width:200px;">Trạng thái</th>
                                 <th style="width:120px;"></th>
                             </tr>
                             </thead>
@@ -51,9 +51,11 @@
                                         <div class="product__cart__item__text">
                                             <ul class="list-unstyled mb-0">
                                             {{#each items}}
-                                                <li class="small">
-                                                    <span>{{this.name}}</span>
-                                                    <span class="text-muted ml-1">(Size {{this.size}}) x{{this.quantity}}</span>
+                                                <li class="small mb-2">
+                                                    <span>{{this.name}}</span><br>
+                                                    <small class="text-muted">
+                                                        Kích cỡ: {{this.size}} &nbsp;|&nbsp; SL: {{this.quantity}}
+                                                    </small>
                                                 </li>
                                             {{/each}}
                                             </ul>
@@ -65,19 +67,21 @@
                                     <td class="cart__price" style="width:180px;">
                                         <span class="badge badge-pill px-3 py-2
                                             {{#if (eq status 'PendingPayment')}}badge-warning text-dark{{/if}}
-                                            {{#if (eq status 'Paid')}}badge-info{{/if}}
-                                            {{#if (eq status 'Confirmed')}}badge-primary{{/if}}
-                                            {{#if (eq status 'Processing')}}badge-secondary{{/if}}
+                                            {{#if (eq status 'Paid')}}badge-primary{{/if}}
                                             {{#if (eq status 'Shipping')}}badge-info{{/if}}
-                                            {{#if (eq status 'Delivered')}}badge-success{{/if}}
-                                            {{#if (eq status 'Cancelled')}} badge-danger{{/if}}">
-                                            {{status}}
-                                        </span>
+                                            {{#if (eq status 'Completed')}}badge-success{{/if}}
+                                            {{#if (eq status 'Cancelled')}}badge-danger{{/if}}">
 
+                                            {{#if (eq status 'PendingPayment')}}Chờ thanh toán{{/if}}
+                                            {{#if (eq status 'Paid')}}Đã thanh toán{{/if}}
+                                            {{#if (eq status 'Shipping')}}Đang giao hàng{{/if}}
+                                            {{#if (eq status 'Completed')}}Hoàn thành{{/if}}
+                                            {{#if (eq status 'Cancelled')}}Đã hủy{{/if}}
+                                        </span>
                                     </td>
                                     <td class="cart__close">
                                         <a href="/my-orders/{{_id}}" class="primary-btn" style="padding: 10px 20px; font-size: 12px;">
-                                            View
+                                            Chi tiết
                                         </a>
                                     </td>
                                 </tr>
@@ -91,10 +95,10 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
-                        <span>Empty</span>
-                        <h2>You have no orders</h2>
+                        <span>Trống</span>
+                        <h2>Hiện tại chưa có đơn hàng nào</h2>
                     </div>
-                    <a href="/" class="primary-btn">Continue Shopping</a>
+                    <a href="/" class="primary-btn">Tiếp tục mua sắm</a>
                 </div>
             </div>
         {{/if}}

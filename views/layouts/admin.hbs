@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
-    <title>Elegant Jewelry Admin Dashboard</title>
+    <title>Trang quản trị Elegant Jewelry</title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="css/simplebar.css">
     <!-- Fonts CSS -->
@@ -92,40 +92,35 @@
                     </a>
                     <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
                         <li class="nav-item active">
-                            <a class="nav-link pl-3" href="/admin"><span class="ml-1 item-text">Overview</span></a>
+                            <a class="nav-link pl-3" href="/admin"><span class="ml-1 item-text">Tổng quan</span></a>
                         </li>
                         {{#if canViewRevenue}}
                             <li class="nav-item">
-                                <a class="nav-link pl-3" href="/admin/revenue">
-                                    Revenue Report
-                                </a>
+                                <a class="nav-link pl-3" href="/admin/revenue"><span class="ml-1 item-text">Báo cáo doanh thu</span></a>
                             </li>
                         {{/if}}
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="./dashboard-saas.html"><span class="ml-1 item-text">Order Statistics</span></a>
+                            <a class="nav-link pl-3" href="./dashboard-saas.html"><span class="ml-1 item-text">Thống kê đơn hàng</span></a>
                         </li>
                     </ul>
                 </li>
             </ul>
             <p class="text-muted nav-heading mt-4 mb-1">
-                <span>Store Management</span>
+                <span>Quản lý cửa hàng</span>
             </p>
             <ul class="navbar-nav flex-fill w-100 mb-2">
                 <li class="nav-item dropdown {{#unless canViewProducts}}disabled-menu{{/unless}}">
                     <a href="#ui-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-box fe-16"></i>
-                        <span class="ml-3 item-text">Product Management</span>
+                        <span class="ml-3 item-text">Quản lý sản phẩm</span>
                     </a>
                     <ul class="collapse list-unstyled pl-4 w-100" id="ui-elements">
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="admin/product"><span class="ml-1 item-text">Product List</span>
+                            <a class="nav-link pl-3" href="admin/product"><span class="ml-1 item-text">Danh sách sản phẩm</span>
                             </a>
                         </li>
                         <li class="nav-item {{#unless canManageCategories}}disabled-menu{{/unless}} ">
-                            <a class="nav-link pl-3" href="admin/category"><span class="ml-1 item-text">Product Categories</span></a>
-                        </li>
-                        <li class="nav-item {{#unless canManageReviews}}disabled-menu{{/unless}}">
-                            <a class="nav-link pl-3" href="admin/review"><span class="ml-1 item-text">Review Management</span></a>
+                            <a class="nav-link pl-3" href="admin/category"><span class="ml-1 item-text">Danh mục sản phẩm</span></a>
                         </li>
                     </ul>
                 </li>
@@ -135,7 +130,7 @@
                        aria-expanded="false"
                        class="dropdown-toggle nav-link">
                         <i class="fe fe-truck fe-16"></i>
-                        <span class="ml-3 item-text">Supplier Management</span>
+                        <span class="ml-3 item-text">Quản lý nhà cung cấp</span>
                     </a>
 
                     <ul class="collapse list-unstyled pl-4 w-100" id="supplier-menu">
@@ -143,7 +138,7 @@
                         {{#if canManageSuppliers}}
                             <li class="nav-item">
                                 <a class="nav-link pl-3" href="/admin/supplier">
-                                    <span class="ml-1 item-text">Supplier List</span>
+                                    <span class="ml-1 item-text">Danh sách nhà cung cấp</span>
                                 </a>
                             </li>
                         {{/if}}
@@ -151,7 +146,7 @@
                         {{#if isSupplier}}
                             <li class="nav-item">
                                 <a class="nav-link pl-3" href="/supplier/import-request">
-                                    <span class="ml-1 item-text">My Import Requests</span>
+                                    <span class="ml-1 item-text">Yêu cầu nhập hàng của tôi</span>
                                 </a>
                             </li>
                         {{/if}}
@@ -161,91 +156,91 @@
                 <li class="nav-item dropdown {{#unless canViewInventory}}disabled-menu{{/unless}}">
                     <a href="#inventory-menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-database fe-16"></i>
-                        <span class="ml-3 item-text">Inventory Management</span>
+                        <span class="ml-3 item-text">Quản lý kho hàng</span>
                     </a>
                     <ul class="collapse list-unstyled pl-4 w-100" id="inventory-menu">
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="/admin/inventory/overview"><span class="ml-1 item-text">Stock Overview</span></a>
+                            <a class="nav-link pl-3" href="/admin/inventory/overview"><span class="ml-1 item-text">Tổng quan tồn kho</span></a>
                         </li>
                         <li class="nav-item {{#unless canViewInventoryReport}}disabled-menu{{/unless}}">
-                            <a class="nav-link pl-3" href="/admin/inventory/report"><span class="ml-1 item-text">Inventory Report</span></a>
+                            <a class="nav-link pl-3" href="/admin/inventory/report"><span class="ml-1 item-text">Báo cáo kho hàng</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="/admin/inventory/low-stock"><span class="ml-1 item-text">Low Stock Alert</span></a>
+                            <a class="nav-link pl-3" href="/admin/inventory/low-stock"><span class="ml-1 item-text">Cảnh báo sắp hết hàng</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="/admin/import-request"><span class="ml-1 item-text">Import Requests</span></a>
+                            <a class="nav-link pl-3" href="/admin/import-request"><span class="ml-1 item-text">Yêu cầu nhập hàng</span></a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{#unless canViewOrders}}disabled-menu{{/unless}}">
                     <a href="#forms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-credit-card fe-16"></i>
-                        <span class="ml-3 item-text">Order Management</span>
+                        <span class="ml-3 item-text">Quản lý đơn hàng</span>
                     </a>
                     <ul class="collapse list-unstyled pl-4 w-100" id="forms">
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="admin/orders"><span class="ml-1 item-text">Order List</span></a>
+                            <a class="nav-link pl-3" href="admin/orders"><span class="ml-1 item-text">Danh sách đơn hàng</span></a>
                         </li>
                         <li class="nav-item  {{#unless canCreateImportRequest}}disabled-menu{{/unless}}">
-                            <a class="nav-link pl-3" href="admin/orders"><span class="ml-1 item-text">Completed Orders</span></a>
+                            <a class="nav-link pl-3" href="admin/orders"><span class="ml-1 item-text">Đơn hàng hoàn thành</span></a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{#unless canManageUsers}}disabled-menu{{/unless}}">
                     <a href="#tables" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-grid fe-16"></i>
-                        <span class="ml-3 item-text">User Management</span>
+                        <span class="ml-3 item-text">Quản lý người dùng</span>
                     </a>
                     <ul class="collapse list-unstyled pl-4 w-100" id="tables">
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="/users"><span class="ml-1 item-text">Customer List</span></a>
+                            <a class="nav-link pl-3" href="/users"><span class="ml-1 item-text">Danh sách khách hàng</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="/users/admins"><span class="ml-1 item-text">Admin List</span></a>
+                            <a class="nav-link pl-3" href="/users/admins"><span class="ml-1 item-text">Danh sách quản trị viên</span></a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item w-100 {{#unless canManageCoupons}}disabled-menu{{/unless}}">
                     <a class="nav-link" href="/admin/coupon">
                         <i class="fe fe-layers fe-16"></i>
-                        <span class="ml-3 item-text">Promotion Management</span>
+                        <span class="ml-3 item-text">Quản lý khuyến mãi</span>
                     </a>
                 </li>
                 <li class="nav-item w-100 {{#unless canManageReviews}}disabled-menu{{/unless}}">
                     <a class="nav-link" href="/admin/review">
                         <i class="fe fe-star fe-16"></i>
-                        <span class="ml-3 item-text">Review Management</span>
+                        <span class="ml-3 item-text">Quản lý đánh giá</span>
                     </a>
                 </li>
 
                 <li class="nav-item dropdown {{#unless canViewInventoryReport}}disabled-menu{{/unless}}">
                     <a href="#charts" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                         <i class="fe fe-pie-chart fe-16"></i>
-                        <span class="ml-3 item-text">Reports & Statistics</span>
+                        <span class="ml-3 item-text">Báo cáo & Thống kê</span>
                     </a>
                     <ul class="collapse list-unstyled pl-4 w-100" id="charts">
                         <li class="nav-item {{#unless canViewRevenue}}disabled-menu{{/unless}}">
-                            <a class="nav-link pl-3" href="/revenue"><span class="ml-1 item-text">Revenue Statistics</span></a>
+                            <a class="nav-link pl-3" href="/revenue"><span class="ml-1 item-text">Thống kê doanh thu</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="./chart-chartjs.html"><span class="ml-1 item-text">Sales Charts</span></a>
+                            <a class="nav-link pl-3" href="./chart-chartjs.html"><span class="ml-1 item-text">Biểu đồ doanh số</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-3" href="./chart-apexcharts.html"><span class="ml-1 item-text">Best Selling Products</span></a>
+                            <a class="nav-link pl-3" href="./chart-apexcharts.html"><span class="ml-1 item-text">Sản phẩm bán chạy nhất</span></a>
                         </li>
                     </ul>
                 </li>
 
             </ul>
             <p class="text-muted nav-heading mt-4 mb-1">
-                <span>Account</span>
+                <span>Tài khoản</span>
             </p>
             <ul class="navbar-nav flex-fill w-100 mb-2">
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/profile" >
                         <i class="fe fe-user fe-16"></i>
-                        <span class="ml-3 item-text">Admin Profile</span>
+                        <span class="ml-3 item-text">Thông tin cá nhân</span>
                     </a>
                 </li>
 
@@ -254,7 +249,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">
                         <i class="fe fe-log-out fe-16"></i>
-                        <span class="ml-3 item-text">Logout</span>
+                        <span class="ml-3 item-text">Đăng xuất</span>
                     </a>
                 </li>
             </ul>
@@ -262,7 +257,7 @@
                 <li class="nav-item w-100">
                     <a class="nav-link" href="/">
                         <i class="fe fe-globe fe-16"></i>
-                        <span class="ml-3 item-text">Back to Home</span>
+                        <span class="ml-3 item-text">Quay lại trang chủ</span>
                     </a>
                 </li>
             </ul>
@@ -357,12 +352,12 @@
                 endDate: end,
                 ranges:
                         {
-                            'Today': [moment(), moment()],
-                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                            'This Month': [moment().startOf('month'), moment().endOf('month')],
-                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            'Hôm nay': [moment(), moment()],
+                            'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            '7 ngày qua': [moment().subtract(6, 'days'), moment()],
+                            '30 ngày qua': [moment().subtract(29, 'days'), moment()],
+                            'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+                            'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                         }
             }, cb);
     cb(start, end);

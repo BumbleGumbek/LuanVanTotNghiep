@@ -8,10 +8,10 @@
                         <table>
                             <thead>
                             <tr>
-                                <th>Jewelry</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>x</th>
+                                <th>Trang sức</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                                <th>Xóa</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -24,7 +24,7 @@
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{name}}</h6>
-                                            <p style="margin-bottom: 0; color: #b7b7b7; font-size: 14px;">Size: <span style="color: #111; font-weight: 600;">{{size}}</span></p>
+                                            <p style="margin-bottom: 0; color: #b7b7b7; font-size: 14px;">Kích cỡ: <span style="color: #111; font-weight: 600;">{{size}}</span></p>
                                             <h5>
                                                 {{formatCurrency price}} VND
                                             </h5>
@@ -54,13 +54,13 @@
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
                                 <a href="/">
-                                    Continue Shopping
+                                    Tiếp tục mua sắm
                                 </a>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn update__btn">
-                                <button type="submit" class="site-btn">Update cart</button>
+                                <button type="submit" class="site-btn">Cập nhật giỏ hàng</button>
                             </div>
 
                         </div>
@@ -68,19 +68,19 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="cart__total">
-                        <h6>Cart Total</h6>
+                        <h6>Tóm tắt giỏ hàng</h6>
                         <ul>
                             <li>
-                                Total Items:
+                                Tổng số sản phẩm:
                                 <span>{{totalQty}}</span>
                             </li>
                             <li>
-                                Total Price:
+                                Tổng cộng tiền:
                                 <span>{{formatCurrency totalPrice}} VND</span>
                             </li>
                         </ul>
                         <a href="/checkout" class="primary-btn">
-                            Proceed to Checkout
+                            Tiến hành thanh toán
                         </a>
                     </div>
                 </div>

@@ -19,13 +19,13 @@
                     </h5>
                     <p>{{product.description}}</p>
                     <ul>
-                        <li>Total Quantity: <span>{{product.totalQuantity}}</span></li>
-                        <li>Status:
+                        <li>Tổng số lượng: <span>{{product.totalQuantity}}</span></li>
+                        <li>Tình trạng:
                             <span>
                                 {{#if product.totalQuantity}}
-                                    In Stock
+                                    Còn hàng
                                 {{else}}
-                                    Out Of Stock
+                                    Hết hàng
                                 {{/if}}
                             </span>
                         </li>
@@ -34,7 +34,7 @@
                     <form action="/add-cart/{{product._id}}" method="POST">
                         <div class="product__details__option__size" style="margin-bottom: 30px; border-top: 1px solid #e1e1e1; padding-top: 20px;">
                             <span style="font-weight: 600; color: #111111; display: block; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
-                                Select Size:
+                                Chọn kích cỡ:
                             </span>
                             <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                                 {{#each product.variants}}
@@ -42,15 +42,15 @@
                                         <label class="size-label" data-stock="{{this.quantity}}" style="position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 85px; padding: 10px 12px; border: 1px solid #e1e1e1; cursor: pointer; border-radius: 2px; background: #ffffff; margin: 0; transition: all 0.2s;">
                                             <input type="radio" name="size" value="{{this.size}}" required style="position: absolute; opacity: 0; width: 0; height: 0; margin: 0;">
                                             <div style="text-align: center; width: 100%;">
-                                                <span style="font-weight: 600; font-size: 13px; color: #111111; display: block;">Size {{this.size}}</span>
-                                                <span style="color: #04274c; font-size: 11px; display: block; margin-top: 2px;">({{this.quantity}} available)</span>
+                                                <span style="font-weight: 600; font-size: 13px; color: #111111; display: block;">Kích cỡ {{this.size}}</span>
+                                                <span style="color: #04274c; font-size: 11px; display: block; margin-top: 2px;">(còn {{this.quantity}})</span>
                                             </div>
                                         </label>
                                     {{else}}
                                         <label class="size-label disabled" style="display: inline-flex; align-items: center; justify-content: center; min-width: 85px; padding: 10px 12px; border: 1px solid #f1f1f1; color: #b2b2b2; background: #fafafa; cursor: not-allowed; border-radius: 2px; margin: 0; text-align: center;">
                                             <div>
-                                                <span style="font-weight: 500; font-size: 13px; text-decoration: line-through; display: block;">Size {{this.size}}</span>
-                                                <small style="color: #cc0000; font-size: 11px; display: block; margin-top: 2px;">Sold out</small>
+                                                <span style="font-weight: 500; font-size: 13px; text-decoration: line-through; display: block;">Kích cỡ {{this.size}}</span>
+                                                <small style="color: #cc0000; font-size: 11px; display: block; margin-top: 2px;">Hết hàng</small>
                                             </div>
                                         </label>
                                     {{/if}}
@@ -67,11 +67,11 @@
                                 </div>
 
                                 <button type="submit" name="action" value="add_to_cart" class="primary-btn" style="border: none;">
-                                    Add to cart
+                                    Thêm vào giỏ
                                 </button>
 
                                 <button type="submit" name="action" value="buy_now" class="primary-btn" style="background: #111111; border: none;">
-                                    Buy Now
+                                    Mua ngay
                                 </button>
 
                                 <a href="/wishlist/add/{{product._id}}" class="heart__btn">
@@ -90,7 +90,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="section-title">
-                            <h2>Related Products</h2>
+                            <h2>Sản phẩm liên quan</h2>
                         </div>
                     </div>
                 </div>
@@ -124,25 +124,12 @@
                                             {{formatCurrency price}} VND
                                         </div>
                                         <div class="cart_add">
-
-                                            <form action="/add-cart/{{_id}}" method="POST">
-
-                                                <button type="submit"
-                                                        class="border-0 bg-transparent">
-
-                                                    Add to cart
-
-                                                </button>
-
-                                            </form>
-
+                                            <a href="/product-detail/{{this._id}}">Chi tiết</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 {{/each}}
-
-
                     </div>
                 </div>
 
@@ -150,4 +137,3 @@
         </section>
     </div>
 </section>
-<!-- Product Details Section End -->

@@ -2312,7 +2312,7 @@ ol {
 }
 .cart__total ul li span {
   font-weight: 600;
-  color: #055883;
+  color: rgb(137 174 189);
   float: right;
 }
 .cart__total .primary-btn {

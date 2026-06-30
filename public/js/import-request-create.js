@@ -89,17 +89,18 @@ document.addEventListener("DOMContentLoaded", function() {
     // Add initial rows
     if (window.selectedProductsData && window.selectedProductsData.length > 0) {
         window.selectedProductsData.forEach(product => {
-            if (product.variants && product.variants.length > 0) {
-                product.variants.forEach(variant => {
-                    addItemRow({
-                        product: product._idStr,
-                        size: variant.size,
-                        quantityRequested:
-                            variant.quantity <= product.lowStockThreshold ? 20 : 0
-                    });
+            const variants = product.variants || [];
+            const defaultVariant = variants.length > 0
+                ? variants.reduce((lowest, variant) =>
+                    variant.quantity < lowest.quantity ? variant : lowest
+                )
+                : null;
 
-                });
-            }
+            addItemRow({
+                product: product._idStr,
+                size: defaultVariant ? defaultVariant.size : '',
+                quantityRequested: defaultVariant && defaultVariant.quantity <= product.lowStockThreshold ? 20 : 1
+            });
         });
     } else if (window.preExistingItems && window.preExistingItems.length > 0) {
         window.preExistingItems.forEach(item => {

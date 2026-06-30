@@ -26,10 +26,10 @@
                     <table>
                         <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Name</th>
-                            <th>Unit Price</th>
-                            <th>Stock</th>
+                            <th>Sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Tình trạng</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -59,9 +59,9 @@
                                 <!-- STOCK -->
                                 <td class="cart__stock">
                                     {{#if product.status}}
-                                        In stock
+                                        Còn hàng
                                     {{else}}
-                                        Out stock
+                                        Hết hàng
                                     {{/if}}
                                 </td>
 
@@ -76,7 +76,7 @@
 
                                         <a href="/product-detail/{{product._id}}"
                                            class="primary-btn">
-                                            View Product
+                                            Xem chi tiết
                                         </a>
 
                                     </form>

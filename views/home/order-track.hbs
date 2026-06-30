@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Order - {{shortId order._id}}</title>
+    <title>Theo dõi đơn hàng - {{shortId order._id}}</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <style>
@@ -152,11 +152,15 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="font-weight-bold mb-0">Luna Jewelry</h4>
-            <span class="badge badge-pill py-2 px-3 
+            <span class="badge badge-pill py-2 px-3
                 {{#if (eq order.status 'Shipping')}}badge-info text-white{{/if}}
                 {{#if (eq order.status 'Completed')}}badge-success{{/if}}
                 {{#if (eq order.status 'Cancelled')}}badge-danger{{/if}}" style="font-size: 13px;">
-                {{order.status}}
+                {{#if (eq order.status 'PendingPayment')}}Chờ thanh toán{{/if}}
+                {{#if (eq order.status 'Paid')}}Đã thanh toán{{/if}}
+                {{#if (eq order.status 'Shipping')}}Đang giao hàng{{/if}}
+                {{#if (eq order.status 'Completed')}}Hoàn thành{{/if}}
+                {{#if (eq order.status 'Cancelled')}}Đã hủy{{/if}}
             </span>
         </div>
 
@@ -168,15 +172,15 @@
                 
                 <div class="progress-step {{#if order.isPaidStep}}active{{/if}}">
                     <div class="step-circle"><i class="fa fa-credit-card"></i></div>
-                    <div class="step-title">Paid</div>
+                    <div class="step-title">Đã thanh toán</div>
                 </div>
                 <div class="progress-step {{#if order.isShippingStep}}active{{/if}}">
                     <div class="step-circle"><i class="fa fa-truck"></i></div>
-                    <div class="step-title">Delivering</div>
+                    <div class="step-title">Đang giao hàng</div>
                 </div>
                 <div class="progress-step {{#if order.isCompletedStep}}active{{/if}}">
                     <div class="step-circle"><i class="fa fa-check-circle"></i></div>
-                    <div class="step-title">Completed</div>
+                    <div class="step-title">Hoàn thành</div>
                 </div>
             </div>
         </div>
@@ -195,38 +199,42 @@
 
         <!-- Order Info -->
         <div class="tracking-card p-3">
-            <h6 class="font-weight-bold mb-3 border-bottom pb-2">Order Information</h6>
+            <h6 class="font-weight-bold mb-3 border-bottom pb-2">Thông tin đơn hàng</h6>
             <div class="row mb-2">
                 <div class="col-6">
-                    <div class="info-label">Order Code</div>
+                    <div class="info-label">Mã đơn hàng</div>
                     <div class="info-value text-primary font-weight-bold">{{shortId order._id}}</div>
                 </div>
                 <div class="col-6">
-                    <div class="info-label">Order Date</div>
+                    <div class="info-label">Ngày đặt hàng</div>
                     <div class="info-value">{{formatDate order.createdAt}}</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
-                    <div class="info-label">Payment Status</div>
-                    <div class="info-value">{{order.paymentStatus}}</div>
+                    <div class="info-label">Trạng thái thanh toán</div>
+                    <div class="info-value">
+                        {{#if (eq order.paymentStatus 'Paid')}}Đã thanh toán{{else}}{{#if (eq order.paymentStatus 'Pending')}}Chưa thanh toán{{else}}{{order.paymentStatus}}{{/if}}{{/if}}
+                    </div>
                 </div>
                 <div class="col-6">
-                    <div class="info-label">Payment Method</div>
-                    <div class="info-value">{{order.paymentMethod}}</div>
+                    <div class="info-label">Phương thức thanh toán</div>
+                    <div class="info-value">
+                        {{#if order.paymentMethod}}{{order.paymentMethod}}{{else}}Chuyển khoản ngân hàng{{/if}}
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Product List -->
         <div class="tracking-card p-3">
-            <h6 class="font-weight-bold mb-2 border-bottom pb-2">Product List</h6>
+            <h6 class="font-weight-bold mb-2 border-bottom pb-2">Danh sách sản phẩm</h6>
             {{#each order.items}}
                 <div class="product-item">
                     <img src="{{this.image}}" alt="{{this.name}}" class="product-img">
                     <div class="product-details">
                         <div class="product-name">{{this.name}}</div>
-                        <div class="product-meta">Size: <span class="badge badge-light border">{{this.size}}</span></div>
+                        <div class="product-meta">Kích cỡ: <span class="badge badge-light border">{{this.size}}</span></div>
                         <div class="price-qty">
                             <span class="product-price">{{formatCurrency this.price_at_purchase}} VND</span>
                             <span class="text-muted" style="font-size: 13px;">x{{this.quantity}}</span>
@@ -235,24 +243,24 @@
                 </div>
             {{/each}}
             <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-                <span class="font-weight-bold" style="font-size: 15px;">Total Amount</span>
+                <span class="font-weight-bold" style="font-size: 15px;">Tổng số tiền</span>
                 <span class="font-weight-bold text-danger" style="font-size: 18px;">{{formatCurrency order.totalPrice}} VND</span>
             </div>
         </div>
 
         <!-- Shipping Address -->
         <div class="tracking-card p-3">
-            <h6 class="font-weight-bold mb-3 border-bottom pb-2">Delivery Address</h6>
+            <h6 class="font-weight-bold mb-3 border-bottom pb-2">Địa chỉ giao hàng</h6>
             <div class="mb-2">
-                <div class="info-label">Receiver</div>
+                <div class="info-label">Người nhận</div>
                 <div class="info-value font-weight-bold">{{order.shippingAddress.receiverName}}</div>
             </div>
             <div class="mb-2">
-                <div class="info-label">Phone Number</div>
+                <div class="info-label">Số điện thoại</div>
                 <div class="info-value">{{order.shippingAddress.receiverPhone}}</div>
             </div>
             <div>
-                <div class="info-label">Address</div>
+                <div class="info-label">Địa chỉ</div>
                 <div class="info-value">{{order.shippingAddress.detailAddress}}</div>
             </div>
         </div>
@@ -262,14 +270,14 @@
             <div class="mt-4">
                 <form action="/confirm-received/{{order._id}}" method="POST">
                     <button type="submit" class="confirm-btn">
-                        <i class="fa fa-check mr-2"></i> Confirm Received
+                        <i class="fa fa-check mr-2"></i> Xác nhận đã nhận hàng
                     </button>
                 </form>
             </div>
         {{/if}}
         {{#if (eq order.status 'Completed')}}
             <div class="alert alert-success text-center font-weight-bold p-3 mt-4" style="border-radius: 8px;">
-                <i class="fa fa-check-circle mr-2"></i> Order Completed successfully! Thank you for purchasing at Luna Jewelry.
+                <i class="fa fa-check-circle mr-2"></i> Đơn hàng đã hoàn thành thành công! Xin cảm ơn quý khách đã mua sắm tại Luna Jewelry.
             </div>
         {{/if}}
     </div>
