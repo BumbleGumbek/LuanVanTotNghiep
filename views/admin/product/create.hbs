@@ -3,12 +3,12 @@
         <div class="col-12">
             <div class="row align-items-center mb-4">
                 <div class="col">
-                    <h2 >Create New Product</h2>
-                    <p class="text-muted">Fill in the details below to add a new jewelry item to your inventory.</p>
+                    <h2>Tạo sản phẩm mới</h2>
+                    <p class="text-muted">Nhập thông tin chi tiết bên dưới để thêm sản phẩm trang sức mới vào kho hàng.</p>
                 </div>
                 <div class="col-auto">
                     <a href="/admin/product" class="btn btn-secondary px-4">
-                        <i class="fe fe-arrow-left mr-1"></i> Back to List
+                        <i class="fe fe-arrow-left mr-1"></i> Quay lại danh sách
                     </a>
                 </div>
             </div>
@@ -18,15 +18,15 @@
                     <div class="col-md-8">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"></i>Basic Information</strong>
+                                <strong class="card-title">Thông tin cơ bản</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Product Name <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Tên sản phẩm <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" required>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Description <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Mô tả <span class="text-danger">*</span></label>
                                     <textarea name="description" class="form-control" rows="6"  required></textarea>
                                 </div>
                             </div>
@@ -34,9 +34,9 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <strong class="card-title"><i class="fe fe-layers mr-2"></i>Product Inventory & Variants</strong>
+                                <strong class="card-title"><i class="fe fe-layers mr-2"></i>Tồn kho & Phân loại kích cỡ</strong>
                                 <button type="button" class="btn btn-sm btn-outline-success" id="add-size-btn">
-                                    <i class="fe fe-plus-circle mr-1"></i> Add Size
+                                    <i class="fe fe-plus-circle mr-1"></i> Thêm kích cỡ
                                 </button>
                             </div>
                             <div class="card-body bg-light-lighter">
@@ -47,7 +47,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
                                                 </div>
-                                                <input type="text" name="sizes[]" class="form-control" placeholder="Size (e.g., 6, S, 42)" required>
+                                                <input type="text" name="sizes[]" class="form-control" placeholder="Kích cỡ (VD: 6, S, 42)" required>
                                             </div>
                                         </div>
                                         <div class="col-5">
@@ -74,11 +74,11 @@
                     <div class="col-md-4">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-name"><i class="fe fe-tag mr-2"></i>Pricing & Category</strong>
+                                <strong class="card-name"><i class="fe fe-tag mr-2"></i>Giá bán & Danh mục</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Price (VND) <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Giá bán (VND) <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="number" name="price" class="form-control" min="1" placeholder="0" required>
                                         <div class="input-group-append">
@@ -87,18 +87,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Category <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Danh mục <span class="text-danger">*</span></label>
                                     <select name="category" class="form-control custom-select" required>
-                                        <option value="" disabled selected>-- Select --</option>
+                                        <option value="" disabled selected>-- Chọn danh mục --</option>
                                         {{#each plainCategory}}
                                             <option value="{{_id}}">{{name}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Supplier <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Nhà cung cấp <span class="text-danger">*</span></label>
                                     <select name="supplier" class="form-control custom-select" required>
-                                        <option value="" disabled selected>-- Select --</option>
+                                        <option value="" disabled selected>-- Chọn nhà cung cấp --</option>
                                         {{#each plainSupplier}}
                                             <option value="{{_id}}">{{name}}</option>
                                         {{/each}}
@@ -109,21 +109,21 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-image mr-2"></i>Product Media</strong>
+                                <strong class="card-title"><i class="fe fe-image mr-2"></i>Hình ảnh sản phẩm</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Upload Image</label>
+                                    <label class="form-label font-weight-bold">Tải ảnh lên</label>
                                     <div class="custom-file">
                                         <input type="file" name="image" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                        <label class="custom-file-label" for="customFile">Chọn tệp</label>
                                     </div>
                                 </div>
                                 <div class="text-center my-2">
-                                    <span class="badge badge-light px-3 py-2 text-muted">OR</span>
+                                    <span class="badge badge-light px-3 py-2 text-muted">HOẶC</span>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Image URL</label>
+                                    <label class="form-label font-weight-bold">Đường dẫn hình ảnh (URL)</label>
                                     <input type="text" name="imageUrl" class="form-control" placeholder="https://example.com/image.jpg">
                                 </div>
                             </div>
@@ -131,21 +131,21 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-eye mr-2"></i>Visibility</strong>
+                                <strong class="card-title"><i class="fe fe-eye mr-2"></i>Hiển thị</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Product Status</label>
+                                    <label class="form-label font-weight-bold">Trạng thái sản phẩm</label>
                                     <select name="status" class="form-control custom-select">
-                                        <option value="true">Visible (Public)</option>
-                                        <option value="false">Hidden (Draft)</option>
+                                        <option value="true">Hiển thị (Công khai)</option>
+                                        <option value="false">Ẩn (Bản nháp)</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm font-weight-bold py-3">
-                            <i class="fe fe-save mr-2"></i> Save Product
+                            <i class="fe fe-save mr-2"></i> Lưu sản phẩm
                         </button>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
                     </div>
-                    <input type="text" name="sizes[]" class="form-control" placeholder="Size" required>
+                    <input type="text" name="sizes[]" class="form-control" placeholder="Kích cỡ" required>
                 </div>
             </div>
             <div class="col-5">
@@ -174,7 +174,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fe fe-package"></i></span>
                     </div>
-                    <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="0" value="0" required>
+                    <input type="number" name="quantities[]" class="form-control" placeholder="Số lượng" min="0" value="0" required>
                 </div>
             </div>
             <div class="col-2">
@@ -194,7 +194,7 @@
             if (rows.length > 1) {
                 btn.closest('.variant-item').remove();
             } else {
-                alert('You must have at least one size variant!');
+                alert('Phải có ít nhất một phân loại kích cỡ!');
             }
         }
     });

@@ -1,17 +1,17 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
-            <h2 class="h3 mb-4 page-title">Settings</h2>
+            <h2 class="h3 mb-4 page-title">Cài đặt</h2>
             <div class="my-4">
                 <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Thông tin cá nhân</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Security</a>
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Bảo mật</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Notifications</a>
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Thông báo</a>
                     </li>
                 </ul>
                 <form>
@@ -25,16 +25,16 @@
                             <div class="row align-items-center">
                                 <div class="col-md-7">
                                     <h4 class="mb-1">{{user.lastName}}, {{user.firstName}}</h4>
-                                    <p class="small mb-3"><span class="badge badge-dark">Elegant Jewelry Admin</span></p>
+                                    <p class="small mb-3"><span class="badge badge-dark">Quản trị viên Elegant Jewelry</span></p>
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-7">
-                                    <p class="text-muted"> Welcome to your profile management. Here you can update your personal information and security settings for the Elegant Jewelry E-commerce platform. </p>
+                                    <p class="text-muted"> Khu vực quản lý thông tin tài khoản. Tại đây có thể cập nhật thông tin cá nhân và cài đặt bảo mật cho hệ thống thương mại điện tử Elegant Jewelry. </p>
                                 </div>
                                 <div class="col">
                                     <p class="small mb-0 text-muted">Elegant Jewelry Co.</p>
-                                    <p class="small mb-0 text-muted">Fashion District, Ho Chi Minh City</p>
+                                    <p class="small mb-0 text-muted">Quận 1, Thành phố Hồ Chí Minh</p>
                                     <p class="small mb-0 text-muted">(+84) 123-456-789</p>
                                 </div>
                             </div>
@@ -43,12 +43,12 @@
                     <hr class="my-4">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="firstname">Firstname</label>
-                            <input type="text" id="firstname" class="form-control" placeholder="First Name" value="{{user.firstName}}">
+                            <label for="firstname">Tên</label>
+                            <input type="text" id="firstname" class="form-control" placeholder="Nhập tên" value="{{user.firstName}}">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="lastname">Lastname</label>
-                            <input type="text" id="lastname" class="form-control" placeholder="Last Name" value="{{user.lastName}}">
+                            <label for="lastname">Họ</label>
+                            <input type="text" id="lastname" class="form-control" placeholder="Nhập họ" value="{{user.lastName}}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,55 +56,55 @@
                         <input type="email" class="form-control" id="inputEmail4" placeholder="email@example.com" value="{{user.email}}">
                     </div>
                     <div class="form-group">
-                        <label for="inputAddress5">Address</label>
-                        <input type="text" class="form-control" id="inputAddress5" placeholder="Address" value="Fashion District, Ho Chi Minh City">
+                        <label for="inputAddress5">Địa chỉ</label>
+                        <input type="text" class="form-control" id="inputAddress5" placeholder="Địa chỉ" value="Quận 1, Thành phố Hồ Chí Minh">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="inputCompany5">Company</label>
-                            <input type="text" class="form-control" id="inputCompany5" placeholder="Company" value="Elegant Jewelry Co.">
+                            <label for="inputCompany5">Công ty</label>
+                            <input type="text" class="form-control" id="inputCompany5" placeholder="Nhập tên công ty" value="Elegant Jewelry Co.">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputState5">State</label>
+                            <label for="inputState5">Thành phố</label>
                             <select id="inputState5" class="form-control">
-                                <option selected="">Ho Chi Minh City</option>
-                                <option>Ha Noi</option>
-                                <option>Da Nang</option>
+                                <option selected="">Thành phố Hồ Chí Minh</option>
+                                <option>Hà Nội</option>
+                                <option>Đà Nẵng</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputZip5">Zip</label>
-                            <input type="text" class="form-control" id="inputZip5" placeholder="Zip code" value="70000">
+                            <label for="inputZip5">Mã bưu chính (Zip)</label>
+                            <input type="text" class="form-control" id="inputZip5" placeholder="Mã Zip" value="70000">
                         </div>
                     </div>
                     <hr class="my-4">
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="inputPassword4">Old Password</label>
+                                <label for="inputPassword4">Mật khẩu cũ</label>
                                 <input type="password" class="form-control" id="inputPassword4">
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword5">New Password</label>
+                                <label for="inputPassword5">Mật khẩu mới</label>
                                 <input type="password" class="form-control" id="inputPassword5">
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword6">Confirm Password</label>
+                                <label for="inputPassword6">Xác nhận mật khẩu</label>
                                 <input type="password" class="form-control" id="inputPassword6">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-2">Password requirements</p>
-                            <p class="small text-muted mb-2"> To create a new password, you have to meet all of the following requirements: </p>
+                            <p class="mb-2">Yêu cầu mật khẩu</p>
+                            <p class="small text-muted mb-2"> Để tạo mật khẩu mới, mật khẩu phải đáp ứng các yêu cầu sau: </p>
                             <ul class="small text-muted pl-4 mb-0">
-                                <li> Minimum 8 characters </li>
-                                <li>At least one special character</li>
-                                <li>At least one number</li>
-                                <li>Can’t be the same as a previous password </li>
+                                <li> Tối thiểu 8 ký tự </li>
+                                <li>Có nhất một ký tự đặc biệt</li>
+                                <li>Có ít nhất một chữ số</li>
+                                <li>Không được trùng với mật khẩu cũ </li>
                             </ul>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                 </form>
             </div> <!-- /.my-4 -->
         </div> <!-- /.col-12 -->

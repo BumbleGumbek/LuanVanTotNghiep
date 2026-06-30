@@ -3,12 +3,12 @@
         <div class="col-12">
             <div class="row align-items-center mb-2">
                 <div class="col">
-                    <h2 class="h5 page-title">Jewelry Store Dashboard</h2>
+                    <h2 class="h5 page-title">Bảng điều khiển Cửa hàng Trang sức</h2>
                 </div>
                 <div class="col-auto">
                     <form class="form-inline">
                         <div class="form-group d-none d-lg-inline">
-                            <label for="reportrange" class="sr-only">Date Ranges</label>
+                            <label for="reportrange" class="sr-only">Khoảng thời gian</label>
                             <div id="reportrange" class="px-2 py-2 text-muted">
                                 <span class="small"></span>
                             </div>
@@ -24,26 +24,33 @@
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         <div class="row mt-1 align-items-center">
-                            <div class="col-12 col-lg-4 text-left pl-4">
-                                <p class="mb-1 small text-muted">Total Revenue</p>
+                            <div class="col-12 col-lg-3 text-left pl-4">
+                                <p class="mb-1 small text-muted">Tổng doanh thu</p>
                                 <span class="h3">
                                     {{formatCurrency totalRevenue}} VND
                                 </span>
-                                <span class="small text-muted">+20%</span>
+                                <span class="small text-muted"></span>
                                 <span class="fe fe-arrow-up text-success fe-12"></span>
-                                <p class="text-muted mt-2"> Overall revenue generated from jewelry sales and completed customer orders. </p>
+                                <p class="text-muted mt-2"> Doanh thu toàn bộ được tạo từ doanh số bán trang sức và các đơn hàng hoàn thành của khách hàng. </p>
                             </div>
-                            <div class="col-6 col-lg-2 text-center py-4">
-                                <p class="mb-1 small text-muted">Today's Orders</p>
+                            <div class="col-6 col-lg-3 text-center py-4">
+                                <p class="mb-1 small text-muted">Doanh thu hôm nay</p>
                                 <span class="h3">
-                                    {{totalOrders}}
+                                    {{formatCurrency todayRevenue}} VND
                                 </span>
-                                <span class="small text-muted">+20%</span>
                                 <span class="fe fe-arrow-up text-success fe-12"></span>
                             </div>
-                            <div class="col-6 col-lg-2 text-center py-4">
+                            <div class="col-6 col-lg-3 text-center py-4">
+                                <p class="mb-1 small text-muted">Đơn hàng hôm nay</p>
+                                <span class="h3">
+                                    {{ordersToday}}
+                                </span>
+                                <span class="small text-muted">Today</span>
+                                <span class="fe fe-arrow-up text-success fe-12"></span>
+                            </div>
+                            <div class="col-6 col-lg-3 text-center py-4">
                                 <p class="mb-1 small text-muted">
-                                    All Orders
+                                    Tất cả đơn hàng
                                 </p>
                                 <span class="h3">
                                     {{totalOrders}}
@@ -64,11 +71,11 @@
                         <div class="card-body mb-n3">
                             <div class="row items-align-baseline h-100">
                                 <div class="col-md-6 my-3">
-                                    <p class="mb-0"><strong class="mb-0 text-uppercase text-muted">Monthly Revenue</strong></p>
+                                    <p class="mb-0"><strong class="mb-0 text-uppercase text-muted">Doanh thu tháng</strong></p>
                                     <h3>
-                                        {{formatCurrency totalRevenue}} VND
+                                        {{formatCurrency monthlyRevenue}} VND
                                     </h3>
-                                    <p class="text-muted">Revenue generated from jewelry sales this month.</p>
+                                    <p class="text-muted">Doanh thu được tạo từ doanh số bán trang sức trong tháng này.</p>
                                 </div>
                                 <div class="col-md-6 my-4 text-center">
                                     <div class="chart-box mx-4">
@@ -76,33 +83,36 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 border-top py-3">
-                                    <p class="mb-1"><strong class="text-muted">Total Products</strong></p>
+                                    <p class="mb-1"><strong class="text-muted">Tổng số sản phẩm</strong></p>
                                     <h4 class="mb-0">
                                         {{totalProducts}}
                                     </h4>
-                                    <p class="small text-muted mb-0"><span>37.7% Last week</span></p>
+                                    <p class="small text-muted mb-0"><span>Danh mục sản phẩm hiện tại</span></p>
                                 </div> <!-- .col -->
                                 <div class="col-md-6 border-top py-3">
-                                    <p class="mb-1"><strong class="text-muted">Total Customers</strong></p>
+                                    <p class="mb-1"><strong class="text-muted">Tổng số khách hàng</strong></p>
                                     <h4 class="mb-0">
                                         {{totalCustomers}}
                                     </h4>
-                                    <p class="small text-muted mb-0"><span>-18.9% Last week</span></p>
+                                    <p class="mb-0 text-muted">
+                                        Mới hôm nay:
+                                        <strong>{{newCustomersToday}}</strong>
+                                    </p>
+                                    <p class="small text-muted mb-0"><span></span></p>
                                 </div> <!-- .col -->
                             </div>
                         </div> <!-- .card-body -->
                     </div> <!-- .card -->
                 </div> <!-- .col -->
                 <div class="col-md-12 col-lg-4">
-                    <div class="card shadow eq-card mb-4">
+                    <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="d-flex mt-3 mb-4">
                                 <div class="flex-fill pt-2">
-                                    <p class="mb-0 text-muted">Total</p>
+                                    <p class="mb-0 text-muted">Tổng cộng</p>
                                     <h4 class="mb-0">
                                         {{totalProducts}}
                                     </h4>
-                                    <span class="small text-muted">+37.7%</span>
                                 </div>
                                 <div class="flex-fill chart-box mt-n2">
                                     <div id="barChartWidget"></div>
@@ -110,32 +120,47 @@
                             </div> <!-- .d-flex -->
                         </div> <!-- .card-body -->
                     </div> <!-- .card -->
+
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <p class="mb-1 small text-muted">Doanh thu năm</p>
+                            <h4 class="mb-0">
+                                {{formatCurrency yearlyRevenue}} VND
+                            </h4>
+                            <p class="text-muted small mt-2">Doanh thu tích lũy được tạo từ các đơn hàng hoàn thành trong năm nay.</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-12 col-lg-3">
                     <div class="card shadow eq-card mb-4">
                         <div class="card-header">
                             <strong class="card-title">
-                                Order Statistics
+                                Thống kê đơn hàng
                             </strong>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Pending Payment</span>
+                                <span>Chờ thanh toán</span>
                                 <strong>{{orderStats.PendingPayment}}</strong>
                             </div>
 
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Paid</span>
+                                <span>Đã thanh toán</span>
                                 <strong>{{orderStats.Paid}}</strong>
                             </div>
 
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Shipping</span>
+                                <span>Đang vận chuyển</span>
                                 <strong>{{orderStats.Shipping}}</strong>
                             </div>
 
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Đã hoàn thành</span>
+                                <strong>{{orderStats.Completed}}</strong>
+                            </div>
+
                             <div class="d-flex justify-content-between">
-                                <span>Cancelled</span>
+                                <span>Đã hủy</span>
                                 <strong class="text-danger">
                                     {{orderStats.Cancelled}}
                                 </strong>
@@ -149,10 +174,10 @@
                 <div class="col-12">
                     <div class="card shadow mt-4">
                         <div class="card-header">
-                            <strong class="card-title">Top Selling Products</strong>
+                            <strong class="card-title">Sản phẩm bán chạy nhất</strong>
                             <a class="float-right small text-primary"
-                               href="/admin/product">
-                                View all
+                               href="/admin/inventory/overview">
+                                Xem tất cả
                             </a>
                         </div>
                         <div class="card-body my-n2">
@@ -160,10 +185,12 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Image</th>
-                                    <th>Product Name</th>
-                                    <th>Price</th>
-                                    <th>Sold</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="text-right">Giá bán</th>
+                                    <th class="text-center">Đã bán</th>
+                                    <th class="text-center">Tồn kho</th>
+                                    <th class="text-center">Trạng thái</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -178,8 +205,32 @@
                                                  style="object-fit: cover; border-radius: 8px;">
                                         </td>
                                         <td>{{name}}</td>
-                                        <td>{{formatCurrency price}} VND</td>
-                                        <td>{{sold}}</td>
+                                        <td class="text-right">{{formatCurrency price}} VND</td>
+                                        <td class="text-center">
+                                            {{sold}}
+                                        </td>
+
+                                        <td class="text-center">
+                                            {{stock}}
+                                        </td>
+
+                                        <td class="text-center">
+                                            {{#if (eq stock 0)}}
+                                                <span class="badge badge-danger">
+                                                    Out of Stock
+                                                </span>
+
+                                            {{else if (lte stock lowStockThreshold)}}
+                                                <span class="badge badge-warning">
+                                                    Low Stock
+                                                </span>
+
+                                            {{else}}
+                                                <span class="badge badge-success">
+                                                    In Stock
+                                                </span>
+                                            {{/if}}
+                                        </td>
                                     </tr>
                                 {{/each}}
                                 </tbody>
@@ -188,10 +239,10 @@
                     </div>
                     <div class="card shadow mt-4">
                         <div class="card-header">
-                            <strong>Low Stock Products</strong>
+                            <strong>Sản phẩm sắp hết hàng</strong>
                             <a class="float-right small text-primary"
                                href="/admin/product">
-                                View all
+                                Xem tất cả
                             </a>
                         </div>
 
@@ -200,10 +251,10 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Image</th>
-                                    <th>Product Name</th>
-                                    <th >Price</th>
-                                    <th class="text-center">Remaining Stock</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="text-center">Tồn kho thấp nhất</th>
+                                    <th class="text-center">Trạng thái</th>
                                 </tr>
                                 </thead>
 
@@ -219,12 +270,19 @@
                                                  style="object-fit: cover; border-radius: 8px;">
                                         </td>
                                         <td>{{name}}</td>
-                                        <td>{{formatCurrency price}} VND</td>
                                         <td class="text-center">
-                                            {{#if (lte stock 2)}}
-                                                <span class="badge badge-danger">{{stock}}</span>
+                                            Size {{lowStockVariant.size}} (Qty: {{stock}})
+                                        </td>
+
+                                        <td class="text-center">
+                                            {{#if (eq stock 0)}}
+                                                <span class="badge badge-danger">
+                                                    Out of Stock
+                                                </span>
                                             {{else}}
-                                                <span class="badge badge-warning">{{stock}}</span>
+                                                <span class="badge badge-warning">
+                                                    Low Stock
+                                                </span>
                                             {{/if}}
                                         </td>
                                     </tr>
@@ -236,17 +294,20 @@
                     <div class="card shadow mt-4">
                         <div class="card-header">
                             <strong>
-                                Recent Orders
+                                Đơn hàng gần đây
                             </strong>
                         </div>
                         <div class="card-body">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Order ID</th>
-                                    <th>Customer</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Khách hàng</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Thanh toán</th>
+                                    <th>Trạng thái đơn</th>
+                                    <th>Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -256,26 +317,48 @@
                                             {{shortId _id}}
                                         </td>
                                         <td>
-                                            {{user.firstName}}
-                                            {{user.lastName}}
+                                            {{#if user}}
+                                                {{user.firstName}} {{user.lastName}}
+                                            {{else}}
+                                                Khách vãng lai
+                                            {{/if}}
+                                        </td>
+                                        <td>
+                                            {{formatDate createdAt}}
                                         </td>
                                         <td>
                                             {{formatCurrency totalPrice}} VND
                                         </td>
                                         <td>
+                                            {{#if (eq paymentStatus 'Paid')}}
+                                                <span class="badge badge-success">Đã trả</span>
+                                            {{else if (eq paymentStatus 'Failed')}}
+                                                <span class="badge badge-danger">Thất bại</span>
+                                            {{else}}
+                                                <span class="badge badge-warning">Chưa trả</span>
+                                            {{/if}}
+                                        </td>
+                                        <td>
                                             <span class="dot dot-lg mr-2
-                                                 {{#if (eq status 'PendingPayment')}}bg-warning{{/if}}
-                                                 {{#if (eq status 'Paid')}}bg-info{{/if}}
-                                                 {{#if (eq status 'Shipping')}}bg-primary{{/if}}
-                                                 {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
-                                             </span>
-                                             <span class="font-weight-bold
-                                                 {{#if (eq status 'PendingPayment')}}text-warning{{/if}}
-                                                 {{#if (eq status 'Paid')}}text-info{{/if}}
-                                                 {{#if (eq status 'Shipping')}}text-primary{{/if}}
-                                                 {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
-                                                 {{status}}
-                                             </span>
+                                                {{#if (eq status 'Paid')}}bg-info{{/if}}
+                                                {{#if (eq status 'Shipping')}}bg-primary{{/if}}
+                                                {{#if (eq status 'Completed')}}bg-success{{/if}}
+                                                {{#if (eq status 'Cancelled')}}bg-danger{{/if}}">
+                                            </span>
+                                            <span class="font-weight-bold
+                                                {{#if (eq status 'Paid')}}text-info{{/if}}
+                                                {{#if (eq status 'Shipping')}}text-primary{{/if}}
+                                                {{#if (eq status 'Completed')}}text-success{{/if}}
+                                                {{#if (eq status 'Cancelled')}}text-danger{{/if}}">
+                                                {{#if (eq status 'PendingPayment')}}Chờ thanh toán{{/if}}
+                                                {{#if (eq status 'Paid')}}Đã thanh toán{{/if}}
+                                                {{#if (eq status 'Shipping')}}Đang vận chuyển{{/if}}
+                                                {{#if (eq status 'Completed')}}Hoàn thành{{/if}}
+                                                {{#if (eq status 'Cancelled')}}Đã hủy{{/if}}
+                                              </span>
+                                        </td>
+                                        <td>
+                                            <a href="/admin/orders/invoice/{{_id}}" class="btn btn-sm btn-outline-primary">Xem</a>
                                         </td>
                                     </tr>
                                 {{/each}}
@@ -289,3 +372,18 @@
     </div>
 </div>
 </div>
+<script>
+    const chartRaw = {{{chartDataJSON}}};
+    window.dashboardChart = {
+        labels: chartRaw.labels,
+        revenue: chartRaw.revenue,
+        monthlyPercentage: {{monthlyRevenuePercentage}},
+        orderStats: [
+            {{orderStats.PendingPayment}},
+            {{orderStats.Paid}},
+            {{orderStats.Shipping}},
+            {{orderStats.Completed}},
+            {{orderStats.Cancelled}}
+        ]
+    };
+</script>

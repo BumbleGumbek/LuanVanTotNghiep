@@ -3,6 +3,7 @@ const router = express.Router();
 const Review = require('../models/Review');
 const Product = require('../models/Product');
 const User = require('../models/User');
+const { hasRole } = require('../middlewares/authorization');
 
 router.all('/*', function (req, res, next) {
     res.app.locals.layout = 'admin';
@@ -56,7 +57,7 @@ router.get('/', async function(req, res, next) {
     }
 });
 
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', hasRole('admin'), async function(req, res, next) {
     try {
         const review = await Review.findById(req.params.id);
         if (!review) {

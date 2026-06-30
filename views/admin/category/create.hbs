@@ -3,24 +3,24 @@
         <form action="/admin/category/create" method="POST">
             <div class="mb-3">
                 <label class="form-label">
-                    Name
+                    Tên danh mục
                 </label>
                 <input type="text" name="name" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Status</label>
+                <label class="form-label">Trạng thái</label>
                 <select name="status" class="form-control">
                     <option value="true">
-                        True
+                        Hoạt động
                     </option>
                     <option value="false">
-                        False
+                        Khóa
                     </option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">
-                Create Category
+                Tạo danh mục
             </button>
         </form>
     </div>

@@ -3,26 +3,26 @@
         <form action="/admin/category/edit/{{category._id}}" method="POST">
             <div class="mb-3">
                 <label class="form-label">
-                    Category Name
+                    Tên danh mục
                 </label>
                 <input type="text" name="name" class="form-control" value="{{category.name}}" required>
             </div>
 
             <div class="mb-4">
                 <label class="form-label">
-                    Status
+                    Trạng thái
                 </label>
                 <select name="status" class="form-control">
                     <option value="true" {{#if category.status}} selected {{/if}}>
-                        True
+                        Hoạt động
                     </option>
                     <option value="false" {{#unless category.status}} selected {{/unless}}>
-                        False
+                        Khóa
                     </option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">
-                Update Category
+                Cập nhật danh mục
             </button>
         </form>
     </div>

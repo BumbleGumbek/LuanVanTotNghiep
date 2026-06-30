@@ -1,17 +1,17 @@
 <div class="card shadow">
     <div class="card-body">
         <h4 class="mb-4">
-            Create
+            Tạo tài khoản
         </h4>
 
         <form action="/users/create" method="POST">
             <div class="form-group mb-3">
-                <label>First Name</label>
+                <label>Tên</label>
                 <input type="text" name="firstName" class="form-control" required>
             </div>
 
             <div class="form-group mb-3">
-                <label>Last Name</label>
+                <label>Họ</label>
                 <input type="text" name="lastName" class="form-control" required>
             </div>
 
@@ -20,20 +20,20 @@
                 <input type="email" name="email" class="form-control" required>
             </div>
             <div class="form-group mb-3">
-                <label>Role</label>
+                <label>Vai trò</label>
                 <select name="role" id="roleSelect" class="form-control">
-                    <option value="customer">Customer</option>
-                    <option value="admin">Admin</option>
-                    <option value="warehouse">Warehouse</option>
-                    <option value="supplier">Supplier</option>
-                    <option value="store_manager">Store Manager</option>
+                    <option value="customer">Khách hàng</option>
+                    <option value="admin">Quản trị viên</option>
+                    <option value="warehouse">Thủ kho</option>
+                    <option value="supplier">Nhà cung cấp</option>
+                    <option value="store_manager">Quản lý cửa hàng</option>
                 </select>
             </div>
 
             <div class="form-group mb-3" id="supplierSelectGroup" style="display: none;">
-                <label>Supplier Partner</label>
+                <label>Đối tác cung cấp</label>
                 <select name="supplierId" class="form-control">
-                    <option value="" disabled selected>-- Select Supplier --</option>
+                    <option value="" disabled selected>-- Chọn nhà cung cấp --</option>
                     {{#each plainSupplier}}
                         <option value="{{_id}}">{{name}}</option>
                     {{/each}}
@@ -41,20 +41,20 @@
             </div>
 
             <div class="form-group mb-3">
-                <label>Password</label>
+                <label>Mật khẩu</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
 
             <div class="form-group mb-3">
-                <label>Status</label>
+                <label>Trạng thái</label>
                 <select name="status" class="form-control">
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+                    <option value="true">Hoạt động</option>
+                    <option value="false">Khóa</option>
                 </select>
             </div>
 
             <button class="btn btn-primary">
-                Create
+                Tạo tài khoản
             </button>
         </form>
     </div>

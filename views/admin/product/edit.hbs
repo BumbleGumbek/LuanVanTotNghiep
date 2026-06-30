@@ -3,12 +3,12 @@
         <div class="col-12">
             <div class="row align-items-center mb-4">
                 <div class="col">
-                    <h2 class="h3 page-title text-primary"><i class="fe fe-edit mr-2"></i>Edit Product</h2>
-                    <p class="text-muted">Modify the details below to update the jewelry item in your inventory.</p>
+                    <h2 class="h3 page-title text-primary"><i class="fe fe-edit mr-2"></i>Chỉnh sửa sản phẩm</h2>
+                    <p class="text-muted">Chỉnh sửa thông tin chi tiết bên dưới để cập nhật sản phẩm trang sức trong kho hàng.</p>
                 </div>
                 <div class="col-auto">
                     <a href="/admin/product" class="btn btn-secondary px-4">
-                        <i class="fe fe-arrow-left mr-1"></i> Back to List
+                        <i class="fe fe-arrow-left mr-1"></i> Quay lại danh sách
                     </a>
                 </div>
             </div>
@@ -18,25 +18,25 @@
                     <div class="col-md-8">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-info mr-2"></i>Basic Information</strong>
+                                <strong class="card-title"><i class="fe fe-info mr-2"></i>Thông tin cơ bản</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Product Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="name" value="{{product.name}}" class="form-control" placeholder="Enter product name" required>
+                                    <label class="form-label font-weight-bold">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" value="{{product.name}}" class="form-control" placeholder="Nhập tên sản phẩm" required>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Description <span class="text-danger">*</span></label>
-                                    <textarea name="description" class="form-control" rows="6" placeholder="Describe the product..." required>{{product.description}}</textarea>
+                                    <label class="form-label font-weight-bold">Mô tả <span class="text-danger">*</span></label>
+                                    <textarea name="description" class="form-control" rows="6" placeholder="Mô tả sản phẩm..." required>{{product.description}}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card shadow mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <strong class="card-name"><i class="fe fe-layers mr-2"></i>Product Inventory & Variants</strong>
+                                <strong class="card-name"><i class="fe fe-layers mr-2"></i>Tồn kho & Phân loại kích cỡ</strong>
                                 <button type="button" class="btn btn-sm btn-outline-success" id="add-size-btn">
-                                    <i class="fe fe-plus-circle mr-1"></i> Add Size
+                                    <i class="fe fe-plus-circle mr-1"></i> Thêm kích cỡ
                                 </button>
                             </div>
                             <div class="card-body bg-light-lighter">
@@ -48,7 +48,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
                                                     </div>
-                                                    <input type="text" name="sizes[]" value="{{this.size}}" class="form-control" placeholder="Size" required>
+                                                    <input type="text" name="sizes[]" value="{{this.size}}" class="form-control" placeholder="Kích cỡ" required>
                                                 </div>
                                             </div>
                                             <div class="col-5">
@@ -56,7 +56,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fe fe-package"></i></span>
                                                     </div>
-                                                    <input type="number" name="quantities[]" value="{{this.quantity}}" class="form-control" placeholder="Quantity" min="0" required>
+                                                    <input type="number" name="quantities[]" value="{{this.quantity}}" class="form-control" placeholder="Số lượng" min="0" required>
                                                 </div>
                                             </div>
                                             <div class="col-2">
@@ -72,7 +72,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
                                                     </div>
-                                                    <input type="text" name="sizes[]" class="form-control" placeholder="Size (e.g., S, M, L)" required>
+                                                    <input type="text" name="sizes[]" class="form-control" placeholder="Kích cỡ (VD: S, M, L)" required>
                                                 </div>
                                             </div>
                                             <div class="col-5">
@@ -80,7 +80,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text"><i class="fe fe-package"></i></span>
                                                     </div>
-                                                    <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="0" value="0" required>
+                                                    <input type="number" name="quantities[]" class="form-control" placeholder="Số lượng" min="0" value="0" required>
                                                 </div>
                                             </div>
                                             <div class="col-2">
@@ -92,7 +92,7 @@
                                     {{/each}}
                                 </div>
                                 <div class="mt-3">
-                                    <small class="text-muted"><i class="fe fe-help-circle mr-1"></i> Update sizes and stock levels. Deleting a row will remove that variant upon saving.</small>
+                                    <small class="text-muted"><i class="fe fe-help-circle mr-1"></i> Cập nhật phân loại kích cỡ và mức tồn kho. Xóa một dòng sẽ loại bỏ phân loại kích cỡ đó khi lưu.</small>
                                 </div>
                             </div>
                         </div>
@@ -101,11 +101,11 @@
                     <div class="col-md-4">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-tag mr-2"></i>Pricing & Category</strong>
+                                <strong class="card-title"><i class="fe fe-tag mr-2"></i>Giá bán & Danh mục</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Price (VND) <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Giá bán (VND) <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="number" name="price" value="{{product.price}}" class="form-control" min="1" required>
                                         <div class="input-group-append">
@@ -114,7 +114,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Category <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Danh mục <span class="text-danger">*</span></label>
                                     <select name="category" class="form-control custom-select" required>
                                         {{#each plainCategory}}
                                             <option value="{{this._id}}" {{#if (eq this._id ../product.category._id)}}selected{{/if}}>
@@ -124,7 +124,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Supplier <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Nhà cung cấp <span class="text-danger">*</span></label>
                                     <select name="supplier" class="form-control custom-select" required>
                                         <option value="{{product.supplier._id}}" selected>{{product.supplier.name}}</option>
 
@@ -138,24 +138,24 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-image mr-2"></i>Product Media</strong>
+                                <strong class="card-title"><i class="fe fe-image mr-2"></i>Hình ảnh sản phẩm</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Current Image</label>
+                                    <label class="form-label font-weight-bold">Hình ảnh hiện tại</label>
                                     <div class="mb-2 text-center bg-light p-2 rounded">
                                         <img src="{{product.image}}" alt="Product Image" style="max-height: 100px; object-fit: contain;">
                                     </div>
                                     <div class="custom-file">
                                         <input type="file" name="image" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Change file...</label>
+                                        <label class="custom-file-label" for="customFile">Thay đổi tệp...</label>
                                     </div>
                                 </div>
                                 <div class="text-center my-2">
-                                    <span class="badge badge-light px-3 py-2 text-muted">OR</span>
+                                    <span class="badge badge-light px-3 py-2 text-muted">HOẶC</span>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Image URL</label>
+                                    <label class="form-label font-weight-bold">Đường dẫn hình ảnh (URL)</label>
                                     <input type="text" name="imageUrl" value="{{product.image}}" class="form-control" placeholder="https://example.com/image.jpg">
                                 </div>
                             </div>
@@ -163,21 +163,21 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-eye mr-2"></i>Visibility</strong>
+                                <strong class="card-title"><i class="fe fe-eye mr-2"></i>Hiển thị</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Product Status</label>
+                                    <label class="form-label font-weight-bold">Trạng thái sản phẩm</label>
                                     <select name="status" class="form-control custom-select">
-                                        <option value="true" {{#if product.status}}selected{{/if}}>Visible (Public)</option>
-                                        <option value="false" {{#unless product.status}}selected{{/unless}}>Hidden (Draft)</option>
+                                        <option value="true" {{#if product.status}}selected{{/if}}>Hiển thị (Công khai)</option>
+                                        <option value="false" {{#unless product.status}}selected{{/unless}}>Ẩn (Bản nháp)</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm font-weight-bold py-3">
-                            <i class="fe fe-save mr-2"></i> Update Product
+                            <i class="fe fe-save mr-2"></i> Cập nhật sản phẩm
                         </button>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fe fe-maximize-2"></i></span>
                     </div>
-                    <input type="text" name="sizes[]" class="form-control" placeholder="Size" required>
+                    <input type="text" name="sizes[]" class="form-control" placeholder="Kích cỡ" required>
                 </div>
             </div>
             <div class="col-5">
@@ -205,7 +205,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fe fe-package"></i></span>
                     </div>
-                    <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="0" value="0" required>
+                    <input type="number" name="quantities[]" class="form-control" placeholder="Số lượng" min="0" value="0" required>
                 </div>
             </div>
             <div class="col-2">
@@ -224,7 +224,7 @@
             if (rows.length > 1) {
                 btn.closest('.variant-item').remove();
             } else {
-                alert('You must have at least one size variant!');
+                alert('Phải có ít nhất một phân loại kích cỡ!');
             }
         }
     });

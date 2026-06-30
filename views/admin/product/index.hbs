@@ -4,13 +4,13 @@
         <div class="d-flex align-items-center mb-3">
             <div>
                 <h5 class="card-title mb-1">
-                    Products Table
+                    Bảng sản phẩm
                 </h5>
                 <p class="card-text mb-0">
-                    Manage all jewelry products here.
+                    Quản lý tất cả sản phẩm trang sức tại đây.
                 </p>
                 <p class="card-text mt-2 font-weight-bold">
-                    Total number of products: {{plainProduct.length}}
+                    Tổng số loại sản phẩm: {{plainProduct.length}}
                 </p>
             </div>
             <div class="flex-grow-1 d-flex justify-content-center">
@@ -20,7 +20,7 @@
                             type="search"
                             name="keyword"
                             value="{{keyword}}"
-                            placeholder="Search products..."
+                            placeholder="Tìm kiếm sản phẩm..."
                             aria-label="Search"
                             style="width: 300px;">
                 </form>
@@ -29,7 +29,7 @@
             <div class="d-flex align-items-center">
                 <form action="/admin/product" method="GET" class="mr-3 d-flex align-items-center">
                     <select name="category" class="form-control mr-2" onchange="this.form.submit()">
-                        <option value="">All Categories</option>
+                        <option value="">Tất cả danh mục</option>
                         {{#each categories}}
                             <option value="{{_id}}" {{#if (eq _id ../selectedCategory)}}selected{{/if}}>
                                 {{name}}
@@ -40,7 +40,7 @@
 
                 {{#if canManageProducts}}
                     <a href="/admin/product/create" class="btn btn-primary">
-                        Add Product
+                        Thêm sản phẩm
                     </a>
                 {{/if}}
             </div>
@@ -49,13 +49,13 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>Trạng thái</th>
+                <th>Sửa</th>
+                <th>Xóa</th>
             </tr>
             </thead>
             <tbody>

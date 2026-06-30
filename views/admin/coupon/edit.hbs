@@ -1,54 +1,54 @@
 <div class="card shadow">
     <div class="card-body">
         <h4 class="mb-4">
-            Create Coupon
+            Cập nhật mã giảm giá
         </h4>
         <form action="/admin/coupon/edit/{{coupon._id}}"
               method="POST">
             <div class="form-group">
-                <label>Coupon Code</label>
+                <label>Mã giảm giá</label>
                 <input type="text" name="code" class="form-control" value="{{coupon.code}}" required>
             </div>
 
             <div class="form-group">
-                <label>Discount Value (VND)</label>
+                <label>Giá trị giảm giá (VND)</label>
                 <input type="number" name="discountValue" class="form-control" min="0" value="{{coupon.discountValue}}" required>
             </div>
 
             <div class="form-group">
-                <label>Minimum Order Value</label>
+                <label>Giá trị đơn hàng tối thiểu</label>
                 <input type="number" name="minOrderValue" class="form-control" min="0" value="{{coupon.minOrderValue}}" required>
             </div>
 
             <div class="form-group">
-                <label>Usage Limit</label>
+                <label>Giới hạn sử dụng</label>
                 <input type="number" name="usageLimit" class="form-control" min="1" value="{{coupon.usageLimit}}" required>
             </div>
 
             <div class="form-group">
-                <label>Expiry Date</label>
+                <label>Ngày hết hạn</label>
                 <input type="date" name="expiryDate" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Status</label>
+                <label>Trạng thái</label>
                 <select name="status" class="form-control">
 
                     <option value="true"
                             {{#if coupon.status}}selected{{/if}}>
-                        Active
+                        Hoạt động
                     </option>
 
                     <option value="false"
                             {{#unless coupon.status}}selected{{/unless}}>
-                        Inactive
+                        Khóa
                     </option>
 
                 </select>
             </div>
 
             <button type="submit" class="btn btn-primary">
-                Create Coupon
+                Cập nhật mã giảm giá
             </button>
         </form>
     </div>
