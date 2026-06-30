@@ -3,8 +3,8 @@
         <div class="col-12">
             <div class="row align-items-center mb-4">
                 <div class="col">
-                    <h2>Import Request Details</h2>
-                    <p class="text-muted">Detailed view of the requested items and supplier information.</p>
+                    <h2>Chi tiết yêu cầu nhập hàng</h2>
+                    <p class="text-muted">Xem chi tiết danh sách sản phẩm yêu cầu và thông tin nhà cung cấp.</p>
                 </div>
                 <div class="col-auto d-flex align-items-center">
 
@@ -12,7 +12,7 @@
                         {{#if canReceiveGoods}}
                             <form action="/admin/import-request/import/{{request._id}}" method="POST">
                                 <button type="submit" class="btn btn-success">
-                                    Receive Goods
+                                    Nhập kho
                                 </button>
                             </form>
                         {{/if}}
@@ -21,7 +21,7 @@
                     <a href="/admin/import-request"
                        class="btn btn-secondary px-4">
                         <i class="fe fe-arrow-left mr-1"></i>
-                        Back to List
+                        Quay lại danh sách
                     </a>
 
                 </div>
@@ -32,46 +32,46 @@
                 <div class="col-md-4">
                     <div class="card shadow mb-4">
                         <div class="card-header">
-                            <strong class="card-title"><i class="fe fe-info mr-2"></i>General Information</strong>
+                            <strong class="card-title"><i class="fe fe-info mr-2"></i>Thông tin chung</strong>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold text-muted mb-0">Request Code</label>
+                                <label class="form-label font-weight-bold text-muted mb-0">Mã yêu cầu</label>
                                 <p class="h5 font-weight-bold text-primary">{{request.requestCode}}</p>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold text-muted mb-0">Supplier</label>
+                                <label class="form-label font-weight-bold text-muted mb-0">Nhà cung cấp</label>
                                 <p class="h6 font-weight-bold">{{request.supplier.name}}</p>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold text-muted mb-0">Status</label>
+                                <label class="form-label font-weight-bold text-muted mb-0">Trạng thái</label>
                                 <div>
                                     {{#if (eq request.status "Pending")}}
-                                        <span class="badge badge-warning">Pending</span>
+                                        <span class="badge badge-warning">Chờ xử lý</span>
                                     {{/if}}
                                     {{#if (eq request.status "Delivered")}}
-                                        <span class="badge badge-info">Delivered</span>
+                                        <span class="badge badge-info">Đã giao hàng</span>
                                     {{/if}}
                                     {{#if (eq request.status "Completed")}}
-                                        <span class="badge badge-success">Completed</span>
+                                        <span class="badge badge-success">Hoàn thành</span>
                                     {{/if}}
                                     {{#if (eq request.status "Rejected")}}
-                                        <span class="badge badge-danger">Rejected</span>
+                                        <span class="badge badge-danger">Đã từ chối</span>
                                     {{/if}}
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold text-muted mb-0">Created By</label>
+                                <label class="form-label font-weight-bold text-muted mb-0">Người tạo</label>
                                 <p class="mb-0">{{request.createdBy.firstName}} {{request.createdBy.lastName}}</p>
                                 <small class="text-muted">{{request.createdBy.email}}</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label font-weight-bold text-muted mb-0">Created Date</label>
-                                <p class="mb-0">{{request.createdAt}}</p>
+                                <label class="form-label font-weight-bold text-muted mb-0">Ngày tạo</label>
+                                <p class="mb-0">{{formatDate request.createdAt}}</p>
                             </div>
                             {{#if request.note}}
                                 <div class="mb-0">
-                                    <label class="form-label font-weight-bold text-muted mb-0">Note</label>
+                                    <label class="form-label font-weight-bold text-muted mb-0">Ghi chú</label>
                                     <p class="mb-0 text-muted">{{request.note}}</p>
                                 </div>
                             {{/if}}
@@ -84,16 +84,16 @@
                 <div class="col-md-8">
                     <div class="card shadow mb-4">
                         <div class="card-header">
-                            <strong class="card-title"><i class="fe fe-package mr-2"></i>Requested Items</strong>
+                            <strong class="card-title"><i class="fe fe-package mr-2"></i>Mặt hàng yêu cầu</strong>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-bordered mb-0" style="min-width: 500px;">
                                     <thead class="bg-light">
                                         <tr>
-                                            <th>Product</th>
-                                            <th style="width: 25%;">Size</th>
-                                            <th style="width: 25%;" class="text-right">Quantity Requested</th>
+                                            <th>Sản phẩm</th>
+                                            <th style="width: 25%;">Kích cỡ</th>
+                                            <th style="width: 25%;" class="text-right">Số lượng yêu cầu</th>
                                         </tr>
                                     </thead>
                                     <tbody>

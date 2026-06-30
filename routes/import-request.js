@@ -65,6 +65,15 @@ router.get('/create', hasRole('admin', 'store_manager'), async function(req, res
             }
         }
 
+        console.log('selectedProducts length:', selectedProducts.length);
+
+        console.log(
+            selectedProducts.map(p => ({
+                id: p._idStr,
+                name: p.name
+            }))
+        );
+
         res.render('admin/import-request/create', {
             title: 'Create Import Request',
             plainProducts,

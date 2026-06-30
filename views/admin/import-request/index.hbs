@@ -2,11 +2,11 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h5 class="card-title mb-1">Import Requests</h5>
+                <h5 class="card-title mb-1">Yêu cầu nhập hàng</h5>
             </div>
             {{#if canCreateImportRequest}}
             <div>
-                <a href="/admin/import-request/create" class="btn btn-primary">Create Request</a>
+                <a href="/admin/import-request/create" class="btn btn-primary">Tạo yêu cầu</a>
             </div>
             {{/if}}
         </div>
@@ -14,13 +14,13 @@
         <table class="table table-hover align-middle">
             <thead>
                 <tr>
-                    <th>Request Code</th>
-                    <th>Supplier</th>
-                    <th>Status</th>
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Mã yêu cầu</th>
+                    <th>Nhà cung cấp</th>
+                    <th>Trạng thái</th>
+                    <th>Người tạo</th>
+                    <th>Ngày tạo</th>
+                    <th>Sửa</th>
+                    <th>Xóa</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,16 +30,16 @@
                         <td>{{supplier.name}}</td>
                         <td>
                             {{#if (eq status "Pending")}}
-                                <span class="badge badge-warning">Pending</span>
+                                <span class="badge badge-warning">Chờ xử lý</span>
                             {{/if}}
                             {{#if (eq status "Delivered")}}
-                                <span class="badge badge-info">Delivered</span>
+                                <span class="badge badge-info">Đã giao hàng</span>
                             {{/if}}
                             {{#if (eq status "Completed")}}
-                                <span class="badge badge-success">Completed</span>
+                                <span class="badge badge-success">Hoàn thành</span>
                             {{/if}}
                             {{#if (eq status "Rejected")}}
-                                <span class="badge badge-danger">Rejected</span>
+                                <span class="badge badge-danger">Đã từ chối</span>
                             {{/if}}
                         </td>
                         <td>{{createdBy.firstName}} {{createdBy.lastName}}</td>
@@ -60,7 +60,7 @@
                                 {{#if ../canCreateImportRequest}}
                                 <div class="d-flex align-items-center">
                                     <form action="/admin/import-request/{{_id}}?_method=DELETE" method="POST" class="d-inline">
-                                        <button type="submit" class="border-0 bg-transparent p-0" onclick="return confirm('Delete this import request?')">
+                                        <button type="submit" class="border-0 bg-transparent p-0" onclick="return confirm('Xác nhận xóa yêu cầu nhập hàng này?')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash3 text-danger" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/></svg>
                                         </button>
                                     </form>
@@ -72,7 +72,7 @@
                     </tr>
                 {{else}}
                     <tr>
-                        <td colspan="6" class="text-center">No import requests found.</td>
+                        <td colspan="7" class="text-center">Không tìm thấy yêu cầu nhập hàng nào.</td>
                     </tr>
                 {{/each}}
             </tbody>

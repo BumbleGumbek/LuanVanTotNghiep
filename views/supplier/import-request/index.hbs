@@ -2,17 +2,17 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h5 class="card-title mb-1">My Import Requests</h5>
+                <h5 class="card-title mb-1">Yêu cầu nhập hàng của tôi</h5>
             </div>
         </div>
 
         <table class="table table-hover align-middle">
             <thead>
                 <tr>
-                    <th>Request Code</th>
-                    <th>Status</th>
-                    <th>Created Date</th>
-                    <th>Action</th>
+                    <th>Mã yêu cầu</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,26 +21,26 @@
                         <td><a href="/supplier/import-request/{{_id}}" class="font-weight-bold text-primary">{{requestCode}}</a></td>
                         <td>
                             {{#if (eq status "Pending")}}
-                                <span class="badge badge-warning">Pending</span>
+                                <span class="badge badge-warning">Chờ xử lý</span>
                             {{/if}}
                             {{#if (eq status "Delivered")}}
-                                <span class="badge badge-info">Delivered</span>
+                                <span class="badge badge-info">Đã giao hàng</span>
                             {{/if}}
                             {{#if (eq status "Completed")}}
-                                <span class="badge badge-success">Completed</span>
+                                <span class="badge badge-success">Hoàn thành</span>
                             {{/if}}
                             {{#if (eq status "Rejected")}}
-                                <span class="badge badge-danger">Rejected</span>
+                                <span class="badge badge-danger">Đã từ chối</span>
                             {{/if}}
                         </td>
-                        <td>{{createdAt}}</td>
+                        <td>{{formatDate createdAt}}</td>
                         <td>
-                            <a href="/supplier/import-request/{{_id}}" class="btn btn-sm btn-info">View Details</a>
+                            <a href="/supplier/import-request/{{_id}}" class="btn btn-sm btn-info">Xem chi tiết</a>
                         </td>
                     </tr>
                 {{else}}
                     <tr>
-                        <td colspan="4" class="text-center">No import requests found.</td>
+                        <td colspan="4" class="text-center">Không tìm thấy yêu cầu nhập hàng nào.</td>
                     </tr>
                 {{/each}}
             </tbody>

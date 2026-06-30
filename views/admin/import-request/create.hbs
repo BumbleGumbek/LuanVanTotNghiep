@@ -3,12 +3,12 @@
         <div class="col-12">
             <div class="row align-items-center mb-4">
                 <div class="col">
-                    <h2>Create Import Request</h2>
-                    <p class="text-muted">Create a request to order inventory variants from suppliers.</p>
+                    <h2>Tạo yêu cầu nhập hàng</h2>
+                    <p class="text-muted">Tạo yêu cầu đặt hàng các loại tồn kho từ nhà cung cấp.</p>
                 </div>
                 <div class="col-auto">
                     <a href="/admin/import-request" class="btn btn-secondary px-4">
-                        <i class="fe fe-arrow-left mr-1"></i> Back to List
+                        <i class="fe fe-arrow-left mr-1"></i> Quay lại danh sách
                     </a>
                 </div>
             </div>
@@ -36,21 +36,21 @@
                     <div class="col-md-4">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-file-text mr-2"></i>Request Info</strong>
+                                <strong class="card-title"><i class="fe fe-file-text mr-2"></i>Thông tin yêu cầu</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Supplier <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Nhà cung cấp <span class="text-danger">*</span></label>
                                     <select name="supplier" id="supplier" class="form-control custom-select" required>
-                                        <option value="" disabled selected>-- Select Supplier --</option>
+                                        <option value="" disabled selected>-- Chọn nhà cung cấp --</option>
                                         {{#each plainSuppliers}}
                                             <option value="{{this._idStr}}">{{this.name}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Note / Reason</label>
-                                    <textarea name="note" class="form-control" rows="4" placeholder="Describe the reason or add instructions..."></textarea>
+                                    <label class="form-label font-weight-bold">Ghi chú / Lý do</label>
+                                    <textarea name="note" class="form-control" rows="4" placeholder="Mô tả lý do hoặc thêm hướng dẫn..."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                         <div class="card shadow">
                             <div class="card-body">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm font-weight-bold py-3">
-                                    <i class="fe fe-check mr-2"></i> Submit Import Request
+                                    <i class="fe fe-check mr-2"></i> Gửi yêu cầu nhập hàng
                                 </button>
                             </div>
                         </div>
@@ -69,9 +69,9 @@
                     <div class="col-md-8">
                         <div class="card shadow mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <strong class="card-title"><i class="fe fe-package mr-2"></i>Requested Items</strong>
+                                <strong class="card-title"><i class="fe fe-package mr-2"></i>Mặt hàng yêu cầu</strong>
                                 <button type="button" class="btn btn-sm btn-success px-3" id="add-item-btn">
-                                    <i class="fe fe-plus mr-1"></i> Add Item
+                                    <i class="fe fe-plus mr-1"></i> Thêm mặt hàng
                                 </button>
                             </div>
                             <div class="card-body p-0">
@@ -79,11 +79,11 @@
                                     <table class="table table-bordered mb-0" id="items-table" style="min-width: 600px;">
                                         <thead class="bg-light">
                                             <tr>
-                                                <th style="width: 45%;">Product <span class="text-danger">*</span></th>
-                                                <th style="width: 20%;">Size <span class="text-danger">*</span></th>
-                                                <th style="width: 15%;">Current Stock</th>
-                                                <th style="width: 15%;">Quantity <span class="text-danger">*</span></th>
-                                                <th style="width: 5%;" class="text-center">Action</th>
+                                                <th style="width: 45%;">Sản phẩm <span class="text-danger">*</span></th>
+                                                <th style="width: 20%;">Kích cỡ <span class="text-danger">*</span></th>
+                                                <th style="width: 15%;">Tồn kho hiện tại</th>
+                                                <th style="width: 15%;">Số lượng <span class="text-danger">*</span></th>
+                                                <th style="width: 5%;" class="text-center">Thao tác</th>
                                             </tr>
                                         </thead>
                                         <tbody id="items-tbody">

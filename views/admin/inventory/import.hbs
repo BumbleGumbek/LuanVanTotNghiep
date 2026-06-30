@@ -3,12 +3,12 @@
         <div class="col-12">
             <div class="row align-items-center mb-4">
                 <div class="col">
-                    <h2>Import Stock</h2>
-                    <p class="text-muted">Import quantities for existing jewelry products or create a new product during entry.</p>
+                    <h2>Nhập kho</h2>
+                    <p class="text-muted">Nhập số lượng cho các sản phẩm trang sức hiện có hoặc tạo sản phẩm mới trong khi nhập.</p>
                 </div>
                 <div class="col-auto">
                     <a href="/admin/inventory/overview" class="btn btn-secondary px-4">
-                        <i class="fe fe-arrow-left mr-1"></i> Back to Overview
+                        <i class="fe fe-arrow-left mr-1"></i> Quay lại tổng quan
                     </a>
                 </div>
             </div>
@@ -39,39 +39,39 @@
                     <div class="col-md-7">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <strong class="card-title"><i class="fe fe-package mr-2"></i>Select Product & Size</strong>
+                                <strong class="card-title"><i class="fe fe-package mr-2"></i>Chọn sản phẩm & kích cỡ</strong>
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Product <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Sản phẩm <span class="text-danger">*</span></label>
                                     <select name="productId" id="productId" class="form-control select2" required style="width: 100%;">
-                                        <option value="" disabled selected>-- Select Product --</option>
+                                        <option value="" disabled selected>-- Chọn sản phẩm --</option>
                                         {{#each plainProducts}}
-                                            <option value="{{_id}}">{{name}} (Category: {{category.name}})</option>
+                                            <option value="{{_id}}">{{name}} (Danh mục: {{category.name}})</option>
                                         {{/each}}
                                     </select>
                                 </div>
 
                                 <div class="form-group mb-3" id="size-select-group">
-                                    <label class="form-label font-weight-bold">Size <span class="text-danger">*</span></label>
+                                    <label class="form-label font-weight-bold">Kích cỡ <span class="text-danger">*</span></label>
                                     <select name="sizeName" id="sizeName" class="form-control custom-select">
-                                        <option value="" disabled selected>-- Select Size --</option>
+                                        <option value="" disabled selected>-- Chọn kích cỡ --</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group mb-3" id="new-size-section" style="display: none;">
-                                    <label class="form-label font-weight-bold">New Size Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="newSizeName" id="newSizeName" class="form-control" placeholder="e.g. 6, 7, 8, S, M">
+                                    <label class="form-label font-weight-bold">Tên kích cỡ mới <span class="text-danger">*</span></label>
+                                    <input type="text" name="newSizeName" id="newSizeName" class="form-control" placeholder="VD: 6, 7, 8, S, M">
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label class="form-label font-weight-bold">Import Quantity <span class="text-danger">*</span></label>
-                                    <input type="number" name="quantity" class="form-control" min="1" placeholder="Enter import quantity" required>
+                                    <label class="form-label font-weight-bold">Số lượng nhập <span class="text-danger">*</span></label>
+                                    <input type="number" name="quantity" class="form-control" min="1" placeholder="Nhập số lượng nhập" required>
                                 </div>
 
                                 <div class="form-group mb-0">
-                                    <label class="form-label font-weight-bold">Note / Reason</label>
-                                    <textarea name="note" class="form-control" rows="3" placeholder="Describe the reason for import "></textarea>
+                                    <label class="form-label font-weight-bold">Ghi chú / Lý do</label>
+                                    <textarea name="note" class="form-control" rows="3" placeholder="Mô tả lý do nhập hàng"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -80,15 +80,15 @@
                         <div id="new-product-section" style="display: none;">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
-                                    <strong class="card-title text-success"><i class="fe fe-plus-circle mr-2"></i>New Product Information</strong>
+                                    <strong class="card-title text-success"><i class="fe fe-plus-circle mr-2"></i>Thông tin sản phẩm mới</strong>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group mb-3">
-                                        <label class="form-label font-weight-bold">Product Name <span class="text-danger">*</span></label>
+                                        <label class="form-label font-weight-bold">Tên sản phẩm <span class="text-danger">*</span></label>
                                         <input type="text" name="name" id="newProductName" class="form-control">
                                     </div>
                                     <div class="form-group mb-0">
-                                        <label class="form-label font-weight-bold">Description <span class="text-danger">*</span></label>
+                                        <label class="form-label font-weight-bold">Mô tả <span class="text-danger">*</span></label>
                                         <textarea name="description" id="newProductDescription" class="form-control" rows="4"></textarea>
                                     </div>
                                 </div>
@@ -101,11 +101,11 @@
                         <div id="new-product-meta-section" style="display: none;">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
-                                    <strong class="card-title"><i class="fe fe-tag mr-2"></i>Pricing & Classification</strong>
+                                    <strong class="card-title"><i class="fe fe-tag mr-2"></i>Giá bán & Phân loại</strong>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group mb-3">
-                                        <label class="form-label font-weight-bold">Price (VND) <span class="text-danger">*</span></label>
+                                        <label class="form-label font-weight-bold">Giá bán (VND) <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="number" name="price" id="newProductPrice" class="form-control" min="0" placeholder="0">
                                             <div class="input-group-append">
@@ -121,7 +121,7 @@
                         <div class="card shadow">
                             <div class="card-body">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm font-weight-bold py-3">
-                                    <i class="fe fe-check mr-2"></i> Complete Stock Import
+                                    <i class="fe fe-check mr-2"></i> Hoàn tất nhập kho
                                 </button>
                             </div>
                         </div>

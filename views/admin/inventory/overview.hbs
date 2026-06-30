@@ -2,8 +2,8 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="card-title mb-1">Stock Overview</h3>
-                <p class="card-text text-muted mb-0">Monitor real-time inventory levels, imports, sales, shelf-life, and stock statuses.</p>
+                <h3 class="card-title mb-1">Tổng quan tồn kho</h3>
+                <p class="card-text text-muted mb-0"></p>
             </div>
             <div class="flex-grow-1 d-flex justify-content-center">
                 <form action="/admin/inventory/overview" method="GET" class="form-inline searchform text-muted">
@@ -12,7 +12,7 @@
                             type="search"
                             name="keyword"
                             value="{{keyword}}"
-                            placeholder="Search products..."
+                            placeholder="Tìm kiếm sản phẩm..."
                             aria-label="Search"
                             style="width: 300px;">
                     {{#if selectedFilter}}
@@ -25,14 +25,14 @@
             </div>
             <div class="d-flex align-items-center">
                 <button type="button" class="btn btn-sm btn-outline-secondary mr-2" id="btn-select-all">
-                    Select All
+                    Chọn tất cả
                 </button>
                 <button type="button" class="btn btn-sm btn-outline-warning mr-2" id="btn-select-low-stock">
-                    <i class="fe fe-alert-triangle mr-1"></i> Select Low Stock
+                    <i class="fe fe-alert-triangle mr-1"></i> Chọn hàng sắp hết
                 </button>
                 {{#if canCreateImportRequest}}
                 <button type="button" class="btn btn-sm btn-primary" id="btn-create-import-request">
-                    <i class="fe fe-plus mr-1"></i> Create Import Request
+                    <i class="fe fe-plus mr-1"></i> Tạo yêu cầu nhập hàng
                 </button>
                 {{/if}}
             </div>
@@ -46,7 +46,7 @@
                 {{/if}}
                 <div class="d-flex flex-wrap align-items-center">
                     <div class="form-group mr-4">
-                        <label for="filter" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-filter mr-1"></i>Filter Status:</label>
+                        <label for="filter" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-filter mr-1"></i>Lọc trạng thái:</label>
                         <select name="filter" id="filter" class="form-control custom-select custom-select-sm" onchange="this.form.submit()" style="min-width: 160px;">
                             {{#each filterOptions}}
                                 <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.text}}</option>
@@ -54,7 +54,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="sort" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-list mr-1"></i>Sort By:</label>
+                        <label for="sort" class="mr-2 font-weight-bold text-secondary"><i class="fe fe-list mr-1"></i>Sắp xếp theo:</label>
                         <select name="sort" id="sort" class="form-control custom-select custom-select-sm" onchange="this.form.submit()" style="min-width: 180px;">
                             {{#each sortOptions}}
                                 <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.text}}</option>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="text-muted mt-2 mt-sm-0">
-                    Showing <strong class="text-dark">{{plainProducts.length}}</strong> products
+                    Hiển thị <strong class="text-dark">{{plainProducts.length}}</strong> sản phẩm
                 </div>
             </form>
         </div>
@@ -85,16 +85,16 @@
                             <input type="checkbox" id="check-all-products">
                         </th>
                         <th style="width: 5%;">#</th>
-                        <th style="width: 10%;">Image</th>
-                        <th style="width: 20%;">Product Name</th>
-                        <th style="width: 12%;">Sizes & Stock</th>
-                        <th style="width: 8%;" class="text-center">Imported</th>
-                        <th style="width: 8%;" class="text-center">Sold</th>
-                        <th style="width: 10%;" class="text-center">Current Stock</th>
-                        <th style="width: 10%;">Last Import Date</th>
-                        <th style="width: 8%;" class="text-center">Days On Shelf</th>
-                        <th style="width: 9%;" class="text-center">Status</th>
-                        <th style="width: 10%;" class="text-center">Performance</th>
+                        <th style="width: 10%;">Hình ảnh</th>
+                        <th style="width: 20%;">Tên sản phẩm</th>
+                        <th style="width: 12%;">Kích cỡ & Tồn kho</th>
+                        <th style="width: 8%;" class="text-center">Đã nhập</th>
+                        <th style="width: 8%;" class="text-center">Đã bán</th>
+                        <th style="width: 10%;" class="text-center">Tồn kho hiện tại</th>
+                        <th style="width: 10%;">Ngày nhập gần nhất</th>
+                        <th style="width: 8%;" class="text-center">Số ngày bày bán</th>
+                        <th style="width: 9%;" class="text-center">Trạng thái</th>
+                        <th style="width: 10%;" class="text-center">Hiệu suất</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,7 +109,7 @@
                             </td>
                             <td>
                                 <span class="font-weight-bold text-dark d-block">{{name}}</span>
-                                <small class="text-muted">Category: {{category.name}}</small>
+                                <small class="text-muted">Danh mục: {{category.name}}</small>
                             </td>
                             <td>
                                 {{#if variants.length}}
@@ -118,15 +118,15 @@
                                             <li class="mb-1 d-flex align-items-center">
                                                 <span class="badge badge-light text-dark font-weight-bold mr-1" style="border: 1px solid #ced4da; min-width: 24px; text-align: center;">{{this.size}}</span>:
                                                 {{#if (eq this.quantity 0)}}
-                                                    <span class="badge badge-soft-danger text-danger font-weight-bold ml-1">Out</span>
+                                                    <span class="badge badge-soft-danger text-danger font-weight-bold ml-1">Hết</span>
                                                 {{else}}
-                                                    <span class="text-secondary ml-1 font-weight-bold">{{this.quantity}} pcs</span>
+                                                    <span class="text-secondary ml-1 font-weight-bold">{{this.quantity}} sản phẩm</span>
                                                 {{/if}}
                                             </li>
                                         {{/each}}
                                     </ul>
                                 {{else}}
-                                    <span class="badge badge-soft-danger text-danger">No variants</span>
+                                    <span class="badge badge-soft-danger text-danger">Không có phân loại</span>
                                 {{/if}}
                             </td>
                             <td class="text-center font-weight-bold text-info">{{imported}}</td>
@@ -139,7 +139,7 @@
                                 {{#if (eq daysOnShelf 'N/A')}}
                                     <span class="text-muted">N/A</span>
                                 {{else}}
-                                    <span class="text-dark">{{daysOnShelf}} days</span>
+                                    <span class="text-dark">{{daysOnShelf}} ngày</span>
                                 {{/if}}
                             </td>
                             <td class="text-center">
@@ -158,7 +158,7 @@
                         <tr>
                             <td colspan="12" class="text-center text-muted py-5">
                                 <i class="fe fe-inbox fe-24 d-block mb-2"></i>
-                                No products match the selected filters.
+                                Không có sản phẩm nào khớp với bộ lọc đã chọn.
                             </td>
                         </tr>
                     {{/unless}}
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (selectedIds.length === 0) {
-                alert('Please select at least one product.');
+                alert('Vui lòng chọn ít nhất một sản phẩm.');
                 return;
             }
 
