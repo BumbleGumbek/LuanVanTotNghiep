@@ -34,7 +34,7 @@ async function createOrder({
         note: note || '',
         status: 'PendingPayment',
 
-        paymentMethod: 'PayOS',
+        paymentMethod: 'Chuyển khoản',
         paymentStatus: 'Pending',
         expiredAt:
             new Date(

@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const User = require('../models/User');
+const mongoose = require('mongoose');
 const { deductInventory } = require('../helpers/inventory-helper');
 const { hasRole } = require('../middlewares/authorization');
 
@@ -12,21 +14,158 @@ router.all('/*', function (req, res, next) {
 
 router.get('/', hasRole('admin', 'store_manager', 'warehouse'), async function (req, res, next) {
     try {
-        const orders = await Order.find({})
-            .populate('user', 'firstName lastName email')
-            .sort({ createdAt: -1 });
+        const { fromDate, toDate, status, keyword } = req.query;
+        const page = Math.max(parseInt(req.query.page) || 1, 1);
+        const allowedLimits = [10, 20, 50];
+        const limit = allowedLimits.includes(Number(req.query.limit))
+            ? Number(req.query.limit)
+            : 10;
+        const filter = {};
 
-        const sortedOrders = orders.map(order => order.toObject()).sort((a, b) => {
-            const aPaid = a.paymentStatus === 'Paid';
-            const bPaid = b.paymentStatus === 'Paid';
-            if (aPaid && !bPaid) return -1;
-            if (!aPaid && bPaid) return 1;
-            return 0;
-        });
+        // 1. Date filter validation
+        let startDate = null;
+        let endDate = null;
+
+        if (fromDate) {
+            startDate = new Date(fromDate);
+            if (isNaN(startDate.getTime())) {
+                startDate = null;
+            } else {
+                startDate.setHours(0, 0, 0, 0);
+            }
+        }
+
+        if (toDate) {
+            endDate = new Date(toDate);
+            if (isNaN(endDate.getTime())) {
+                endDate = null;
+            } else {
+                endDate.setHours(23, 59, 59, 999);
+            }
+        }
+
+        // Nếu fromDate > toDate thì bỏ filter ngày
+        if (startDate && endDate && startDate > endDate) {
+            req.flash('error_message', 'From date cannot be greater than To date.');
+            return res.redirect('/admin/orders');
+        }
+
+        if (startDate) {
+            filter.createdAt = {
+                ...filter.createdAt,
+                $gte: startDate
+            };
+        }
+
+        if (endDate) {
+            filter.createdAt = {
+                ...filter.createdAt,
+                $lte: endDate
+            };
+        }
+
+        // 2. Status filter
+        if (status && ['PendingPayment', 'Paid', 'Shipping', 'Completed', 'Cancelled'].includes(status)) {
+            filter.status = status;
+        }
+
+        // 3. Keyword search
+        if (keyword) {
+            const cleanKeyword = keyword.trim();
+            if (cleanKeyword) {
+                // Find matching users first to support search by name/email
+                const matchingUsers = await User.find({
+                    $or: [
+                        { firstName: { $regex: cleanKeyword, $options: 'i' } },
+                        { lastName: { $regex: cleanKeyword, $options: 'i' } },
+                        { email: { $regex: cleanKeyword, $options: 'i' } }
+                    ]
+                }).select('_id');
+                const userIds = matchingUsers.map(u => u._id);
+
+                const orConditions = [
+                    { 'shippingAddress.receiverName': { $regex: cleanKeyword, $options: 'i' } },
+                    { 'shippingAddress.receiverPhone': { $regex: cleanKeyword, $options: 'i' } }
+                ];
+
+                if (userIds.length > 0) {
+                    orConditions.push({ user: { $in: userIds } });
+                }
+
+                if (mongoose.Types.ObjectId.isValid(cleanKeyword)) {
+                    orConditions.push({ _id: cleanKeyword });
+                }
+
+                const numVal = Number(cleanKeyword);
+                if (!isNaN(numVal)) {
+                    orConditions.push({ payosOrderCode: numVal });
+                }
+
+                filter.$or = orConditions;
+            }
+        }
+        await Order.updateMany(
+            {
+                status: 'PendingPayment',
+                expiredAt: { $lt: new Date() }
+            },
+            {
+                $set: {
+                    status: 'Cancelled',
+                    paymentStatus: 'Failed'
+                }
+            }
+        );
+        const count = await Order.countDocuments(filter);
+        const pages = Math.ceil(count / limit);
+        const activePage = Math.min(page, pages > 0 ? pages : 1);
+        const skip = (activePage - 1) * limit;
+
+        const orders = await Order.find(filter)
+            .populate('user', 'firstName lastName email')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // const sortedOrders = orders.map(order => order.toObject()).sort((a, b) => {
+        //     const aPaid = a.paymentStatus === 'Paid';
+        //     const bPaid = b.paymentStatus === 'Paid';
+        //     if (aPaid && !bPaid) return -1;
+        //     if (!aPaid && bPaid) return 1;
+        //     return 0;
+        // });
+
+        const pagesList = [];
+        for (let i = 1; i <= pages; i++) {
+            pagesList.push({
+                number: i,
+                isCurrent: i === activePage
+            });
+        }
+
+        const queryParams = new URLSearchParams({
+            ...(fromDate && { fromDate }),
+            ...(toDate && { toDate }),
+            ...(status && { status }),
+            ...(keyword && { keyword })
+        }).toString();
 
         res.render('admin/orders/index', {
-            orders: sortedOrders,
-            title: 'Order Management'
+            orders: orders.map(order => order.toObject()),
+            title: 'Order Management',
+            fromDate,
+            toDate,
+            status,
+            keyword,
+            currentPage: activePage,
+            totalPages: pages,
+            totalCount: count,
+            hasPrev: activePage > 1,
+            hasNext: activePage < pages,
+            prevPage: activePage - 1,
+            nextPage: activePage + 1,
+            pagesList,
+            queryParams
         });
     } catch (err) {
         console.error("Error retrieving order list:", err);
@@ -45,8 +184,8 @@ router.post('/update-status/:id', hasRole('admin', 'warehouse'), async function 
         const newStatus = req.body.status;
         const statusFlow = {
             PendingPayment: ['Paid', 'Cancelled'],
-            Paid: ['Shipping'],
-            Shipping: ['Completed'],
+            Paid: ['Shipping', 'Cancelled'],
+            Shipping:['Completed', 'Cancelled'],
             Completed: [],
             Cancelled: []
         };

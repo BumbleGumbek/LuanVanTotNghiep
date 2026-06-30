@@ -268,7 +268,10 @@ router.get('/checkout', async function(req, res, next){
 });
 
 router.post('/checkout', async function(req, res, next){
-    if (!req.isAuthenticated()) return res.status(401).redirect('/login');
+    if (!req.isAuthenticated()) {
+        console.log("CHECKPOINT 1");
+        return res.status(401).redirect('/login');
+    }
     try {
         const { receiverName, receiverPhone, detailAddress, note, couponCode } = req.body;
         if (
@@ -276,10 +279,16 @@ router.post('/checkout', async function(req, res, next){
             !receiverPhone ||
             !detailAddress
         ) {
+            console.log("LỖI 1");
+
             req.flash(
                 'error_message',
                 'Please fill in all required shipping fields.'
             );
+
+            console.log("LỖI 2");
+
+            console.log("CHECKPOINT 2");
             return res.redirect('/checkout');
         }
         let checkoutItems = [];
@@ -303,6 +312,7 @@ router.post('/checkout', async function(req, res, next){
             // Nếu không, đọc từ Giỏ hàng Database gốc
             const dbCart = await Cart.findOne({ user_id: req.user._id }).populate('items.product_id');
             if(!dbCart || !dbCart.items || dbCart.items.length <= 0) {
+                console.log("CHECKPOINT 3");
                 return res.redirect('/shopping-cart');
             }
             dbCart.items.forEach(item => {
@@ -331,16 +341,19 @@ router.post('/checkout', async function(req, res, next){
 
             if (!coupon) {
                 req.flash('error_message', 'Invalid coupon code.');
+                console.log("CHECKPOINT 4");
                 return res.redirect('/checkout');
             }
 
             if (coupon.expiryDate < new Date()) {
                 req.flash('error_message', 'Coupon has expired.');
+                console.log("CHECKPOINT 5");
                 return res.redirect('/checkout');
             }
 
             if (coupon.usedCount >= coupon.usageLimit) {
                 req.flash('error_message', 'Coupon usage limit reached.');
+                console.log("CHECKPOINT 6");
                 return res.redirect('/checkout');
             }
 
@@ -349,6 +362,7 @@ router.post('/checkout', async function(req, res, next){
                     'error_message',
                     `Minimum order value is ${coupon.minOrderValue.toLocaleString()} VND`
                 );
+                console.log("CHECKPOINT 7");
                 return res.redirect('/checkout');
             }
 
@@ -357,8 +371,21 @@ router.post('/checkout', async function(req, res, next){
                 0
             );
         }
-
         console.log(req.body);
+        const existingOrder = await Order.findOne({
+            user: req.user._id,
+            status: 'PendingPayment',
+            paymentStatus: 'Pending'
+        });
+
+        if (existingOrder) {
+            req.flash(
+                'error_message',
+                'You have an unpaid order. Please complete or cancel it before placing a new order.'
+            );
+
+            return res.redirect('/my-orders/' + existingOrder._id);
+        }
         const newOrder = await createOrder({
             userId: req.user._id,
             receiverName,
@@ -377,6 +404,7 @@ router.post('/checkout', async function(req, res, next){
         }
 
         req.flash('success_message', 'Your order has been placed successfully!');
+        console.log("CHECKPOINT SUCCESS");
         res.redirect('/payment/' + newOrder._id);
     } catch (error) {
         console.error("ERROR WHEN SAVING ORDERS TO MONGO:", error);

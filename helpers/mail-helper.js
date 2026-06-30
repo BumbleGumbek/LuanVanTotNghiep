@@ -146,6 +146,40 @@ async function sendOrderPaidEmail(order, user) {
     });
 }
 
+async function sendResetPasswordEmail(user, resetLink) {
+
+    const html = `
+        <h2>Password Reset</h2>
+
+        <p>Hello ${user.firstName},</p>
+
+        <p>You requested to reset your password.</p>
+
+        <p>
+            Click the link below:
+        </p>
+
+        <p>
+            <a href="${resetLink}">
+                Reset Password
+            </a>
+        </p>
+
+        <p>
+            This link will expire in 15 minutes.
+        </p>
+    `;
+
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: 'Reset Your Password',
+        html
+    });
+
+}
+
 module.exports = {
-    sendOrderPaidEmail
+    sendOrderPaidEmail,
+    sendResetPasswordEmail
 };
