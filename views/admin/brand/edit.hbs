@@ -1,0 +1,65 @@
+<div class="card shadow">
+    <div class="card-body">
+
+        <form action="/admin/brand/edit/{{brand._id}}" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Tên thương hiệu</label>
+                <input
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        value="{{brand.name}}"
+                        required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mã thương hiệu</label>
+                <input
+                        type="text"
+                        name="code"
+                        class="form-control"
+                        maxlength="20"
+                        value="{{brand.code}}"
+                        required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Quốc gia</label>
+                <input
+                        type="text"
+                        name="country"
+                        class="form-control"
+                        value="{{brand.country}}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Thứ tự hiển thị</label>
+                <input
+                        type="number"
+                        name="displayOrder"
+                        class="form-control"
+                        min="0"
+                        value="{{brand.displayOrder}}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea name="description" rows="4" class="form-control">{{brand.description}}</textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label"></label>
+                <select name="status" class="form-control">
+                    <option value="true"{{#if brand.status}}selected{{/if}}>Hoạt động</option>
+                    <option value="false"{{#unless brand.status}}selected{{/unless}}>Khóa</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Cập nhật thương hiệu
+            </button>
+
+        </form>
+
+    </div>
+</div>

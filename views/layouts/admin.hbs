@@ -122,6 +122,11 @@
                         <li class="nav-item {{#unless canManageCategories}}disabled-menu{{/unless}} ">
                             <a class="nav-link pl-3" href="admin/category"><span class="ml-1 item-text">Danh mục sản phẩm</span></a>
                         </li>
+                        <li class="nav-item {{#unless canManageBrands}}disabled-menu{{/unless}}">
+                            <a class="nav-link pl-3" href="/admin/brand">
+                                <span class="ml-1 item-text">Thương hiệu</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{#unless canManageSuppliers}}{{#unless isSupplier}}{{#unless canCreateImportRequest}}disabled-menu{{/unless}}{{/unless}}{{/unless}}">

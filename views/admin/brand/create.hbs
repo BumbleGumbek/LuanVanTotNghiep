@@ -1,0 +1,61 @@
+<div class="card shadow">
+    <div class="card-body">
+        <form action="/admin/brand/create" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Tên thương hiệu
+                </label>
+                <input
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Mã thương hiệu
+                </label>
+                <input
+                        type="text"
+                        name="code"
+                        class="form-control"
+                        maxlength="20"
+                        required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Quốc gia
+                </label>
+                <input
+                        type="text"
+                        name="country"
+                        class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Thứ tự hiển thị</label>
+                <input type="number" name="displayOrder" class="form-control" value="0" min="0">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea name="description" rows="4" class="form-control"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Trạng thái</label>
+                <select name="status" class="form-control">
+                    <option value="true">Hoạt động</option>
+                    <option value="false">Khóa</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Tạo thương hiệu
+            </button>
+
+        </form>
+    </div>
+</div>
